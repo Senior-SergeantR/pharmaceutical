@@ -9,7 +9,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <Image source={require('../../assets/images/delivery.png')} style={styles.image} />
-        <Text style={styles.title}>Delivery</Text>
+        <Text style={styles.title}>DELIVERY</Text>
         <Text style={styles.description}>
           Effortlessly track deliveries with our rider interface,
           ensuring timely and secure transportation of medical supplies.

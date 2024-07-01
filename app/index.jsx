@@ -9,7 +9,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <Image source={require('../assets/images/capsule.png')} style={styles.image} />
-        <Text style={styles.title}>Connect</Text>
+        <Text style={styles.title}>CONNECT</Text>
         <Text style={styles.description}>
           Breeg bridges the gap between medical distributors and pharmacies,
           ensuring swift and efficient distribution of essential supplies.
