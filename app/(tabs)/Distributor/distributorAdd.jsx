@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#fff',
     alignItems: 'center',
-    marginTop: 10,
+    
   },
   headerTitle: {
     color: '#000',
