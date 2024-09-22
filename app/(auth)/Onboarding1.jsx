@@ -1,14 +1,25 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StatusBar } from 'expo-status-bar';
+import { ScrollView, Text, View } from 'react-native';
+import { Link } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const Onboarding1 = () => {
+
+export default function App() {
   return (
-    <View>
-      <Text>Onboarding2</Text>
-    </View>
-  )
+   <SafeAreaView className="bg-primary h-full">
+    <ScrollView contentCContainerStyle={{height: '100%'}}>
+      <View className="w-full justify-center items-center h-full px-4">
+        <Image
+      
+        />
+      <Text className="text-7xl font-bold"> BREEG</Text>
+
+        </View>
+      
+    </ScrollView>
+
+   </SafeAreaView>
+  );
 }
 
-export default Onboarding1
 
-const styles = StyleSheet.create({})

@@ -6,7 +6,9 @@ import { icons } from '../../constants'
 
 const TabIcons = ({icon, color, name, focused }) => {
   return (
+    
     <View className="flex-col items-center justify-center gap-1">
+      
         <Image
         source={icon}
         resizeMode="contain"
@@ -105,4 +107,3 @@ const TabsLayout = () => {
 export default TabsLayout;
 
 
-// const styles = StyleSheet.create({})
