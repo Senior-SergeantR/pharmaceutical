@@ -1,26 +1,55 @@
-import { StatusBar } from 'expo-status-bar';
-
-import { ScrollView, Text, View } from 'react-native';
-import { Link } from 'expo-router';
+import React from 'react';
+import { StatusBar, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomButton from '../components/CustomButton';
+
 
 export default function App() {
   return (
-    
-   <SafeAreaView className="bg-primary h-full">
-    
-   
-      <View className="w-full justify-center items-center h-full px-4 ">
-        <Text className="text-7xl font-bold text-white relative mt-50%"> 
-          BREEG
+    <SafeAreaView style={styles.container}>
+      <View style={styles.centeredView}>
+        <Text style={styles.title}>CONNECT</Text>
+        <Text style={styles.description}>
+          Breeg bridges the gap between medical distributors and pharmacies,
+          ensuring swift and efficient distribution of essential supplies.
         </Text>
 
-      </View>
-      
-    
+        <CustomButton
+        title= "skip"
+        handlePress={() => {}}
+        containerStyles="w-full mt-7"/>
 
-   </SafeAreaView>
+        <CustomButton
+        title= "skip"
+        handlePress={() => {}}
+        containerStyles="w-full mt-7"/>
+
+      </View>
+      <StatusBar style="auto" />
+    </SafeAreaView>
   );
 }
 
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#034B02', // Set your desired background color
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    
+    paddingHorizontal: 56,
+  },
+  title: {
+    fontSize: 60,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 20,
+  },
+  description: {
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'start',
+  },
+});

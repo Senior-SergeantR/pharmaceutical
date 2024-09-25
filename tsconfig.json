@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/index.jsx", "app/(tabs)/_layout.jsx", "app/(tabs)/distributorAdd.jsx", "app/(tabs)/home.jsx", "app/(tabs)/products.jsx", "app/(tabs)/profile.jsx", "app/_layout.jsx", "app/+html.jsx", "app/+not-found.jsx", "app/(auth)/_layout.jsx", "app/(auth)/Onboarding1.jsx", "app/(auth)/Onboarding2.jsx", "app/(auth)/Onboarding3.jsx", "app/(auth)/SignUpDistributor.jsx", "app/(auth)/SignUpPharmacy.jsx", "app/(auth)/UserType.jsx"  ]
+, "app/index.jsx", "app/(tabs)/_layout.jsx", "app/(tabs)/distributorAdd.jsx", "app/(tabs)/home.jsx", "app/(tabs)/products.jsx", "app/(tabs)/profile.jsx", "app/_layout.jsx", "app/SplashScreenView.jsx", "app/+not-found.jsx", "app/(auth)/_layout.jsx", "app/(auth)/Onboarding1.jsx", "app/(auth)/Onboarding2.jsx", "app/(auth)/Onboarding3.jsx", "app/(auth)/SignUpDistributor.jsx", "app/(auth)/SignUpPharmacy.jsx", "app/(auth)/UserType.jsx"  ]
 }
