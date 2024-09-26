@@ -2,7 +2,7 @@ import React from 'react';
 import { StatusBar, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../components/CustomButton';
-
+import { Redirect, router } from 'expo-router';
 
 export default function App() {
   return (
@@ -15,15 +15,16 @@ export default function App() {
         </Text>
 
         <CustomButton
-        title= "skip"
-        handlePress={() => {}}
-        containerStyles="w-full mt-7"/>
+          title="Skip"
+          handlePress={() => router.push('/(auth)/UserType')}
+          containerStyles="w-full mt-7"
+        />
 
         <CustomButton
-        title= "skip"
-        handlePress={() => {}}
-        containerStyles="w-full mt-7"/>
-
+          title="Next"
+          handlePress={() => router.push('/(auth)/Onboarding2')}
+          containerStyles="w-full mt-7"
+        />
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -33,12 +34,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#034B02', // Set your desired background color
+    backgroundColor: '#034B02', 
+    minHeight: '85vh', // Minimum height of 85% of the screen height
   },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-    
     paddingHorizontal: 56,
   },
   title: {

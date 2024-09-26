@@ -18,8 +18,10 @@ const CustomButton = ({title, handlePress,containerStyles,
     
     `}>
 
-      <Text className="text-primary font-psemibold
-      ">CustomButton</Text>
+      <Text className={`text-primary font-psemibold
+      ${textStyles}` }>
+      {title}
+      </Text>
       
     </TouchableOpacity>
     
