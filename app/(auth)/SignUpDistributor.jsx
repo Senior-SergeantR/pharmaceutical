@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
 import { Redirect, router } from 'expo-router';
 import FormField from '../../components/FormField';
+import { Link } from 'expo-router';
+
 
 export default function App() {
+
+  const [form, setForm] = useState({
+    licenseID:'',
+    password:''
+  })
+
+  const [isSubmitting, setfirst] = useState (false)
+
+  const submit = () => {
+    console.log(form)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -18,20 +31,45 @@ export default function App() {
           Enter your official license to sign up for this app
         </Text>
 
-        
+        <FormField
+          title="Enter License ID Here                                                                          "
+          value={form.licenseID}
+          handleChangeText={(e) => setForm({ ...form,
+            licenseID: e
+          })}
+          otherStyles= "mt-7"
+          keyboardType="license-ID"
+          style={{
+            width:'100%',
+          }}
+        />
+
+        {/* <FormField
+          title="password                                                                                "
+          value={form.password}
+          handleChangeText={(e) => setForm({ ...form,
+            password: e
+          })}
+          otherStyles= "mt-7"
+          keyboardType="license-ID"
+          style={{
+            width:'100%',
+          }}
+        /> */}
         
         
 
         <CustomButton
           title="Sign up"
-          handlePress={() => router.push('/UserType')}
+          handlePress={submit}
           containerStyles="w-full mt-7 mb-20"
+          isLoading={isSubmitting}
         />
 
         <Text className="mt-20">
           By clicking Sign Up, you agree to our 
-          <Text style={styles.externallink}> Terms of Service</Text>  and 
-          <Text style={styles.externallink}> Privacy Policy</Text> 
+          <Link href= "/terms" style={styles.externallink}> Terms of Service</Link>  and 
+          <Link href= "/privacy"style={styles.externallink}> Privacy Policy</Link>
         </Text>
       </View>
       <StatusBar style="auto" />
@@ -41,28 +79,29 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+   flex: 1,
     backgroundColor: '#fff', 
     minHeight: '85vh', // Minimum height of 85% of the screen height
   },
   centeredView: {
-    flex: 1,
+    
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 26,
   },
   title: {
-    fontSize: 60,
+    fontSize: 50,
     fontWeight: 'bold',
-    marginBottom: 220,
+    marginBottom: 120,
   },
   description: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'start',
+    marginBottom: 50,
   },
 
   subtitle:{
-    fontSize: 30,
+    fontSize: 25,
     textAlign: 'start',
     fontWeight: 'bold',
     

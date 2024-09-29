@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
 import { Redirect, router } from 'expo-router';
+import FormField from '../../components/FormField';
+
 
 export default function App() {
+
+  const [form, setForm] = useState({
+    licenseID:'',
+    password:''
+  })
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.centeredView}>
@@ -15,6 +23,32 @@ export default function App() {
         <Text style={styles.description}>
           Enter your official license to sign up for this app
         </Text>
+
+        <FormField
+          title="Enter License ID Here                                                                          "
+          value={form.licenseID}
+          handleChangeText={(e) => setForm({ ...form,
+            licenseID: e
+          })}
+          otherStyles= "mt-7"
+          keyboardType="license-ID"
+          style={{
+            width:'100%',
+          }}
+        />
+
+        {/* <FormField
+          title="password                         "
+          value={form.password}
+          handleChangeText={(e) => setForm({ ...form,
+            password: e
+          })}
+          otherStyles= "mt-7"
+          keyboardType="license-ID"
+          style={{
+            width:'100%',
+          }}
+        /> */}
         
         
 
@@ -22,6 +56,7 @@ export default function App() {
           title="Sign up"
           handlePress={() => router.push('/UserType')}
           containerStyles="w-full mt-7 mb-20"
+          
         />
 
         <Text className="mt-20">
@@ -37,28 +72,29 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+   flex: 1,
     backgroundColor: '#fff', 
     minHeight: '85vh', // Minimum height of 85% of the screen height
   },
   centeredView: {
-    flex: 1,
+    
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 26,
+    paddingHorizontal: 6,
   },
   title: {
-    fontSize: 60,
+    fontSize: 50,
     fontWeight: 'bold',
-    marginBottom: 220,
+    marginBottom: 120,
   },
   description: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'start',
+    marginBottom: 50,
   },
 
   subtitle:{
-    fontSize: 30,
+    fontSize: 25,
     textAlign: 'start',
     fontWeight: 'bold',
     
