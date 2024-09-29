@@ -33,6 +33,17 @@ const AuthLayout = () => {
         headerShown: false,
       }}
       />
+   
+
+    <Stack.Screen
+      name='SignUpPharmacy'
+      options={{
+        headerShown: false,
+      }}
+      />
+
+
+   
     </Stack>
 
       
