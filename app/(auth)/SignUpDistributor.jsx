@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomButton from '../../components/CustomButton';
+import CustomButton from '../../components/CustomButton1';
 import { Redirect, router } from 'expo-router';
 import FormField from '../../components/FormField';
 import { Link } from 'expo-router';
@@ -11,7 +11,7 @@ export default function App() {
 
   const [form, setForm] = useState({
     licenseID:'',
-    password:''
+    // password:''
   })
 
   const [isSubmitting, setfirst] = useState (false)
@@ -32,7 +32,7 @@ export default function App() {
         </Text>
 
         <FormField
-          title="Enter License ID Here                                                                          "
+          title="Enter License ID Here                                                                              "
           value={form.licenseID}
           handleChangeText={(e) => setForm({ ...form,
             licenseID: e
@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 50,
     fontWeight: 'bold',
-    marginBottom: 120,
+    marginTop: 100,
+    marginBottom: 150,
   },
   description: {
     fontSize: 18,

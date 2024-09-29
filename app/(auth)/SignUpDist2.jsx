@@ -67,6 +67,17 @@ export default function App() {
         />
 
         <Text className="mt-20">
+                or Continue with google
+        </Text>
+
+        <CustomButton
+          title="Google"
+          handlePress={submit}
+          containerStyles="w-full mt-7 mb-20"
+          isLoading={isSubmitting}
+        />
+
+        <Text className="mt-20">
           By clicking Sign Up, you agree to our 
           <Link href= "/terms" style={styles.externallink}> Terms of Service</Link>  and 
           <Link href= "/privacy"style={styles.externallink}> Privacy Policy</Link>
