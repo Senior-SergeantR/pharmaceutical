@@ -42,6 +42,40 @@ const AuthLayout = () => {
       }}
       />
 
+    <Stack.Screen
+      name='login'
+      options={{
+        headerShown: false,
+      }}
+      />
+
+    <Stack.Screen
+      name='OTPsentToEmail'
+      options={{
+        headerShown: false,
+      }}
+      />
+
+    <Stack.Screen
+      name='SignUpDist2'
+      options={{
+        headerShown: false,
+      }}
+      />
+
+    <Stack.Screen
+      name='SignUpPharm2'
+      options={{
+        headerShown: false,
+      }}
+      />
+      <Stack.Screen
+      name='CreatePassword'
+      options={{
+        headerShown: false,
+      }}
+      />
+
 
    
     </Stack>
