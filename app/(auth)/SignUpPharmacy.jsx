@@ -8,6 +8,8 @@ import { Link } from 'expo-router';
 
 
 export default function App() {
+  
+  
 
   const [form, setForm] = useState({
     licenseID:'',
@@ -32,7 +34,7 @@ export default function App() {
         </Text>
 
         <FormField
-          title="Enter License ID Here                                                                          "
+          title="Enter License ID Here                                                                              "
           value={form.licenseID}
           handleChangeText={(e) => setForm({ ...form,
             licenseID: e
@@ -79,7 +81,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-   flex: 1,
+    flex: 1,
     backgroundColor: '#fff', 
     minHeight: '85vh', 
   },
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 26,
   },
   title: {
-    fontSize: 50,
+    fontSize: 40,
     fontWeight: 'bold',
     marginTop: 100,
     marginBottom: 150,

@@ -8,6 +8,8 @@ import { Link } from 'expo-router';
 
 
 export default function App() {
+  
+  
 
   const [form, setForm] = useState({
     licenseID:'',
@@ -79,9 +81,9 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-   flex: 1,
+    flex: 1,
     backgroundColor: '#fff', 
-    minHeight: '85vh', // Minimum height of 85% of the screen height
+    minHeight: '85vh', 
   },
   centeredView: {
     
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 26,
   },
   title: {
-    fontSize: 50,
+    fontSize: 40,
     fontWeight: 'bold',
     marginTop: 100,
     marginBottom: 150,
