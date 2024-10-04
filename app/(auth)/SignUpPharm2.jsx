@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 35,
     fontWeight: 'bold',
-    marginBottom: 150,
+    marginBottom: 200,
   },
   subtitle: {
     fontSize: 25,

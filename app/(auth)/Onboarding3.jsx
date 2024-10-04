@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#034B02', 
-    minHeight: '85vh', // Minimum height of 85% of the screen height
+    minHeight: '85vh',
   },
   centeredView: {
     flex: 1,
