@@ -12,8 +12,7 @@ export default function SplashScreenView() {
     }, 2000);
   }, []);
 
-  // Your other app code goes here
-  // ...
+
 
   return (
     <SafeAreaView className="bg-primary h-full">
