@@ -14,17 +14,21 @@ export default function App() {
           ensuring swift and efficient distribution of essential supplies.
         </Text>
 
-        <CustomButton
+
+          <CustomButton
           title="Back"
           handlePress={() => router.push('/Onboarding2')}
-          containerStyles="w-full mt-7"
+          containerStyles={{ width: '100%', marginTop: 20 }}
         />
+
 
         <CustomButton
           title="Get Started"
           handlePress={() => router.push('/UserType')}
-          containerStyles="w-full mt-7"
+          containerStyles={{ width: '100%', marginTop: 20 }}
         />
+
+        
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>

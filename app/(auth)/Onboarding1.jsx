@@ -15,17 +15,20 @@ export default function App() {
           ensuring swift and efficient distribution of essential supplies.
         </Text>
 
+        <View style={styles.buttonContainer}>
         <CustomButton
           title="Skip"
           handlePress={() => router.push('/(auth)/UserType')}
-          containerStyles={{ width: '100%', marginTop: 7 }}
+          containerStyles={{ width: '100%', marginTop: 20 }}
         />
 
         <CustomButton
           title="Next"
           handlePress={() => router.push('/(auth)/Onboarding2')}
-          containerStyles={{ width: '100%', marginTop: 7 }}
+          containerStyles={{ width: '100%', marginTop: 20 }}
         />
+
+        </View>
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -59,5 +62,17 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 20,
     color: 'white',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 7,
+  },
+  button: {
+    flex: 1,
+    marginHorizontal: 5,
   },
 });

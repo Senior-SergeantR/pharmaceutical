@@ -14,17 +14,21 @@ export default function App() {
           ensuring timely and secure transportation of medical supplies.
         </Text>
 
-        <CustomButton
-          title="Skip"
-          handlePress={() => router.push('/(auth)/UserType')}
-          containerStyles="w-full mt-7"
-        />
+    
 
-        <CustomButton
-          title="Next"
-          handlePress={() => router.push('/Onboarding3')}
-          containerStyles="w-full mt-7"
-        />
+<CustomButton
+  title="Skip"
+  handlePress={() => router.push('/(auth)/UserType')}
+  containerStyles={{ width: '100%', marginTop: 20 }}
+/>
+
+
+<CustomButton
+  title="Next"
+  handlePress={() => router.push('/Onboarding3')}
+  containerStyles={{ width: '100%', marginTop: 20 }}
+/>
+
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>

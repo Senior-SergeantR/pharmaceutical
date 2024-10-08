@@ -16,13 +16,14 @@ export default function App() {
         <CustomButton
           title="Distributor"
           handlePress={() => router.push('/SignUpDistributor')}
-          containerStyles="w-full mt-7"
+          containerStyles={{ width: '100%', marginTop: 20 }}
         />
+
 
         <CustomButton
           title="Pharmacist"
           handlePress={() => router.push('/SignUpPharmacy')}
-          containerStyles="w-full mt-7"
+          containerStyles={{ width: '100%', marginTop: 20 }}
         />
       </View>
       <StatusBar style="auto" />
