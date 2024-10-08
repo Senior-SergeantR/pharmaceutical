@@ -1,35 +1,40 @@
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 
-const CustomButton = ({title, handlePress,containerStyles,
-  textStyles, isLoading}) => {
-
+const CustomButton = ({ title, handlePress, containerStyles, textStyles, isLoading }) => {
   return (
-    
-    <TouchableOpacity 
-    onPress={handlePress}
-    activeOpacity={0.7}
-    className={`bg-white rounded-md 
-    justify-center 
-    items-center p-4
-    ${containerStyles}
-    ${isLoading ? 'opacity-50' : ''}
-    disabled={isLoading}
-    
-    `}>
-
-      
-
-      <Text className={`text-primary font-psemibold
-      ${textStyles}` }>
-      {title}
+    <TouchableOpacity
+      onPress={handlePress}
+      activeOpacity={0.7}
+      style={[
+        styles.button,
+        containerStyles,
+        isLoading && styles.disabledButton
+      ]}
+      disabled={isLoading}
+    >
+      <Text style={[styles.text, textStyles]}>
+        {title}
       </Text>
-      
     </TouchableOpacity>
-    
-  )
-}
+  );
+};
 
-export default CustomButton
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  disabledButton: {
+    opacity: 0.5,
+  },
+  text: {
+    color: '#000', 
+    fontWeight: '600', 
+  },
+});
 
-const styles = StyleSheet.create({})
+export default CustomButton;
