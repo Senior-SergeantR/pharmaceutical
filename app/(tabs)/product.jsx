@@ -1,10 +1,46 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+// import { deleteProduct } from '../../services/productService';
 
 const { height } = Dimensions.get('window');
 
 const ProductScreen = () => {
+  const navigation = useNavigation();
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
+  const handleEdit = () => {
+    navigation.navigate('EditProduct', { productId: 'BN-252' });
+  };
+
+  const handleDelete = async () => {
+    Alert.alert(
+      "Delete Product",
+      "Are you sure you want to delete this product?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { 
+          text: "Delete", 
+          onPress: async () => {
+            try {
+              await deleteProduct('BN-252');
+              console.log("Product deleted successfully");
+              navigation.goBack();
+            } catch (error) {
+              console.error("Error deleting product:", error);
+              Alert.alert("Error", "Failed to delete product. Please try again.");
+            }
+          }, 
+          style: "destructive" 
+        }
+      ]
+    );
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.titleContainer}>
@@ -33,7 +69,7 @@ const ProductScreen = () => {
           <Text style={styles.availabilityText}>Available</Text>
         </View>
         <Text style={styles.productName}>Amoxicillin</Text>
-        <Text style={styles.price}>$10.99</Text>
+        <Text style={styles.price}>KSh1000.00</Text>
         <Text style={styles.itemNumber}>Item Number: BN-252</Text>
         <Text style={styles.sectionTitle}>Active Ingredients:</Text>
         <Text style={styles.ingredient}>- Amoxicillin trihydrate equivalent to Amoxicillin 500 mg</Text>
