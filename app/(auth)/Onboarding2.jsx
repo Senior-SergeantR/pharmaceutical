@@ -1,36 +1,36 @@
 import React from 'react';
-import { StatusBar, View, Text, StyleSheet } from 'react-native';
+import { StatusBar, View, Text, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
-import { Redirect, router } from 'expo-router';
+import { router } from 'expo-router';
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.centeredView}>
-        <Text style={styles.title}>DELIVERY</Text>
+      <View style={styles.contentContainer}>
+        <Image source={require('../../assets/images/delivery.png')} style={styles.image} />
+        <Text style={styles.title}>Delivery</Text>
         <Text style={styles.description}>
-          Effortlessly track deliveries with our rider interface, 
+          Effortlessly track deliveries with our rider interface,
           ensuring timely and secure transportation of medical supplies.
         </Text>
-
-    
-
-<CustomButton
-  title="Skip"
-  handlePress={() => router.push('/(auth)/UserType')}
-  containerStyles={{ width: '100%', marginTop: 20 }}
-/>
-
-
-<CustomButton
-  title="Next"
-  handlePress={() => router.push('/Onboarding3')}
-  containerStyles={{ width: '100%', marginTop: 20 }}
-/>
-
       </View>
-      <StatusBar style="auto" />
+      
+      <View style={styles.buttonContainer}>
+        <CustomButton
+          title="Skip"
+          handlePress={() => router.push('/(auth)/UserType')}
+          containerStyles={styles.skipButton}
+          textStyles={styles.skipButtonText}
+        />
+        <CustomButton
+          title="Next"
+          handlePress={() => router.push('/Onboarding3')}
+          containerStyles={styles.nextButton}
+          textStyles={styles.nextButtonText}
+        />
+      </View>
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 }
@@ -38,23 +38,57 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#034B02', 
-    minHeight: '85vh', 
+    backgroundColor: '#034B02',
   },
-  centeredView: {
+  contentContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 56,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 30,
   },
   title: {
-    fontSize: 60,
+    fontSize: 40,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 20,
+    textAlign: 'center',
   },
   description: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'white',
-    textAlign: 'start',
+    marginBottom: 40,
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingBottom: 30,
+  },
+  skipButton: {
+    flex: 1,
+    marginRight: 10,
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  skipButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  nextButton: {
+    flex: 1,
+    marginLeft: 10,
+    backgroundColor: 'white',
+  },
+  nextButtonText: {
+    color: '#034B02',
+    fontWeight: 'bold',
   },
 });
