@@ -99,7 +99,6 @@ const TabsLayout = () => {
             ),
           }}
         />
-        
       </Tabs>
     </>
   )
