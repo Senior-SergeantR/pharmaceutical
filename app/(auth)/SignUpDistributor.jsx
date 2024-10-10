@@ -2,76 +2,54 @@ import React, { useState } from 'react';
 import { StatusBar, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton1';
-import { Redirect, router } from 'expo-router';
 import FormField from '../../components/FormField';
 import { Link } from 'expo-router';
 
-
 export default function App() {
-  
-  
-
   const [form, setForm] = useState({
-    licenseID:'',
-    // password:''
-  })
+    licenseID: '',
+  });
 
-  const [isSubmitting, setfirst] = useState (false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
-    console.log(form)
-  }
+    setIsSubmitting(true);
+    console.log(form);
+   
+    setTimeout(() => {
+      setIsSubmitting(false);
+    }, 2000); 
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.centeredView}>
         <Text style={styles.title}>BREEG</Text>
-        <Text style={styles.subtitle}>
-           Create an account
-        </Text>
+        <Text style={styles.subtitle}>Create an account</Text>
         <Text style={styles.description}>
           Enter your official license to sign up for this app
         </Text>
 
         <FormField
-          title="Enter License ID Here                                                                              "
+          title="Enter License ID Here"
           value={form.licenseID}
-          handleChangeText={(e) => setForm({ ...form,
-            licenseID: e
-          })}
-          otherStyles= "mt-7"
-          keyboardType="license-ID"
-          style={{
-            width:'100%',
-          }}
+          handleChangeText={(text) => setForm({ ...form, licenseID: text })}
+          otherStyles={styles.formField}
+          keyboardType="default"
+          style={styles.formFieldInput}
         />
-
-        {/* <FormField
-          title="password                                                                                "
-          value={form.password}
-          handleChangeText={(e) => setForm({ ...form,
-            password: e
-          })}
-          otherStyles= "mt-7"
-          keyboardType="license-ID"
-          style={{
-            width:'100%',
-          }}
-        /> */}
-        
-        
 
         <CustomButton
           title="Sign up"
           handlePress={submit}
-          containerStyles="w-full mt-7 mb-20"
+          containerStyles={styles.buttonContainer}
           isLoading={isSubmitting}
         />
 
-        <Text className="mt-20">
-          By clicking Sign Up, you agree to our 
-          <Link href= "/terms" style={styles.externallink}> Terms of Service</Link>  and 
-          <Link href= "/privacy"style={styles.externallink}> Privacy Policy</Link>
+        <Text style={styles.termsText}>
+          By clicking Sign Up, you agree to our
+          <Link href="/terms" style={styles.externalLink}> Terms of Service</Link> and
+          <Link href="/privacy" style={styles.externalLink}> Privacy Policy</Link>
         </Text>
       </View>
       <StatusBar style="auto" />
@@ -82,11 +60,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff', 
-    minHeight: '85vh', 
+    backgroundColor: '#fff',
   },
   centeredView: {
-    
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 26,
@@ -95,24 +72,36 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     marginTop: 100,
-    marginBottom: 150,
+    marginBottom: 50,
+  },
+  subtitle: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
   description: {
     fontSize: 18,
-    textAlign: 'start',
+    textAlign: 'center',
     marginBottom: 50,
   },
-
-  subtitle:{
-    fontSize: 25,
-    textAlign: 'start',
-    fontWeight: 'bold',
-    
-    
+  formField: {
+    marginTop: 20,
+    width: '100%',
   },
-
-  externallink:{
+  formFieldInput: {
+    width: '100%',
+  },
+  buttonContainer: {
+    width: '100%',
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  termsText: {
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  externalLink: {
     fontWeight: 'bold',
-    fontSize: 17
-  }
+    fontSize: 17,
+  },
 });
