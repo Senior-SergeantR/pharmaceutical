@@ -171,7 +171,7 @@ const Home = () => {
               <Ionicons name="menu" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>BREEG</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <TouchableOpacity onPress={pickImage}>
               {profileImage ? (
                 <Image source={{ uri: profileImage }} style={styles.profileImage} />
               ) : (
