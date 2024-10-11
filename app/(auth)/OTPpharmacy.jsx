@@ -1,25 +1,36 @@
-import { Link } from 'expo-router';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { Link, useRouter } from 'expo-router';
 import CustomButton from '../../components/CustomButton1';
-import React, { useState } from 'react';
 
 const OtpVerificationScreen = () => {
   const [otp, setOtp] = useState(['', '', '', '']);
-  const [isSubmitting, setfirst] = useState (false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const inputRefs = useRef([]);
 
   const handleChange = (text, index) => {
     const newOtp = [...otp];
     newOtp[index] = text;
     setOtp(newOtp);
+
+    // Move to next input if current input is filled
+    if (text && index < 3) {
+      inputRefs.current[index + 1].focus();
+    }
   };
 
-  const submit = () => {
-    console.log(otp)
-  }
-
   const handleVerify = () => {
-    
-    console.log('OTP entered:', otp.join(''));
+    setIsSubmitting(true);
+    const enteredOtp = otp.join('');
+    console.log('OTP entered:', enteredOtp);
+
+    // Simulating API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      // Navigate to next screen after verification
+      router.push('/nextScreen');
+    }, 2000);
   };
 
   return (
@@ -30,6 +41,7 @@ const OtpVerificationScreen = () => {
         {otp.map((digit, index) => (
           <TextInput
             key={index}
+            ref={el => inputRefs.current[index] = el}
             style={styles.otpInput}
             value={digit}
             onChangeText={(text) => handleChange(text, index)}
@@ -39,16 +51,16 @@ const OtpVerificationScreen = () => {
         ))}
       </View>
       <CustomButton
-          title="Verify"
-          handlePress={submit}
-          containerStyles="w-full mt-7 mb-20"
-          isLoading={isSubmitting}
-        />
-      <Text style={styles.text3}>
-          By clicking Sign Up, you agree to our 
-          <Link href= "/terms" style={styles.externallink}> Terms of Service</Link>  and 
-          <Link href= "/privacy"style={styles.externallink}> Privacy Policy</Link>
-        </Text>
+        title="Verify"
+        handlePress={handleVerify}
+        containerStyles={styles.buttonContainer}
+        isLoading={isSubmitting}
+      />
+      <Text style={styles.disclaimer}>
+        By clicking Verify, you agree to our
+        <Link href="/terms" style={styles.externalLink}> Terms of Service</Link> and
+        <Link href="/privacy" style={styles.externalLink}> Privacy Policy</Link>
+      </Text>
     </View>
   );
 };
@@ -74,9 +86,7 @@ const styles = StyleSheet.create({
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    
     marginBottom: 20,
-    
   },
   otpInput: {
     width: 70,
@@ -88,20 +98,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginHorizontal: 5,
   },
-
-  text3:{
-    marginTop: 80,
+  buttonContainer: {
+    width: '100%',
+    marginTop: 20,
+    marginBottom: 20,
   },
-
   disclaimer: {
     fontSize: 12,
     color: '#777',
     textAlign: 'center',
+    marginTop: 80,
   },
-
-  externallink:{
+  externalLink: {
     fontWeight: 'bold',
-    fontSize: 17
+    fontSize: 13,
   }
 });
 
