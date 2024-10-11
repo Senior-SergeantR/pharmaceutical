@@ -74,16 +74,16 @@ const TabsLayout = () => {
             }}
           />
           <Tab.Screen
-            name="AddProduct"
+            name="Products"
             component={ProductsFn}
             options={{
-              title: "Add Product",
+              title: "Products",
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
                 <TabIcons
                   icon="cube-outline"
                   color={color}
-                  name="Add Product"
+                  name="Products"
                   focused={focused}
                 />
               ),
@@ -142,10 +142,10 @@ const TabsLayout = () => {
             }}
           />
           <Tab.Screen
-            name="Add Products"
-            component={AddDistributorScreen}
+            name="products"
+            component={ProductsFn}
             options={{
-              title: "Products",
+              title: "products",
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
                 <TabIcons
@@ -159,7 +159,7 @@ const TabsLayout = () => {
           />
           <Tab.Screen
             name="DistributorAdd"
-            component={AddProductScreen}
+            component={AddDistributorScreen}
             options={{
               title: "Add",
               headerShown: false,
