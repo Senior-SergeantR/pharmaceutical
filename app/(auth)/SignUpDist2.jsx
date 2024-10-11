@@ -1,51 +1,59 @@
-import { Link } from 'expo-router';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
-import CustomButton from '../../components/CustomButton1';
 import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Link, router } from 'expo-router';
+import CustomButton from '../../components/CustomButton1';
 
 const SignUpScreen = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState('');
 
-  const [isSubmitting, setfirst] = useState (false)
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    console.log({ email });
+    // this will Simulate an API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+    }, 2000);
+  };
 
-  const [form, setForm] = useState({
-    licenseID:'',
-    // password:''
-  })
-  const submit = () => {
-    console.log(form)
-  }
+  const handleGoogleSignUp = () => {
+    // For now, just navigate to the next screen
+    router.push('/OTPdistributor');
+    // In the future, implement Google Sign Up logic here
+    console.log('Google Sign Up');
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.header}>BREEG</Text>
-      <Text style={styles.subtitle}>Create an account</Text>
-      <Text style={styles.text1}>Enter your email to sign up for this app</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="email@domain.com"
-        keyboardType="email-address"
-      />
-     
-
-      <CustomButton
+      <View style={styles.formContainer}>
+        <Text style={styles.subtitle}>Create an account (Distributor)</Text>
+        <Text style={styles.text}>Enter your email to sign up for this app</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="email@domain.com"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+        />
+        <CustomButton
           title="Sign up with email"
-          handlePress={submit}
-          containerStyles="w-full mt-7 mb-20"
+          handlePress={handleSubmit}
+          containerStyles={styles.buttonContainer}
           isLoading={isSubmitting}
         />
-
-        <Text style={styles.text2}>
-          or continue with google
+        <Text style={styles.orText}>or continue with</Text>
+        <TouchableOpacity style={styles.googleButton } 
+          onPress={handleGoogleSignUp}>
+        
+          <Text style={styles.googleButtonText}>Google</Text>
+        </TouchableOpacity>
+        <Text style={styles.disclaimer}>
+          By clicking Sign Up, you agree to our
+          <Link href="/terms" style={styles.link}> Terms of Service</Link> and
+          <Link href="/privacy" style={styles.link}> Privacy Policy</Link>
         </Text>
-
-      <TouchableOpacity style={styles.googleButton}>
-        <Text style={styles.googleButtonText}>Google</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.text3}>
-          By clicking Sign Up, you agree to our 
-          <Link href= "/terms" style={styles.externallink}> Terms of Service</Link>  and 
-          <Link href= "/privacy"style={styles.externallink}> Privacy Policy</Link>
-        </Text>
+      </View>
     </View>
   );
 };
@@ -53,31 +61,29 @@ const SignUpScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#fff',
-    marginBottom: 20,
   },
   header: {
     fontSize: 35,
     fontWeight: 'bold',
-    marginBottom: 150,
+    marginTop: 60,
+  },
+  formContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
   subtitle: {
     fontSize: 25,
     marginBottom: 20,
-    fontWeight:"bold",
-  },
-  text1:{
-    marginBottom: 15,
-    fontSize: 15,
     fontWeight: 'bold',
   },
-  text2:{
-    marginTop: 15,
-    color: '#828282',
-    fontWeight: "bold",
+  text: {
+    marginBottom: 15,
+    fontSize: 15,
+    textAlign: 'center',
   },
   input: {
     width: '100%',
@@ -88,18 +94,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
   },
-  button: {
+  buttonContainer: {
     width: '100%',
-    height: 50,
-    backgroundColor: '#007BFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 20,
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
+  orText: {
+    marginVertical: 15,
+    color: '#828282',
+    fontWeight: 'bold',
   },
   googleButton: {
     width: '100%',
@@ -109,29 +111,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     marginBottom: 20,
-    marginTop: 20,
   },
   googleButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-    
   },
   disclaimer: {
     fontSize: 12,
     color: '#777',
     textAlign: 'center',
-  },
-  text3:{
-    
     marginTop: 20,
   },
-
-
-externallink:{
-  fontWeight: 'bold',
-  fontSize: 17
-}
+  link: {
+    fontWeight: 'bold',
+    fontSize: 13,
+  },
 });
 
 export default SignUpScreen;

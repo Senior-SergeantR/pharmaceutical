@@ -3,7 +3,8 @@ import { StatusBar, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton1';
 import FormField from '../../components/FormField';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+
 
 export default function App() {
   const [form, setForm] = useState({
@@ -47,6 +48,13 @@ export default function App() {
         <CustomButton
           title="Sign up"
           handlePress={submit}
+          containerStyles={styles.buttonContainer}
+          isLoading={isSubmitting}
+        />
+{/* temporary button to access other screens without authentication */}
+        <CustomButton
+          title="Next Screen"
+          handlePress={() => router.push('/SignUpDist2')}
           containerStyles={styles.buttonContainer}
           isLoading={isSubmitting}
         />
