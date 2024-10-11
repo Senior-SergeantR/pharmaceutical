@@ -5,7 +5,7 @@ import { Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { format, subMonths, subDays } from 'date-fns';
-import { RefreshControl } from 'react-native';
+
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -171,7 +171,7 @@ const Home = () => {
               <Ionicons name="menu" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>BREEG</Text>
-            <TouchableOpacity onPress={pickImage}>
+            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
               {profileImage ? (
                 <Image source={{ uri: profileImage }} style={styles.profileImage} />
               ) : (
@@ -179,7 +179,7 @@ const Home = () => {
               )}
             </TouchableOpacity>
           </View>
-        );
+        ); 
         case 'buttons':
           return (
             <View style={styles.buttonRow}>
@@ -281,6 +281,8 @@ const Home = () => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
+       showsVerticalScrollIndicator={false}
+       showsHorizontalScrollIndicator={false}
         data={sections}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
