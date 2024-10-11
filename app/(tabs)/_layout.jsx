@@ -143,7 +143,7 @@ const TabsLayout = () => {
           />
           <Tab.Screen
             name="Add Products"
-            component={AddProductScreen}
+            component={AddDistributorScreen}
             options={{
               title: "Products",
               headerShown: false,
@@ -159,7 +159,7 @@ const TabsLayout = () => {
           />
           <Tab.Screen
             name="DistributorAdd"
-            component={AddDistributorScreen}
+            component={AddProductScreen}
             options={{
               title: "Add",
               headerShown: false,
