@@ -47,9 +47,9 @@ const AddDistributorScreen = () => {
           activeFontStyle={{ color: '#fff' }}
         />
 
-        <TouchableOpacity style={styles.addButton}>
-          <Text style={styles.addButtonText}>Add Product</Text>
-        </TouchableOpacity>
+    <TouchableOpacity style={styles.addButton}>
+      <Text style={styles.addButtonText}>Add Product</Text>
+    </TouchableOpacity>
 
         {selectedIndex === 0 && (
           <>
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E0E0E0',
   },
   addButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#038B01',
     padding: 10,
     margin: 16,
     borderRadius: 5,
