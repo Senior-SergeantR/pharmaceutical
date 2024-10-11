@@ -7,7 +7,7 @@ const { width } = Dimensions.get('window');
 const cardWidth = width / 2 - 24;
 const orderWidth = (width - 64) / 3;
 
-const AddProductScreen = () => {
+const AddDistributorScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const products = [
@@ -235,4 +235,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddProductScreen;
+export default AddDistributorScreen;

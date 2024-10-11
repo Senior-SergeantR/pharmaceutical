@@ -1,13 +1,54 @@
-import React, { useState } from 'react';
-import { SafeAreaView, View, Text, TextInput, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
+import React, { useState } from "react";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  StatusBar,
+} from "react-native";
 
 const products = [
-  { id: '1', name: 'Famiclav 200mg', dosage: '100 Tablets', image: require('../../assets/images/default-pharm.jpg') },
-  { id: '2', name: 'PM-O-Line 20mg', dosage: 'Capsules', image: require('../../assets/images/default-pharm.jpg') },
-  { id: '3', name: 'Another Product', dosage: 'Details', image: require('../../assets/images/default-pharm.jpg') },
-  { id: '4', name: 'Product Four', dosage: '50mg', image: require('../../assets/images/default-pharm.jpg') },
-  { id: '5', name: 'Product Five', dosage: '25ml', image: require('../../assets/images/default-pharm.jpg') },
-  { id: '6', name: 'Product Six', dosage: '10 Capsules', image: require('../../assets/images/default-pharm.jpg') },
+  {
+    id: "1",
+    name: "Famiclav 200mg",
+    dosage: "100 Tablets",
+    image: require("../../assets/images/default-pharm.jpg"),
+  },
+  {
+    id: "2",
+    name: "PM-O-Line 20mg",
+    dosage: "Capsules",
+    image: require("../../assets/images/default-pharm.jpg"),
+  },
+  {
+    id: "3",
+    name: "Another Product",
+    dosage: "Details",
+    image: require("../../assets/images/default-pharm.jpg"),
+  },
+  {
+    id: "4",
+    name: "Product Four",
+    dosage: "50mg",
+    image: require("../../assets/images/default-pharm.jpg"),
+  },
+  {
+    id: "5",
+    name: "Product Five",
+    dosage: "25ml",
+    image: require("../../assets/images/default-pharm.jpg"),
+  },
+  {
+    id: "6",
+    name: "Product Six",
+    dosage: "10 Capsules",
+    image: require("../../assets/images/default-pharm.jpg"),
+  },
 ];
 
 const ProductCard = ({ item, style }) => (
@@ -20,11 +61,11 @@ const ProductCard = ({ item, style }) => (
   </View>
 );
 
-const App = () => {
+const ProductsFn = () => {
   const [cartItems, setCartItems] = useState(0);
 
   const handleCartPress = () => {
-    setCartItems(prevItems => prevItems + 1);
+    setCartItems((prevItems) => prevItems + 1);
   };
 
   return (
@@ -46,7 +87,10 @@ const App = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.searchContainer}>
-            <TextInput style={styles.searchBar} placeholder="Search products..." />
+            <TextInput
+              style={styles.searchBar}
+              placeholder="Search products..."
+            />
             <Text style={styles.searchIcon}>🔍</Text>
           </View>
           <TouchableOpacity style={styles.button}>
@@ -57,20 +101,28 @@ const App = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             data={products.slice(0, 3)}
-            renderItem={({ item }) => <ProductCard item={item} style={styles.horizontalCard} />}
-            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <ProductCard item={item} style={styles.horizontalCard} />
+            )}
+            keyExtractor={(item) => item.id}
           />
           <View style={styles.divider} />
           <Text style={styles.sectionTitle}>All Products</Text>
           <View style={styles.productGrid}>
-            {products.map((item, index) => (
-              index % 2 === 0 && (
-                <View key={item.id} style={styles.productRow}>
-                  <ProductCard item={item} style={styles.gridCard} />
-                  {index + 1 < products.length && <ProductCard item={products[index + 1]} style={styles.gridCard} />}
-                </View>
-              )
-            ))}
+            {products.map(
+              (item, index) =>
+                index % 2 === 0 && (
+                  <View key={item.id} style={styles.productRow}>
+                    <ProductCard item={item} style={styles.gridCard} />
+                    {index + 1 < products.length && (
+                      <ProductCard
+                        item={products[index + 1]}
+                        style={styles.gridCard}
+                      />
+                    )}
+                  </View>
+                )
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -81,54 +133,54 @@ const App = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   container: {
     flex: 1,
     padding: 16,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 20,
     marginTop: 50,
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   cartContainer: {
-    position: 'relative',
+    position: "relative",
   },
   icon: {
     fontSize: 24,
   },
   cartBadge: {
-    position: 'absolute',
+    position: "absolute",
     right: -6,
     top: -6,
-    backgroundColor: 'red',
+    backgroundColor: "red",
     borderRadius: 10,
     width: 20,
     height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   cartBadgeText: {
-    color: 'white',
+    color: "white",
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
     borderRadius: 25,
     marginBottom: 20,
     paddingHorizontal: 15,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -144,30 +196,30 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   button: {
-    backgroundColor: '#038B01',
+    backgroundColor: "#038B01",
     padding: 12,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 0,
-    width: '30%',
+    width: "30%",
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   sectionTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
-    color: '#333',
+    color: "#333",
     marginTop: 10,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 5,
     padding: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -179,22 +231,22 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     marginVertical: 15,
   },
   productGrid: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   productRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 16,
   },
   gridCard: {
-    width: '46%',
+    width: "46%",
   },
   productImage: {
-    width: '100%',
+    width: "100%",
     height: 150,
     borderRadius: 8,
     marginBottom: 8,
@@ -204,13 +256,13 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 4,
   },
   productDosage: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
   },
 });
 
-export default App;
+export default ProductsFn;
