@@ -30,8 +30,9 @@ const AddDistributorScreen = () => {
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <ScrollView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Add Product</Text>
+          <Text style={styles.headerTitle}>Explore Products</Text>
         </View>
+        <View style={styles.horizontalLine} />
 
         <SegmentedControl
           values={['Products', 'Performing Products']}
@@ -118,9 +119,6 @@ const AddDistributorScreen = () => {
   );
 };
 
-
-
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -134,15 +132,22 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#fff',
+    alignItems: 'center',
   },
   headerTitle: {
     color: '#000',
     fontSize: 24,
     fontWeight: 'bold',
   },
+  horizontalLine: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    marginHorizontal: 16,
+    marginBottom: 0,
+  },
   segmentedControl: {
     margin: 16,
-    backgroundColor: '#',
+    backgroundColor: '#E0E0E0',
   },
   addButton: {
     backgroundColor: '#4CAF50',
