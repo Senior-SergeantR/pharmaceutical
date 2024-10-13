@@ -5,7 +5,6 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  FlatList,
   Image,
   TouchableOpacity,
   ScrollView,
@@ -462,7 +461,7 @@ const styles = StyleSheet.create({
   },
   recentProductsContainer: {
     paddingLeft: 5,
-    paddingRight: Dimensions.get('window').width * 0.2, // Add extra space at the end
+    paddingRight: Dimensions.get('window').width * 0.2,
   },
 
   productImage: {
