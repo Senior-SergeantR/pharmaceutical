@@ -58,7 +58,7 @@ const HomeScreen = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
       <View style={styles.bannerContainer}>
   <ImageBackground 
-    source={require('../../assets/images/banner.jpg')}
+    source={require('../../../assets/images/banner.jpg')}
     style={styles.banner}
     resizeMode="cover"
   >
@@ -95,7 +95,7 @@ const HomeScreen = () => {
             contentContainerStyle={styles.promos}
           >
             <PromoCard
-              image={require('../../assets/images/blue-pill.jpeg')}
+              image={require('../../../assets/images/blue-pill.jpeg')}
               name="Pain Relief Extra Strength Tablets"
               price="KSh1000.00"
               discount="-25%"
@@ -103,7 +103,7 @@ const HomeScreen = () => {
               stock={50}
             />
             <PromoCard
-              image={require('../../assets/images/blue-pill.jpeg')}
+              image={require('../../../assets/images/blue-pill.jpeg')}
               name="Vitamin C Immune Support Supplements"
               price="KSh1500.00"
               discount="-30%"
@@ -111,7 +111,7 @@ const HomeScreen = () => {
               stock={30}
             />
             <PromoCard
-              image={require('../../assets/images/blue-pill.jpeg')}
+              image={require('../../../assets/images/blue-pill.jpeg')}
               name="Allergy Relief 24-Hour Syrup"
               price="KSh800.00"
               discount="-20%"
