@@ -8,7 +8,7 @@ import App from "./searchInvoices";
 import ProfileScreen from "./profile";
 import AddProductScreen from "./addproduct";
 import AddDistributorScreen from "./distributorAdd"
-const isDistributor = false; // Dynamically set this based on the logged-in user role
+const isDistributor = false; 
 
 const TabIcons = ({ icon, color, name, focused }) => {
   return (
