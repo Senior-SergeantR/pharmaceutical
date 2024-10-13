@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
-    marginTop: 20,
+    marginTop: 40,
   },
   title: {
     fontSize: 28,
@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 0,
     marginBottom: 10,
   },
   backButton: {
