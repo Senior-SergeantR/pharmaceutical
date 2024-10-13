@@ -63,9 +63,21 @@ const ProductCard = ({ item, style }) => (
 
 const ProductsFn = () => {
   const [cartItems, setCartItems] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState(products);
 
   const handleCartPress = () => {
     setCartItems((prevItems) => prevItems + 1);
+  };
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    const filtered = products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(query.toLowerCase()) ||
+        product.dosage.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredProducts(filtered);
   };
 
   return (
@@ -90,6 +102,8 @@ const ProductsFn = () => {
             <TextInput
               style={styles.searchBar}
               placeholder="Search products..."
+              value={searchQuery}
+              onChangeText={handleSearch}
             />
             <Text style={styles.searchIcon}>🔍</Text>
           </View>
@@ -100,7 +114,7 @@ const ProductsFn = () => {
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
-            data={products.slice(0, 3)}
+            data={filteredProducts.slice(0, 3)}
             renderItem={({ item }) => (
               <ProductCard item={item} style={styles.horizontalCard} />
             )}
@@ -109,14 +123,14 @@ const ProductsFn = () => {
           <View style={styles.divider} />
           <Text style={styles.sectionTitle}>All Products</Text>
           <View style={styles.productGrid}>
-            {products.map(
+            {filteredProducts.map(
               (item, index) =>
                 index % 2 === 0 && (
                   <View key={item.id} style={styles.productRow}>
                     <ProductCard item={item} style={styles.gridCard} />
-                    {index + 1 < products.length && (
+                    {index + 1 < filteredProducts.length && (
                       <ProductCard
-                        item={products[index + 1]}
+                        item={filteredProducts[index + 1]}
                         style={styles.gridCard}
                       />
                     )}
@@ -261,7 +275,7 @@ const styles = StyleSheet.create({
   },
   productDosage: {
     fontSize: 14,
-    color: "#666",
+    color: "#777",
   },
 });
 
