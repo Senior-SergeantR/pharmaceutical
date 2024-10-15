@@ -7,8 +7,10 @@
     "icon": "./assets/icons",
     "scheme": "PROTO",
     "userInterfaceStyle": "automatic",
+    "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true
+      
     },
     "assetBundlePatterns": [
       "**/*"
