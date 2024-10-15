@@ -3,7 +3,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
   ScrollView,
   Alert,
@@ -12,7 +12,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native'; 
-import {StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 
 const AddProductScreen = () => {
   const navigation = useNavigation();
@@ -113,13 +113,13 @@ const AddProductScreen = () => {
         </View>
         <View style={styles.horizontalLine} />
       
-        <TouchableOpacity style={styles.imageUpload} onPress={handleImagePick}>
+        <Pressable style={styles.imageUpload} onPress={handleImagePick}>
           {product.image ? (
             <Image source={{ uri: product.image.uri }} style={styles.imagePreview} />
           ) : (
             <Text>Tap to select an image</Text>
           )}
-        </TouchableOpacity>
+        </Pressable>
       <TextInput
         style={styles.input}
         placeholder="Enter batch number"
@@ -163,9 +163,13 @@ const AddProductScreen = () => {
         onChangeText={(text) => handleChange('description', text)}
         multiline
       />
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-        <Text style={styles.submitButtonText}>Add Product</Text>
-      </TouchableOpacity>
+        <Pressable 
+          style={styles.submitButton} 
+          onPress={handleSubmit}
+          android_ripple={{color: 'rgba(255,255,255,0.3)'}}
+        >
+          <Text style={styles.submitButtonText}>Add Product</Text>
+          </Pressable>
     </ScrollView>
     </View>
   );
@@ -241,7 +245,9 @@ const styles = StyleSheet.create({
   },
   descriptionInput: {
     height: 100,
-    textAlignVertical: 'top',
+    verticalAlign: 'top',
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   errorText: {
     color: 'red',
