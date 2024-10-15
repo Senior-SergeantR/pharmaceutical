@@ -4,12 +4,12 @@ import { Icon, CheckBox } from '@rneui/themed';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function CheckoutScreen({ navigation }) {
-  const [email, setEmail] = useState('attellisanjay29@gmail.com');
-  const [phone, setPhone] = useState('+254789192029');
+  const [email, setEmail] = useState('theagakhanunivertyhospital@gmail.com');
+  const [phone, setPhone] = useState('+254720555777');
   const [selectedPayment, setSelectedPayment] = useState('mpesa');
   const [isEditingEmail, setIsEditingEmail] = useState(false);
   const [isEditingPhone, setIsEditingPhone] = useState(false);
-  const [address, setAddress] = useState('Newahall St 36, London, 12908 - UK');
+  const [address, setAddress] = useState('The Agakhan University Hospital, 3rd Parkalnds avenue, Nairobi');
   const [isEditingAddress, setIsEditingAddress] = useState(false);
 
   return (
@@ -73,14 +73,14 @@ export default function CheckoutScreen({ navigation }) {
           />
         </Section>
 
-        <Section title="Order Summary" icon="shopping-cart">
-          <SummaryRow title="Subtotal" value="$128.00" />
-          <SummaryRow title="Shipping" value="$40.90" />
-          <View style={styles.totalRow}>
-            <Text style={styles.totalText}>Total</Text>
-            <Text style={styles.totalAmount}>$168.99</Text>
-          </View>
-        </Section>
+          <Section title="Order Summary" icon="shopping-cart">
+            <SummaryRow title="Subtotal" value="KSHs 1,012,800" />
+            <SummaryRow title="Shipping" value="KSHs 4,090" />
+            <View style={styles.totalRow}>
+              <Text style={styles.totalText}>Total</Text>
+              <Text style={styles.totalAmount}>KSHs 1,016,890</Text>
+            </View>
+          </Section>
 
         <TouchableOpacity
           style={styles.buttonContainer}
