@@ -26,20 +26,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     padding: 20,
-    shadowColor: 'green',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 4, 
-    elevation: 10, 
+    boxShadow: '0px 5px 4px 0px rgba(0, 128, 0, 1)',
+    elevation: 10,
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
   },
 });
-
 
 export default CustomButton;
