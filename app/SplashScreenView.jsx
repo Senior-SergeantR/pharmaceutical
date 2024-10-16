@@ -1,62 +1,34 @@
 import React, { useEffect } from 'react';
-import { SplashScreen } from 'expo';
+import { View, Text, SafeAreaView } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function SplashScreenView() {
   useEffect(() => {
-    // Prevent the splash screen from auto-hiding
-    SplashScreen.preventAutoHideAsync();
+    async function prepare() {
+      try {
+        // Prevent the splash screen from auto-hiding
+        await SplashScreen.preventAutoHideAsync();
 
-    // Hide the splash screen after 2 seconds
-    setTimeout(() => {
-      SplashScreen.hideAsync();
-    }, 2000);
+        // Simulate some loading or initialization
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Hide the splash screen
+        await SplashScreen.hideAsync();
+      }
+    }
+
+    prepare();
   }, []);
 
-
-
   return (
-    <SafeAreaView className="bg-primary h-full">
-    
-   
-    <View className="w-full justify-center items-center h-full px-4 ">
-      <Text className="text-7xl font-bold text-white relative mt-50%"> 
-        BREEG
-      </Text>
-      
-
-    </View>
-    
-
- </SafeAreaView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'primary' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 }}>
+        <Text style={{ fontSize: 72, fontWeight: 'bold', color: 'white', marginTop: '50%' }}>
+          BREEG
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
-
-
-// import { StatusBar } from 'expo-status-bar';
-
-// import { ScrollView, Text, View } from 'react-native';
-// import { Link } from 'expo-router';
-// import { SafeAreaView } from 'react-native-safe-area-context';
-
-
-// export default function App() {
-//   return (
-    
-//    <SafeAreaView className="bg-primary h-full">
-    
-   
-//       <View className="w-full justify-center items-center h-full px-4 ">
-//         <Text className="text-7xl font-bold text-white relative mt-50%"> 
-//           BREEG
-//         </Text>
-
-//       </View>
-      
-    
-
-//    </SafeAreaView>
-//   );
-// }
-
-
-
