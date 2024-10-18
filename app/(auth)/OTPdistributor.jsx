@@ -18,6 +18,7 @@ const OtpVerificationScreen = () => {
     if (text && index < 3) {
       inputRefs.current[index + 1].focus();
     }
+    
   };
 
   const handleVerify = () => {
@@ -29,7 +30,7 @@ const OtpVerificationScreen = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       // Navigate to next screen after verification
-      router.push('../../(tabs)/dashboard');
+      router.push('../(tabs)/Distributor/dashboard');
     }, 2000);
   };
 

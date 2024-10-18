@@ -75,9 +75,12 @@ const AuthLayout = () => {
         headerShown: false,
       }}
       />
-
-
-   
+      <Stack.Screen
+      name='OTPdistributor'
+      options={{
+        headerShown: false,
+      }}
+      />
     </Stack>
 
       
