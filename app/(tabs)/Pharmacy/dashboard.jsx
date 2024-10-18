@@ -1,11 +1,71 @@
-import React from 'react';
-import { View, Text, Image, ImageBackground, StyleSheet, ScrollView, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+  Dimensions,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 const cardWidth = width * 0.45;
 
+const productDatabase = [
+  {
+    id: '1',
+    image: require('../../../assets/images/blue-pill.jpeg'),
+    name: "Pain Relief Extra Strength Tablets",
+    price: "KSh1000.00",
+    discount: "-25%",
+    rating: 4,
+    stock: 50
+  },
+  {
+    id: '2',
+    image: require('../../../assets/images/blue-pill.jpeg'),
+    name: "Vitamin C Immune Support Supplements",
+    price: "KSh1500.00",
+    discount: "-30%",
+    rating: 5,
+    stock: 30
+  },
+  {
+    id: '3',
+    image: require('../../../assets/images/blue-pill.jpeg'),
+    name: "Allergy Relief 24-Hour Syrup",
+    price: "KSh800.00",
+    discount: "-20%",
+    rating: 3,
+    stock: 75
+  },
+];
+
 const HomeScreen = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState(productDatabase);
+
+  useEffect(() => {
+    handleSearch(searchQuery);
+  }, [searchQuery]);
+
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+    const filtered = productDatabase.filter(product =>
+      product.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  };
+
   const StarRating = ({ rating }) => {
     return (
       <View style={styles.starContainer}>
@@ -55,72 +115,56 @@ const HomeScreen = () => {
         </View>
       </View>
      
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-      <View style={styles.bannerContainer}>
-  <ImageBackground 
-    source={require('../../../assets/images/banner.jpg')}
-    style={styles.banner}
-    resizeMode="cover"
-  >
-    <View style={styles.bannerContent}>
-      <Text style={styles.tagline}>Feel good, look good.</Text>
-      <TouchableOpacity style={styles.ctaButton}>
-        <Text style={styles.ctaText}>Learn more</Text>
-      </TouchableOpacity>
-    </View>
-  </ImageBackground>
-</View>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.bannerContainer}>
+            <ImageBackground
+              source={require('../../../assets/images/banner.jpg')}
+              style={styles.banner}
+              resizeMode="cover"
+            >
+              <View style={styles.bannerContent}>
+                <Text style={styles.tagline}>Feel good, look good.</Text>
+                <TouchableOpacity style={styles.ctaButton}>
+                  <Text style={styles.ctaText}>Learn more</Text>
+                </TouchableOpacity>
+              </View>
+            </ImageBackground>
+          </View>
 
-
-        <View style={styles.searchBarContainer}>
-          <Ionicons name="search-outline" size={20} color="#888" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchBar}
-            placeholder="Search products"
-            placeholderTextColor="#888"
-          />
-        </View>
-
-        <View style={styles.promosHeader}>
-          <Text style={styles.promosTitle}>Promos</Text>
-          <TouchableOpacity>
-            <Text style={styles.seeAll}>See all</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.promosContainer}>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.promos}
-          >
-            <PromoCard
-              image={require('../../../assets/images/blue-pill.jpeg')}
-              name="Pain Relief Extra Strength Tablets"
-              price="KSh1000.00"
-              discount="-25%"
-              rating={4}
-              stock={50}
+          <View style={styles.searchBarContainer}>
+            <Ionicons name="search-outline" size={20} color="#888" style={styles.searchIcon} />
+            <TextInput
+              style={styles.searchBar}
+              placeholder="Search products"
+              placeholderTextColor="#888"
+              value={searchQuery}
+              onChangeText={handleSearch}
             />
-            <PromoCard
-              image={require('../../../assets/images/blue-pill.jpeg')}
-              name="Vitamin C Immune Support Supplements"
-              price="KSh1500.00"
-              discount="-30%"
-              rating={5}
-              stock={30}
+          </View>
+
+          <View style={styles.promosHeader}>
+            <Text style={styles.promosTitle}>Promos</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>See all</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.promosContainer}>
+            <FlatList
+              data={filteredProducts}
+              renderItem={({ item }) => <PromoCard {...item} />}
+              keyExtractor={item => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.promos}
             />
-            <PromoCard
-              image={require('../../../assets/images/blue-pill.jpeg')}
-              name="Allergy Relief 24-Hour Syrup"
-              price="KSh800.00"
-              discount="-20%"
-              rating={3}
-              stock={75}
-            />
-          </ScrollView>
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -129,6 +173,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  keyboardAvoidingView: {
+    flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
@@ -178,13 +225,6 @@ const styles = StyleSheet.create({
     color: '#038B01',
     marginBottom: 10,
   },
-
-  ctaText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  
   ctaButton: {
     paddingVertical: 12,
     paddingHorizontal: 29,
@@ -301,7 +341,7 @@ const styles = StyleSheet.create({
   },
   stockText: {
     fontSize: 12,
-    color: '#666',
+    color: '#777',
   },
 });
 
