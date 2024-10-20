@@ -479,12 +479,9 @@ const ProductsFn = () => {
         </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+      </View>
       </TouchableOpacity>
       </Modal>
-                  
-           
-       
       </SafeAreaView>
     </>
   );
