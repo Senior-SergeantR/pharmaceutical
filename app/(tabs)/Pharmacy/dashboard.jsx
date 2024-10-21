@@ -108,7 +108,7 @@ const HomeScreen = () => {
       style={styles.menuOverlay} 
       activeOpacity={1} 
       onPress={() => setIsMenuVisible(false)}
-    >
+      >
       <View style={styles.menuContent}>
         <TouchableOpacity style={styles.menuItem}>
           <Ionicons name="home-outline" size={24} color="#038B01" />
