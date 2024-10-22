@@ -8,10 +8,11 @@ import {
   ScrollView,
   Alert,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Ionicons } from '@expo/vector-icons'; 
-import { useNavigation } from '@react-navigation/native'; 
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 
 const AddProductScreen = () => {
@@ -75,7 +76,6 @@ const AddProductScreen = () => {
 
   const handleSubmit = () => {
     if (validateForm()) {
-      
       console.log('Product data:', product);
       Alert.alert('Success', 'Product added successfully!');
       
@@ -91,86 +91,99 @@ const AddProductScreen = () => {
       Alert.alert('Error', 'Please correct the errors in the form.');
     }
   };
+
   const handleGoBack = () => {
     navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="dark-content"  
-        backgroundColor="#fff"   
-        translucent={false}
-      />
-      <ScrollView>
+      <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" translucent={false} />
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
             <Ionicons name="arrow-back" size={24} color="#038B01" />
           </TouchableOpacity>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Add Product</Text>
-          </View>
+          <Text style={styles.title}>Add Product</Text>
         </View>
-        <View style={styles.horizontalLine} />
-      
+
         <Pressable style={styles.imageUpload} onPress={handleImagePick}>
           {product.image ? (
             <Image source={{ uri: product.image.uri }} style={styles.imagePreview} />
           ) : (
-            <Text>Tap to select an image</Text>
+            <View style={styles.imagePlaceholder}>
+              <Ionicons name="camera-outline" size={40} color="#ccc" />
+              <Text style={styles.imagePlaceholderText}>Tap to select an image</Text>
+            </View>
           )}
         </Pressable>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter batch number"
-        value={product.batchNumber}
-        onChangeText={(text) => handleChange('batchNumber', text)}
-      />
-      {errors.batchNumber && <Text style={styles.errorText}>{errors.batchNumber}</Text>}
-      <TextInput
-        style={styles.input}
-        placeholder="Enter product name"
-        value={product.name}
-        onChangeText={(text) => handleChange('name', text)}
-      />
-      {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
-      <View style={styles.row}>
-        <View style={styles.inputContainer}>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Batch Number</Text>
           <TextInput
             style={styles.input}
-            placeholder="KSh Price"
-            value={product.price}
-            onChangeText={(text) => handleChange('price', text)}
-            keyboardType="numeric"
+            placeholder="Enter batch number"
+            value={product.batchNumber}
+            onChangeText={(text) => handleChange('batchNumber', text)}
           />
-          {errors.price && <Text style={styles.errorText}>{errors.price}</Text>}
+          {errors.batchNumber && <Text style={styles.errorText}>{errors.batchNumber}</Text>}
         </View>
-        <View style={styles.inputContainer}>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Product Name</Text>
           <TextInput
             style={styles.input}
-            placeholder="Quantity"
-            value={product.quantity}
-            onChangeText={(text) => handleChange('quantity', text)}
-            keyboardType="numeric"
+            placeholder="Enter product name"
+            value={product.name}
+            onChangeText={(text) => handleChange('name', text)}
           />
-          {errors.quantity && <Text style={styles.errorText}>{errors.quantity}</Text>}
+          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
         </View>
-      </View>
-      <TextInput
-        style={[styles.input, styles.descriptionInput]}
-        placeholder="Enter additional information (e.g., ingredients)"
-        value={product.description}
-        onChangeText={(text) => handleChange('description', text)}
-        multiline
-      />
-        <Pressable 
-          style={styles.submitButton} 
+
+        <View style={styles.row}>
+          <View style={[styles.inputGroup, styles.halfWidth]}>
+            <Text style={styles.label}>Price (KSh)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter price"
+              value={product.price}
+              onChangeText={(text) => handleChange('price', text)}
+              keyboardType="numeric"
+            />
+            {errors.price && <Text style={styles.errorText}>{errors.price}</Text>}
+          </View>
+          <View style={[styles.inputGroup, styles.halfWidth]}>
+            <Text style={styles.label}>Quantity</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter quantity"
+              value={product.quantity}
+              onChangeText={(text) => handleChange('quantity', text)}
+              keyboardType="numeric"
+            />
+            {errors.quantity && <Text style={styles.errorText}>{errors.quantity}</Text>}
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Additional Information</Text>
+          <TextInput
+            style={[styles.input, styles.descriptionInput]}
+            placeholder="Enter additional information (e.g., ingredients)"
+            value={product.description}
+            onChangeText={(text) => handleChange('description', text)}
+            multiline
+          />
+        </View>
+
+        <TouchableOpacity
+          style={styles.submitButton}
           onPress={handleSubmit}
-          android_ripple={{color: 'rgba(255,255,255,0.3)'}}
+          activeOpacity={0.8}
         >
           <Text style={styles.submitButtonText}>Add Product</Text>
-          </Pressable>
-    </ScrollView>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -179,91 +192,89 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8f8f8',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
-    
+    marginBottom: 20,
   },
   backButton: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-
-  },
-
-  horizontalLine: {
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
-    marginBottom: 20,
+    padding: 10,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 10,
-  },
-  titleContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginLeft: 20,
   },
   imageUpload: {
-    height: 250,
+    height: 200,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderColor: '#e0e0e0',
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
+    backgroundColor: '#fff',
+    overflow: 'hidden',
   },
   imagePreview: {
     width: '100%',
     height: '100%',
-    borderRadius: 8,
+    borderRadius: 12,
+  },
+  imagePlaceholder: {
+    alignItems: 'center',
+  },
+  imagePlaceholderText: {
+    marginTop: 10,
+    color: '#888',
+  },
+  inputGroup: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+    color: '#333',
   },
   input: {
-    height: 40,
-    borderColor: '#ccc',
+    height: 50,
+    borderColor: '#e0e0e0',
     borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    backgroundColor: '#fff',
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  inputContainer: {
-    flex: 1,
-    marginRight: 10,
+  halfWidth: {
+    width: '48%',
   },
   descriptionInput: {
     height: 100,
-    verticalAlign: 'top',
-    paddingTop: 10,
-    paddingBottom: 10,
+    textAlignVertical: 'top',
+    paddingTop: 15,
   },
   errorText: {
-    color: 'red',
-    fontSize: 12,
-    marginBottom: 10,
+    color: '#ff3b30',
+    fontSize: 14,
+    marginTop: 5,
   },
   submitButton: {
     backgroundColor: '#038B01',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
   },
   submitButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });
