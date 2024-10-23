@@ -89,8 +89,6 @@ const AuthLayout = () => {
       />
     </Stack>
 
-      
-    
    </>
   )
 }
