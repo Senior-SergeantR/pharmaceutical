@@ -12,7 +12,10 @@ import {
   Modal,
   Dimensions,
 } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import Menu from '../../../components/menu';
+
+
 
 const { height } = Dimensions.get('window');
 
@@ -402,20 +405,81 @@ const ProductsFn = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
-
       <Modal
         animationType="slide"
-        transparent={false}
-        visible={selectedProduct !== null}
-        onRequestClose={() => setSelectedProduct(null)}
+        transparent={true}
+        visible={isMenuVisible}
+        onRequestClose={() => setIsMenuVisible(false)}
       >
-        {selectedProduct && (
-          <ProductScreen
-            product={selectedProduct}
-            onClose={() => setSelectedProduct(null)}
-          />
-        )}
-      </Modal>
+        <TouchableOpacity
+          style={styles.menuOverlay}
+          activeOpacity={1}
+          onPress={() => setIsMenuVisible(false)}
+        >
+    <View style={styles.menuContainer}>
+      <View style={styles.menuHeader}>
+        <Text style={styles.menuHeaderTitle}>Menu</Text>
+        <TouchableOpacity onPress={() => setIsMenuVisible(false)}>
+          <Ionicons name="close-outline" size={24} color="#333" />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        <View style={styles.menuContent}>
+          <TouchableOpacity style={styles.menuItem}>
+            <Ionicons name="home-outline" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Home</Text>
+            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="calendar-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Reminders</Text>
+          <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+        </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.menuItem}>
+            <Ionicons name="cart-outline" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Orders</Text>
+            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.menuItem}>
+            <Ionicons name="people-outline" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Customers</Text>
+            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="location-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Find Pharmacy</Text>
+            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem}>
+            <Ionicons name="document-text-outline" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Health Articles</Text>
+            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.menuItem}>
+            <Ionicons name="settings-outline" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Settings</Text>
+            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="help-circle-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Help & Support</Text>
+          <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+        </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
+  </TouchableOpacity>
+</Modal>
+
+
+
     </>
   );
 };
@@ -446,6 +510,55 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     position: 'relative',
   },
+  menuOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  menuContainer: {
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '80%',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+  },
+  menuHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  menuHeaderTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  menuContent: {
+    paddingVertical: 10,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  menuText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+    marginLeft: 15,
+  },
+   
 
   cartBadge: {
     position: 'absolute',
