@@ -246,13 +246,24 @@ const products = [
 ];
 
 
-const ProductCard = ({ item, onPress, isRecent }) => (
+const ProductCard = ({ item, onPress, isRecent, onAddToCart }) => (
   <TouchableOpacity style={[styles.card, isRecent && styles.recentCard]} onPress={onPress}>
     <Image source={item.image} style={styles.productImage} />
     <View style={styles.productInfo}>
       <Text style={styles.productName}>{item.name}</Text>
       <Text style={styles.productDosage}>{item.dosage}</Text>
-      <Text style={styles.productPrice}>{item.price}</Text>
+      <View style={styles.priceCartContainer}>
+        <Text style={styles.productPrice}>{item.price}</Text>
+        <TouchableOpacity 
+          style={styles.cartButton}
+          onPress={(e) => {
+            e.stopPropagation();
+            onAddToCart(item);
+          }}
+        >
+          <MaterialIcons name="add-shopping-cart" size={24} color="#038B01" />
+        </TouchableOpacity>
+      </View>
     </View>
   </TouchableOpacity>
 );
@@ -301,6 +312,8 @@ const ProductsFn = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -312,6 +325,10 @@ const ProductsFn = () => {
     setFilteredProducts(filtered);
   };
 
+  const handleAddToCart = (product) => {
+    setCartItems([...cartItems, product]);
+  };
+
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -319,7 +336,27 @@ const ProductsFn = () => {
         <ScrollView style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.title}>Catalogue</Text>
+            <View style={styles.headerIcons}>
+              <TouchableOpacity 
+                style={styles.headerIcon}
+                onPress={() => alert(`Cart Items: ${cartItems.length}`)}
+              >
+                <MaterialIcons name="shopping-cart" size={24} color="#333" />
+                {cartItems.length > 0 && (
+                  <View style={styles.cartBadge}>
+                    <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.headerIcon}
+                onPress={() => setIsMenuVisible(true)}
+              >
+                <MaterialIcons name="menu" size={24} color="#333" />
+              </TouchableOpacity>
+            </View>
           </View>
+
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.searchBar}
@@ -329,13 +366,14 @@ const ProductsFn = () => {
             />
             <Text style={styles.searchIcon}>🔍</Text>
           </View>
+
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Products</Text>
           </TouchableOpacity>
 
           <Text style={styles.sectionTitle}>Recently Added</Text>
-          <ScrollView 
-            horizontal 
+          <ScrollView
+            horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.recentProductsContainer}
           >
@@ -344,11 +382,12 @@ const ProductsFn = () => {
                 key={item.id}
                 item={item}
                 onPress={() => setSelectedProduct(item)}
+                onAddToCart={handleAddToCart}
                 isRecent={true}
               />
             ))}
           </ScrollView>
-          
+
           <View style={styles.divider} />
           <Text style={styles.sectionTitle}>All Products</Text>
           <View style={styles.productGrid}>
@@ -357,11 +396,13 @@ const ProductsFn = () => {
                 key={item.id}
                 item={item}
                 onPress={() => setSelectedProduct(item)}
+                onAddToCart={handleAddToCart}
               />
             ))}
           </View>
         </ScrollView>
       </SafeAreaView>
+
       <Modal
         animationType="slide"
         transparent={false}
@@ -394,6 +435,46 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
     marginTop: 10,
+  },
+  headerIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  
+  headerIcon: {
+    padding: 8,
+    marginLeft: 15,
+    position: 'relative',
+  },
+
+  cartBadge: {
+    position: 'absolute',
+    right: -5,
+    top: -5,
+    backgroundColor: '#ff3b30',
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  cartBadgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+
+  priceCartContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 4,
+  },
+
+  cartButton: {
+    padding: 4,
   },
   title: {
     fontSize: 28,
