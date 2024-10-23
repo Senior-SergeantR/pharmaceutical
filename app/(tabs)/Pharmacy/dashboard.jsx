@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -19,6 +19,12 @@ import { Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 const cardWidth = width * 0.45;
+
+const bannerImages = [
+  require('../../../assets/images/banner.jpg'),
+  require('../../../assets/images/banner2.jpg'),
+  require('../../../assets/images/banner3.jpg'),
+];
 
 const productDatabase = [
   {
@@ -53,10 +59,25 @@ const productDatabase = [
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProducts, setFilteredProducts] = useState(productDatabase);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const bannerScrollRef = useRef(null);
 
   useEffect(() => {
     handleSearch(searchQuery);
   }, [searchQuery]);
+
+  useEffect(() => {
+    const scrollInterval = setInterval(() => {
+      const nextIndex = (currentBannerIndex + 1) % bannerImages.length;
+      setCurrentBannerIndex(nextIndex);
+      bannerScrollRef.current?.scrollTo({
+        x: nextIndex * width,
+        animated: true,
+      });
+    }, 3000);
+
+    return () => clearInterval(scrollInterval);
+  }, [currentBannerIndex]);
 
   const handleSearch = (text) => {
     setSearchQuery(text);
@@ -114,25 +135,50 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-     
-      <KeyboardAvoidingView 
+
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingView}
       >
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.bannerContainer}>
-            <ImageBackground
-              source={require('../../../assets/images/banner.jpg')}
-              style={styles.banner}
-              resizeMode="cover"
+            <ScrollView
+              ref={bannerScrollRef}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onMomentumScrollEnd={(event) => {
+                const newIndex = Math.round(event.nativeEvent.contentOffset.x / width);
+                setCurrentBannerIndex(newIndex);
+              }}
             >
-              <View style={styles.bannerContent}>
-                <Text style={styles.tagline}>Feel good, look good.</Text>
-                <TouchableOpacity style={styles.ctaButton}>
-                  <Text style={styles.ctaText}>Learn more</Text>
-                </TouchableOpacity>
-              </View>
-            </ImageBackground>
+              {bannerImages.map((image, index) => (
+                <ImageBackground
+                  key={index}
+                  source={image}
+                  style={[styles.banner, { width }]}
+                  resizeMode="cover"
+                >
+                  <View style={styles.bannerContent}>
+                    <Text style={styles.tagline}>Feel good, look good.</Text>
+                    <TouchableOpacity style={styles.ctaButton}>
+                      <Text style={styles.ctaText}>Learn more</Text>
+                    </TouchableOpacity>
+                  </View>
+                </ImageBackground>
+              ))}
+            </ScrollView>
+            <View style={styles.paginationDots}>
+              {bannerImages.map((_, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.dot,
+                    { backgroundColor: currentBannerIndex === index ? '#038B01' : '#ccc' }
+                  ]}
+                />
+              ))}
+            </View>
           </View>
 
           <View style={styles.searchBarContainer}>
@@ -208,8 +254,7 @@ const styles = StyleSheet.create({
     marginBottom: -40,
   },
   banner: {
-    flex: 1,
-    justifyContent: 'center',
+    height: '100%',
   },
   bannerContent: {
     position: 'absolute',
@@ -218,6 +263,18 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     width: '30%',
+  },
+  paginationDots: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 50,
+    alignSelf: 'center',
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 4,
   },
   tagline: {
     fontSize: 30,
