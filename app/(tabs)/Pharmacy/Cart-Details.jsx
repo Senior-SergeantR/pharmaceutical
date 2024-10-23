@@ -82,7 +82,36 @@ const ShoppingCart = ({ navigation }) => {
     { id: 4, name: 'Paracetamol 500mg Tablets', price: 150, image: require('../../../assets/images/cart-meds.jpg'), quantity: 1 },
     { id: 5, name: 'Amoxicillin 250mg Capsules', price: 450, image: require('../../../assets/images/cart-meds.jpg'), quantity: 1 },
   ]);
-
+  if (cartItems.length === 0) {
+    return (
+      <>
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+        <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+            <View style={styles.titleContainer}>
+              <Text style={styles.headerTitle}>Shopping Cart</Text>
+            </View>
+          </View>
+          <View style={styles.content}>
+            <Image
+              source={require('../../../assets/images/empty-cart.jpg')}
+              style={styles.image}
+            />
+            <Text style={styles.message}>No items in your basket!!!</Text>
+            <TouchableOpacity 
+              style={styles.button} 
+              onPress={() => navigation.navigate('BrowseItems')}
+            >
+              <Text style={styles.buttonText}>Browse items</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </>
+    );
+  }
   const removeItem = (id) => {
     setCartItems(cartItems.filter(item => item.id !== id));
   };
@@ -166,6 +195,40 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingHorizontal: 16,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  image: {
+    width: 300,
+    height: 300,
+    marginBottom: 20,
+  },
+  message: {
+    fontSize: 18,
+    marginBottom: 20,
+    fontWeight: 'bold',
+  },
+  button: {
+    padding: 15,
+    backgroundColor: '#038B01',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  backButton: {
+    position: 'absolute',
+    left: 16,
+    zIndex: 1,
+  },
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
   itemCount: {
     fontSize: 14,
