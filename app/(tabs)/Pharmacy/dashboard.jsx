@@ -60,6 +60,7 @@ const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProducts, setFilteredProducts] = useState(productDatabase);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const bannerScrollRef = useRef(null);
 
   useEffect(() => {
@@ -102,6 +103,61 @@ const HomeScreen = () => {
     );
   };
 
+  const MenuOverlay = () => (
+    <TouchableOpacity 
+      style={styles.menuOverlay} 
+      activeOpacity={1} 
+      onPress={() => setIsMenuVisible(false)}
+    >
+      <View style={styles.menuContent}>
+        <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="home-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Home</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="medical-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Prescriptions</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="cart-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>My Orders</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="calendar-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Reminders</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="location-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Find Pharmacy</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="document-text-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Health Articles</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="person-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Profile</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="settings-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Settings</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <Ionicons name="help-circle-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Help & Support</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
+  );
+
   const PromoCard = ({ image, name, price, discount, rating, stock }) => (
     <TouchableOpacity style={styles.promoCard}>
       <View style={styles.imageContainer}>
@@ -130,7 +186,10 @@ const HomeScreen = () => {
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="notifications-outline" size={24} color="#333" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity 
+            style={styles.iconButton}
+            onPress={() => setIsMenuVisible(true)}
+          >
             <Ionicons name="menu-outline" size={24} color="#333" />
           </TouchableOpacity>
         </View>
@@ -211,6 +270,7 @@ const HomeScreen = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      {isMenuVisible && <MenuOverlay />}
     </SafeAreaView>
   );
 };
@@ -400,6 +460,37 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#777',
   },
+  menuOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  menuContent: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 15,
+    width: '100%',
+    maxHeight: '80%',
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  menuText: {
+    fontSize: 16,
+    marginLeft: 15,
+    color: '#333',
+  },
 });
 
 export default HomeScreen;
+
