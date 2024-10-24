@@ -11,10 +11,9 @@ import {
   StatusBar,
   Modal,
   Dimensions,
+  Animated,
 } from "react-native";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
-import Menu from '../../../components/menu';
-
 
 
 const { height } = Dimensions.get('window');
@@ -271,45 +270,6 @@ const ProductCard = ({ item, onPress, isRecent, onAddToCart }) => (
   </TouchableOpacity>
 );
 
-const ProductScreen = ({ product, onClose }) => {
-  return (
-    <ScrollView contentContainerStyle={styles.modalContainer}>
-      <View style={styles.titleContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={onClose}>
-          <MaterialIcons name="chevron-left" size={24} color="#333" />
-        </TouchableOpacity>
-        <Text style={styles.pageTitle}>Product</Text>
-        <View style={styles.iconContainer}>
-          <TouchableOpacity style={styles.iconButton}>
-            <MaterialIcons name="edit" size={24} color="#333" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <MaterialIcons name="delete" size={24} color="#333" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.titleUnderline} />
-      <Image
-        source={product.image}
-        style={styles.heroImage}
-      />
-      <View style={styles.detailsContainer}>
-        <View style={styles.availabilityContainer}>
-          <MaterialIcons name="check-circle" size={24} color="green" />
-          <Text style={styles.availabilityText}>Available</Text>
-        </View>
-        <Text style={styles.productName}>{product.name}</Text>
-        <Text style={styles.price}>{product.price}</Text>
-        <Text style={styles.itemNumber}>Item Number: {product.itemNumber}</Text>
-        <Text style={styles.sectionTitle}>Active Ingredients:</Text>
-        {product.ingredients.map((ingredient, index) => (
-          <Text key={index} style={styles.ingredient}>- {ingredient}</Text>
-        ))}
-      </View>
-    </ScrollView>
-  );
-};
 
 const ProductsFn = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -332,15 +292,56 @@ const ProductsFn = () => {
     setCartItems([...cartItems, product]);
   };
 
+  const renderHeader = () => (
+    <View style={styles.headerFixed}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Catalogue</Text>
+        <View style={styles.headerIcons}>
+          <TouchableOpacity
+            style={styles.headerIcon}
+            onPress={() => alert(`Cart Items: ${cartItems.length}`)}
+          >
+            <MaterialIcons name="shopping-cart" size={24} color="#333" />
+            {cartItems.length > 0 && (
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.headerIcon}
+            onPress={() => setIsMenuVisible(true)}
+          >
+            <MaterialIcons name="menu" size={24} color="#333" />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search products..."
+          value={searchQuery}
+          onChangeText={handleSearch}
+        />
+        <Text style={styles.searchIcon}>🔍</Text>
+      </View>
+
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Products</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.container}>
+        <View style={styles.headerFixed}>
           <View style={styles.header}>
             <Text style={styles.title}>Catalogue</Text>
             <View style={styles.headerIcons}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.headerIcon}
                 onPress={() => alert(`Cart Items: ${cartItems.length}`)}
               >
@@ -351,7 +352,7 @@ const ProductsFn = () => {
                   </View>
                 )}
               </TouchableOpacity>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.headerIcon}
                 onPress={() => setIsMenuVisible(true)}
               >
@@ -359,7 +360,7 @@ const ProductsFn = () => {
               </TouchableOpacity>
             </View>
           </View>
-
+  
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.searchBar}
@@ -369,43 +370,47 @@ const ProductsFn = () => {
             />
             <Text style={styles.searchIcon}>🔍</Text>
           </View>
-
+  
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Products</Text>
           </TouchableOpacity>
-
-          <Text style={styles.sectionTitle}>Recently Added</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.recentProductsContainer}
-          >
-            {filteredProducts.slice(0, 5).map((item) => (
-              <ProductCard
-                key={item.id}
-                item={item}
-                onPress={() => setSelectedProduct(item)}
-                onAddToCart={handleAddToCart}
-                isRecent={true}
-              />
-            ))}
-          </ScrollView>
-
-          <View style={styles.divider} />
-          <Text style={styles.sectionTitle}>All Products</Text>
-          <View style={styles.productGrid}>
-            {filteredProducts.map((item) => (
-              <ProductCard
-                key={item.id}
-                item={item}
-                onPress={() => setSelectedProduct(item)}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
+        </View>
+  
+        <ScrollView style={styles.scrollContainer}>
+          <View style={styles.contentContainer}>
+            <Text style={styles.sectionTitle}>Recently Added</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.recentProductsContainer}
+            >
+              {filteredProducts.slice(0, 5).map((item) => (
+                <ProductCard
+                  key={item.id}
+                  item={item}
+                  onPress={() => setSelectedProduct(item)}
+                  onAddToCart={handleAddToCart}
+                  isRecent={true}
+                />
+              ))}
+            </ScrollView>
+  
+            <View style={styles.divider} />
+            <Text style={styles.sectionTitle}>All Products</Text>
+            <View style={styles.productGrid}>
+              {filteredProducts.map((item) => (
+                <ProductCard
+                  key={item.id}
+                  item={item}
+                  onPress={() => setSelectedProduct(item)}
+                  onAddToCart={handleAddToCart}
+                />
+              ))}
+            </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
-      <Modal
+  
+        <Modal
         animationType="slide"
         transparent={true}
         visible={isMenuVisible}
@@ -475,22 +480,38 @@ const ProductsFn = () => {
         </View>
       </ScrollView>
     </View>
-  </TouchableOpacity>
-</Modal>
-
-
-
+      </TouchableOpacity>
+      </Modal>
+                  
+           
+       
+      </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+    safeArea: {
     flex: 1,
     backgroundColor: "#fff",
   },
-  container: {
+  headerFixed: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    zIndex: 1000,
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  scrollContainer: {
     flex: 1,
+    marginTop: 180, 
+  },
+  contentContainer: {
     padding: 16,
   },
   header: {
@@ -498,7 +519,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
-    marginTop: 10,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 25,
+    marginBottom: 20,
+    paddingHorizontal: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   headerIcons: {
     flexDirection: 'row',
