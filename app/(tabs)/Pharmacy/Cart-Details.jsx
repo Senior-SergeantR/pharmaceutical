@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+
 const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
   const [quantity, setQuantity] = useState(item.quantity.toString());
 
@@ -101,12 +102,14 @@ const ShoppingCart = ({ navigation }) => {
               style={styles.image}
             />
             <Text style={styles.message}>No items in your basket!!!</Text>
-            <TouchableOpacity 
-              style={styles.button} 
-              onPress={() => navigation.navigate('BrowseItems')}
+            
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('products')} 
             >
               <Text style={styles.buttonText}>Browse items</Text>
             </TouchableOpacity>
+
           </View>
         </SafeAreaView>
       </>
