@@ -1,56 +1,103 @@
-import { Link } from 'expo-router';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import CustomButton from '../../components/CustomButton1';
-import React, { useState } from 'react';
+import { Link, router } from "expo-router";
+import { View, Text, TextInput, StyleSheet, ToastAndroid } from "react-native";
+import CustomButton from "../../components/CustomButton1";
+import React, { useState } from "react";
+import { supabase } from "../../lib/supabase";
 
 const SignInScreen = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
-    password: ''
+    email: "",
+    password: "",
   });
 
   const handleChange = (name, value) => {
     setForm({
       ...form,
-      [name]: value
+      [name]: value,
     });
   };
 
-  const submit = () => {
+  const submit = async () => {
     setIsSubmitting(true);
-    console.log(form);
-    
-    setIsSubmitting(false);
+
+    const { email, password } = form;
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        ToastAndroid.show(error.message, ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show("Login successful", ToastAndroid.SHORT);
+        router.push("/../../(tabs)/Pharmacy/dashboard");
+      }
+    } catch (error) {
+      console.error(error);
+      ToastAndroid.show(
+        "An error occurred, please try again",
+        ToastAndroid.SHORT
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>BREEG</Text>
-      <Text style={styles.subtitle}>Login account</Text>
+      <Text style={styles.subtitle}>Login Account</Text>
       <Text style={styles.text1}>Enter your email address</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter email"
+        value={form.email}
+        onChangeText={(value) => handleChange("email", value)}
+      />
       <TextInput
         style={styles.input}
         placeholder="Enter password"
         secureTextEntry
         value={form.password}
-        onChangeText={(value) => handleChange('password', value)}
+        onChangeText={(value) => handleChange("password", value)}
       />
 
       <CustomButton
-        title="Sign in"
+        title="Sign In"
         handlePress={submit}
-        containerStyles="w-full mt-7 mb-20"
+        containerStyles={styles.buttonContainer}
         isLoading={isSubmitting}
       />
 
-      <Text style={styles.text2}>
-        <Link href="/privacy" style={styles.externallink}>Forgot password?</Link>
+      <Text style={styles.forgotPasswordText}>
+        <Link href="/ForgotPassword" style={styles.externalLink}>
+          Forgot password?
+        </Link>
       </Text>
+      <Text style={styles.prompt}>Create a new account?</Text>
+
+      <CustomButton
+        title="Sign Up"
+        handlePress={() => {
+          router.push("/(auth)/SignUpPharmacy");
+        }}
+        containerStyles={styles.signUpButtonContainer}
+      />
 
       <Text style={styles.text3}>
-        By clicking Sign Up, you agree to our 
-        <Link href="/terms" style={styles.externallink}> Terms of Service</Link> and 
-        <Link href="/privacy" style={styles.externallink}> Privacy Policy</Link>
+        By signing in, you agree to our
+        <Link href="/terms" style={styles.externalLink}>
+          {" "}
+          Terms of Service
+        </Link>{" "}
+        and
+        <Link href="/privacy" style={styles.externalLink}>
+          {" "}
+          Privacy Policy
+        </Link>
       </Text>
     </View>
   );
@@ -59,50 +106,69 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
-    backgroundColor: '#fff',
-    marginBottom: 20,
+    backgroundColor: "#f5f5f5", 
   },
   header: {
-    fontSize: 35,
-    fontWeight: 'bold',
-    marginBottom: 100,
+    fontSize: 42,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#333",
   },
   subtitle: {
-    fontSize: 25,
+    fontSize: 24,
+    fontWeight: "600",
     marginBottom: 20,
-    fontWeight:"bold",
+    color: "#555",
   },
-  text1:{
+  text1: {
     marginBottom: 15,
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  text2:{
-    marginTop: 15,
-    color: '#828282',
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 50,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
+    borderRadius: 8,
+    paddingHorizontal: 12,
     marginBottom: 20,
+    backgroundColor: "#fff", 
   },
-
-  text3:{
+  buttonContainer: {
+    width: "100%",
     marginTop: 20,
   },
-
-externallink:{
-  fontWeight: 'bold',
-  fontSize: 17
-}
+  signUpButtonContainer: {
+    width: "100%",
+    marginTop: 10,
+  },
+  prompt: {
+    fontSize: 16,
+    color: "#555",
+    marginTop: 20,
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  forgotPasswordText: {
+    marginTop: 15,
+    color: "#007bff",
+    fontWeight: "600",
+  },
+  text3: {
+    marginTop: 20,
+    textAlign: "center",
+    color: "#888",
+    fontSize: 12,
+  },
+  externalLink: {
+    fontWeight: "bold",
+    color: "#007bff",
+  },
 });
 
 export default SignInScreen;
