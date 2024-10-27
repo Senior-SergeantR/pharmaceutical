@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   navBar: {
-    marginTop: 10,
+    marginTop: 30,
     height: 60,
     backgroundColor: '#fff',
     flexDirection: 'row',
