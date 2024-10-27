@@ -20,16 +20,34 @@ const SignUpScreen = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const { data, error } = await supabase
-        .from("users") // Replace 'users' with your actual table name in Supabase
-        .insert([{ email, password, licenseId }]);
+      // Sign up the user with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
-      if (error) {
-        Alert.alert("Sign Up Failed", error.message);
-        console.error("Error:", error);
+      if (authError) {
+        Alert.alert("Sign Up Failed", authError.message);
+        console.error("Auth Error:", authError);
+        return;
+      }
+
+      // Insert additional user details into the "users" table with the auth user ID
+      const { error: userError } = await supabase.from("users").insert([
+        {
+          id: authData.user.id, 
+          email,
+          license_id: licenseId,
+          user_type: "pharmacy", 
+        },
+      ]);
+
+      if (userError) {
+        Alert.alert("Failed to save user details", userError.message);
+        console.error("User Table Error:", userError);
       } else {
         Alert.alert("Sign Up Successful", "Welcome to BREEG!");
-        console.log("User data:", data);
+        console.log("User ID:", authData.user.id);
         router.push("/OTPpharmacy");
       }
     } catch (error) {
@@ -64,7 +82,7 @@ const SignUpScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="*******"
-          keyboardType="visible-password"
+
           secureTextEntry
           value={password}
           onChangeText={setPassword}
