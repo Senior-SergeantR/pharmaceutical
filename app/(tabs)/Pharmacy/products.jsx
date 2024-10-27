@@ -371,9 +371,9 @@ const ProductsFn = () => {
             <Text style={styles.searchIcon}>🔍</Text>
           </View>
   
-          <TouchableOpacity style={styles.button}>
+          {/* <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Products</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
   
         <ScrollView style={styles.scrollContainer}>
