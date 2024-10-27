@@ -89,7 +89,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5", // Light grey background for a modern feel
+    backgroundColor: "#f5f5f5",
   },
   centeredView: {
     flex: 1,
@@ -101,19 +101,19 @@ const styles = StyleSheet.create({
     fontSize: 42,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "#333", // Darker title color for better readability
+    color: "#333",
   },
   subtitle: {
     fontSize: 24,
     fontWeight: "600",
     marginBottom: 8,
-    color: "#555", // Slightly lighter for subtitle
+    color: "#555", 
   },
   description: {
     fontSize: 16,
     textAlign: "center",
     marginBottom: 40,
-    color: "#666", // Soft color for description
+    color: "#666",
   },
   formField: {
     marginBottom: 20,
@@ -121,12 +121,12 @@ const styles = StyleSheet.create({
   },
   formFieldInput: {
     width: "100%",
-    borderColor: "#ccc", // Light border color
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
     height: 50,
-    backgroundColor: "#fff", // White background for inputs
+    backgroundColor: "#fff", 
   },
   buttonContainer: {
     width: "100%",
@@ -135,13 +135,13 @@ const styles = StyleSheet.create({
   termsText: {
     fontSize: 12,
     textAlign: "center",
-    color: "#888", // Grey color for terms
+    color: "#888", 
     marginBottom: 10,
   },
   externalLink: {
     marginHorizontal: 5,
     fontWeight: "bold",
-    color: "#007bff", // Bootstrap primary color for links
+    color: "#007bff", 
   },
   loginPrompt: {
     fontSize: 16,
