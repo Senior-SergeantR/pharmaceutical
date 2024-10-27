@@ -516,6 +516,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
+    marginTop: 35,
   },
   searchContainer: {
     flexDirection: "row",
