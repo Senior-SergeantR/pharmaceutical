@@ -419,6 +419,80 @@ const ProductsFn = () => {
           </View>
           </View>
         </ScrollView>
+        {/* Menu Modal */}
+<Modal
+  animationType="slide"
+  transparent={true}
+  visible={isMenuVisible}
+  onRequestClose={() => setIsMenuVisible(false)}
+>
+  <TouchableOpacity
+    style={styles.menuOverlay}
+    activeOpacity={1}
+    onPress={() => setIsMenuVisible(false)}
+  >
+    <View style={styles.menuContainer}>
+      <View style={styles.menuHeader}>
+        <Text style={styles.menuHeaderTitle}>Menu</Text>
+        <TouchableOpacity onPress={() => setIsMenuVisible(false)}>
+          <MaterialIcons name="close" size={24} color="#333" />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        <View style={styles.menuContent}>
+          <TouchableOpacity style={styles.menuItem}>
+            <MaterialIcons name="home" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Home</Text>
+            <MaterialIcons name="chevron-right" size={24} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem}>
+            <MaterialIcons name="calendar-today" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Reminders</Text>
+            <MaterialIcons name="chevron-right" size={24} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem}>
+            <MaterialIcons name="shopping-bag" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Orders</Text>
+            <MaterialIcons name="chevron-right" size={24} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem}>
+            <MaterialIcons name="people" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Customers</Text>
+            <MaterialIcons name="chevron-right" size={24} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem}>
+            <MaterialIcons name="location-on" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Find Pharmacy</Text>
+            <MaterialIcons name="chevron-right" size={24} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem}>
+            <MaterialIcons name="article" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Health Articles</Text>
+            <MaterialIcons name="chevron-right" size={24} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem}>
+            <MaterialIcons name="settings" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Settings</Text>
+            <MaterialIcons name="chevron-right" size={24} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem}>
+            <MaterialIcons name="help" size={24} color="#038B01" />
+            <Text style={styles.menuText}>Help & Support</Text>
+            <MaterialIcons name="chevron-right" size={24} color="#666" />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
+  </TouchableOpacity>
+</Modal>
+
       </SafeAreaView>
       <Modal
         animationType="slide"
@@ -431,9 +505,9 @@ const ProductsFn = () => {
             product={selectedProduct}
             onClose={() => setSelectedProduct(null)}
             onAddToCart={handleAddToCart}  // Add this prop
-    />
-  )}
-</Modal>
+      />
+       )}
+      </Modal>
 
     </>
   );
@@ -500,7 +574,55 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
-  
+  menuOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+menuContainer: {
+  backgroundColor: '#fff',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  borderTopLeftRadius: 20,
+  borderTopRightRadius: 20,
+  maxHeight: '80%',
+  elevation: 5,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: -2 },
+  shadowOpacity: 0.25,
+  shadowRadius: 5,
+},
+menuHeader: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: 20,
+  borderBottomWidth: 1,
+  borderBottomColor: '#eee',
+},
+menuHeaderTitle: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: '#333',
+},
+menuContent: {
+  paddingVertical: 10,
+},
+menuItem: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: 15,
+  borderBottomWidth: 1,
+  borderBottomColor: '#eee',
+},
+menuText: {
+  flex: 1,
+  fontSize: 16,
+  color: '#333',
+  marginLeft: 15,
+},
+
   scrollContainer: {
     flex: 1,
     marginTop: 130, 
