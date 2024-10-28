@@ -11,10 +11,8 @@ import {
   StatusBar,
   Modal,
   Dimensions,
-  Animated,
 } from "react-native";
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
-
+import { MaterialIcons } from '@expo/vector-icons';
 
 const { height } = Dimensions.get('window');
 
@@ -271,6 +269,57 @@ const ProductCard = ({ item, onPress, isRecent, onAddToCart }) => (
 );
 
 
+const ProductScreen = ({ product, onClose, onAddToCart }) => {
+  return (
+    <ScrollView contentContainerStyle={styles.modalContainer}>
+      <View style={styles.titleContainer}>
+        <TouchableOpacity style={styles.backButton} onPress={onClose}>
+          <MaterialIcons name="chevron-left" size={24} color="#333" />
+        </TouchableOpacity>
+        <Text style={styles.pageTitle}>Product</Text>
+        <View style={styles.iconContainer}>
+          <TouchableOpacity style={styles.iconButton}>
+            <MaterialIcons name="edit" size={24} color="#333" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconButton}>
+            <MaterialIcons name="delete" size={24} color="#333" />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.titleUnderline} />
+      <Image source={product.image} style={styles.heroImage} />
+      
+      <View style={styles.detailsContainer}>
+        <View style={styles.availabilityContainer}>
+          <MaterialIcons name="check-circle" size={24} color="green" />
+          <Text style={styles.availabilityText}>Available</Text>
+        </View>
+        <Text style={styles.productName}>{product.name}</Text>
+        
+        <View style={styles.priceCartContainer}>
+          <Text style={styles.price}>{product.price}</Text>
+          <TouchableOpacity
+            style={styles.cartIconContainer}
+            onPress={() => onAddToCart(product)}  // Now this will work
+          >
+            <MaterialIcons name="shopping-cart" size={28} color="#038B01" />
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.itemNumber}>Item Number: {product.itemNumber}</Text>
+        <Text style={styles.sectionTitle}>Active Ingredients:</Text>
+        {product.ingredients.map((ingredient, index) => (
+          <Text key={index} style={styles.ingredient}>- {ingredient}</Text>
+        ))}
+      </View>
+
+
+    </ScrollView>
+  );
+};
+
+
 const ProductsFn = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
@@ -291,206 +340,230 @@ const ProductsFn = () => {
   const handleAddToCart = (product) => {
     setCartItems([...cartItems, product]);
   };
-
-  const renderHeader = () => (
-    <View style={styles.headerFixed}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Catalogue</Text>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity
-            style={styles.headerIcon}
-            onPress={() => alert(`Cart Items: ${cartItems.length}`)}
-          >
-            <MaterialIcons name="shopping-cart" size={24} color="#333" />
-            {cartItems.length > 0 && (
-              <View style={styles.cartBadge}>
-                <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.headerIcon}
-            onPress={() => setIsMenuVisible(true)}
-          >
-            <MaterialIcons name="menu" size={24} color="#333" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchBar}
-          placeholder="Search products..."
-          value={searchQuery}
-          onChangeText={handleSearch}
-        />
-        <Text style={styles.searchIcon}>🔍</Text>
-      </View>
-
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Products</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.headerFixed}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Catalogue</Text>
-            <View style={styles.headerIcons}>
-              <TouchableOpacity
-                style={styles.headerIcon}
-                onPress={() => alert(`Cart Items: ${cartItems.length}`)}
-              >
-                <MaterialIcons name="shopping-cart" size={24} color="#333" />
-                {cartItems.length > 0 && (
-                  <View style={styles.cartBadge}>
-                    <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
-                  </View>
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.headerIcon}
-                onPress={() => setIsMenuVisible(true)}
-              >
-                <MaterialIcons name="menu" size={24} color="#333" />
-              </TouchableOpacity>
-            </View>
-          </View>
-  
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Search products..."
-              value={searchQuery}
-              onChangeText={handleSearch}
-            />
-            <Text style={styles.searchIcon}>🔍</Text>
-          </View>
-  
-          {/* <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Products</Text>
-          </TouchableOpacity> */}
-        </View>
-  
-        <ScrollView style={styles.scrollContainer}>
-          <View style={styles.contentContainer}>
-            <Text style={styles.sectionTitle}>Recently Added</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.recentProductsContainer}
+    <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+    <SafeAreaView style={styles.safeArea}>
+      {/* Fixed Header Section */}
+      <View style={styles.headerFixed}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Catalogue</Text>
+          <View style={styles.headerIcons}>
+            <TouchableOpacity 
+              style={styles.headerIcon}
+              onPress={() => alert(`Cart Items: ${cartItems.length}`)}
             >
-              {filteredProducts.slice(0, 5).map((item) => (
-                <ProductCard
-                  key={item.id}
-                  item={item}
-                  onPress={() => setSelectedProduct(item)}
-                  onAddToCart={handleAddToCart}
-                  isRecent={true}
-                />
-              ))}
-            </ScrollView>
-  
-            <View style={styles.divider} />
-            <Text style={styles.sectionTitle}>All Products</Text>
-            <View style={styles.productGrid}>
-              {filteredProducts.map((item) => (
-                <ProductCard
-                  key={item.id}
-                  item={item}
-                  onPress={() => setSelectedProduct(item)}
-                  onAddToCart={handleAddToCart}
-                />
-              ))}
-            </View>
+              <MaterialIcons name="shopping-cart" size={24} color="#333" />
+              {cartItems.length > 0 && (
+                <View style={styles.cartBadge}>
+                  <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.headerIcon}
+              onPress={() => setIsMenuVisible(true)}
+            >
+              <MaterialIcons name="menu" size={24} color="#333" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchBar}
+            placeholder="Search products..."
+            value={searchQuery}
+            onChangeText={handleSearch}
+          />
+          <Text style={styles.searchIcon}>🔍</Text>
+        </View>
+
+        {/* <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Products</Text>
+        </TouchableOpacity> */}
+      </View>
+
+      {/* Scrollable Content */}
+      <ScrollView style={styles.scrollContainer}>
+        <View style={styles.contentContainer}>
+          <Text style={styles.sectionTitle}>Recently Added</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.recentProductsContainer}
+          >
+            {filteredProducts.slice(0, 5).map((item) => (
+              <ProductCard
+                key={item.id}
+                item={item}
+                onPress={() => setSelectedProduct(item)}
+                isRecent={true}
+                onAddToCart={handleAddToCart}  // Added here
+              />
+            ))}
+          </ScrollView>
+          
+          <View style={styles.divider} />
+          <Text style={styles.sectionTitle}>All Products</Text>
+          <View style={styles.productGrid}>
+            {filteredProducts.map((item) => (
+              <ProductCard
+                key={item.id}
+                item={item}
+                onPress={() => setSelectedProduct(item)}
+                onAddToCart={handleAddToCart}
+                isRecent={true}
+              />
+            ))}
+          </View>
           </View>
         </ScrollView>
-  
-        <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isMenuVisible}
-        onRequestClose={() => setIsMenuVisible(false)}
-      >
-        <TouchableOpacity
-          style={styles.menuOverlay}
-          activeOpacity={1}
-          onPress={() => setIsMenuVisible(false)}
-        >
+        {/* Menu Modal */}
+<Modal
+  animationType="slide"
+  transparent={true}
+  visible={isMenuVisible}
+  onRequestClose={() => setIsMenuVisible(false)}
+>
+  <TouchableOpacity
+    style={styles.menuOverlay}
+    activeOpacity={1}
+    onPress={() => setIsMenuVisible(false)}
+  >
     <View style={styles.menuContainer}>
       <View style={styles.menuHeader}>
         <Text style={styles.menuHeaderTitle}>Menu</Text>
         <TouchableOpacity onPress={() => setIsMenuVisible(false)}>
-          <Ionicons name="close-outline" size={24} color="#333" />
+          <MaterialIcons name="close" size={24} color="#333" />
         </TouchableOpacity>
       </View>
       <ScrollView>
-        <View style={styles.menuContent}>
-          <TouchableOpacity style={styles.menuItem}>
-            <Ionicons name="home-outline" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Home</Text>
-            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="calendar-outline" size={24} color="#038B01" />
+      {/* Menu Items */}
+      <View style={styles.menuContent}>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="home" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Home</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="event" size={24} color="#038B01" />
           <Text style={styles.menuText}>Reminders</Text>
-          <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
         </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.menuItem}>
-            <Ionicons name="cart-outline" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Orders</Text>
-            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.menuItem}>
-            <Ionicons name="people-outline" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Customers</Text>
-            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="location-outline" size={24} color="#038B01" />
+
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="local-mall" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Orders</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="people-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Customers</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="place" size={24} color="#038B01" />
           <Text style={styles.menuText}>Find Pharmacy</Text>
-            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem}>
-            <Ionicons name="document-text-outline" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Health Articles</Text>
-            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.menuItem}>
-            <Ionicons name="settings-outline" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Settings</Text>
-            <Ionicons name="chevron-forward-outline" size={24} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="help-circle-outline" size={24} color="#038B01" />
-          <Text style={styles.menuText}>Help & Support</Text>
-          <Ionicons name="chevron-forward-outline" size={24} color="#666" />
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
         </TouchableOpacity>
-        </View>
-      </ScrollView>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="description" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Health Articles</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="settings" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Settings</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="help-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Help & Support</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
       </View>
-      </TouchableOpacity>
-      </Modal>
+
+
+      </ScrollView>
+    </View>
+  </TouchableOpacity>
+</Modal>
+
       </SafeAreaView>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={selectedProduct !== null}
+        onRequestClose={() => setSelectedProduct(null)}
+      >
+        {selectedProduct && (
+          <ProductScreen
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+            onAddToCart={handleAddToCart}  // Add this prop
+      />
+       )}
+      </Modal>
+
     </>
   );
 };
 
 const styles = StyleSheet.create({
-    safeArea: {
+  safeArea: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  headerIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  
+  headerIcon: {
+    padding: 8,
+    marginLeft: 15,
+    position: 'relative',
+  },
+  
+  cartBadge: {
+    position: 'absolute',
+    right: -5,
+    top: -5,
+    backgroundColor: '#ff3b30',
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+  cartBadgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   headerFixed: {
     position: 'absolute',
@@ -504,127 +577,64 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
+  menuOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+menuContainer: {
+  backgroundColor: '#fff',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  borderTopLeftRadius: 20,
+  borderTopRightRadius: 20,
+  maxHeight: '80%',
+  elevation: 5,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: -2 },
+  shadowOpacity: 0.25,
+  shadowRadius: 5,
+},
+menuHeader: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: 20,
+  borderBottomWidth: 1,
+  borderBottomColor: '#eee',
+},
+menuHeaderTitle: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: '#333',
+},
+menuContent: {
+  paddingVertical: 10,
+},
+menuItem: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: 15,
+  borderBottomWidth: 1,
+  borderBottomColor: '#eee',
+},
+menuText: {
+  flex: 1,
+  fontSize: 16,
+  color: '#333',
+  marginLeft: 15,
+},
+
   scrollContainer: {
     flex: 1,
-    marginTop: 180, 
+    marginTop: 130, 
   },
+  
   contentContainer: {
     padding: 16,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-    marginTop: 35,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 25,
-    marginBottom: 20,
-    paddingHorizontal: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   
-  headerIcon: {
-    padding: 8,
-    marginLeft: 15,
-    position: 'relative',
-  },
-  menuOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  menuContainer: {
-    backgroundColor: '#fff',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    maxHeight: '80%',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 5,
-  },
-  menuHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  menuHeaderTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  menuContent: {
-    paddingVertical: 10,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  menuText: {
-    flex: 1,
-    fontSize: 16,
-    color: '#333',
-    marginLeft: 15,
-  },
-   
-
-  cartBadge: {
-    position: 'absolute',
-    right: -5,
-    top: -5,
-    backgroundColor: '#ff3b30',
-    borderRadius: 10,
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  cartBadgeText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-
-  priceCartContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 4,
-  },
-
-  cartButton: {
-    padding: 4,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#333",
-  },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -667,6 +677,12 @@ const styles = StyleSheet.create({
     color: "#333",
     marginTop: 10,
   },
+  productGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginHorizontal: 8,
+  },
   card: {
     backgroundColor: "#fff",
     borderRadius: 12,
@@ -707,7 +723,7 @@ const styles = StyleSheet.create({
   },
   productDosage: {
     fontSize: 14,
-    color: "#666",
+    color: "#777",
     marginBottom: 4,
   },
   productPrice: {
@@ -715,17 +731,32 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#038B01",
   },
+  priceCartContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 4,
+  },
+  
+  cartButton: {
+    padding: 4,
+  },
+  
+  cartIconContainer: {
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    borderRadius: 50,
+    elevation: 2,
+  },
+  
+  
   divider: {
     height: 1,
     backgroundColor: "#ccc",
     marginVertical: 16,
   },
-  productGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    marginHorizontal: -8,
-  },
+
   modalContainer: {
     flexGrow: 1,
     backgroundColor: '#fff',
@@ -735,7 +766,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginTop: 0,
+    marginTop: 20,
     marginBottom: 10,
   },
   backButton: {
@@ -795,7 +826,7 @@ const styles = StyleSheet.create({
   itemNumber: {
     fontSize: 16,
     marginBottom: 15,
-    color: '#666',
+    color: '#777',
   },
   ingredient: {
     fontSize: 16,

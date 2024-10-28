@@ -439,55 +439,58 @@ const ProductsFn = () => {
         </TouchableOpacity>
       </View>
       <ScrollView>
-        <View style={styles.menuContent}>
-          <TouchableOpacity style={styles.menuItem}>
-            <MaterialIcons name="home" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Home</Text>
-            <MaterialIcons name="chevron-right" size={24} color="#666" />
-          </TouchableOpacity>
+      {/* Menu Items */}
+      <View style={styles.menuContent}>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="home" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Home</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <MaterialIcons name="calendar-today" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Reminders</Text>
-            <MaterialIcons name="chevron-right" size={24} color="#666" />
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="event" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Reminders</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <MaterialIcons name="shopping-bag" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Orders</Text>
-            <MaterialIcons name="chevron-right" size={24} color="#666" />
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="local-mall" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Orders</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <MaterialIcons name="people" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Customers</Text>
-            <MaterialIcons name="chevron-right" size={24} color="#666" />
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="people-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Customers</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <MaterialIcons name="location-on" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Find Pharmacy</Text>
-            <MaterialIcons name="chevron-right" size={24} color="#666" />
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="place" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Find Pharmacy</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <MaterialIcons name="article" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Health Articles</Text>
-            <MaterialIcons name="chevron-right" size={24} color="#666" />
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="description" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Health Articles</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <MaterialIcons name="settings" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Settings</Text>
-            <MaterialIcons name="chevron-right" size={24} color="#666" />
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="settings" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Settings</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <MaterialIcons name="help" size={24} color="#038B01" />
-            <Text style={styles.menuText}>Help & Support</Text>
-            <MaterialIcons name="chevron-right" size={24} color="#666" />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.menuItem}>
+          <MaterialIcons name="help-outline" size={24} color="#038B01" />
+          <Text style={styles.menuText}>Help & Support</Text>
+          <MaterialIcons name="chevron-right" size={24} color="#777" />
+        </TouchableOpacity>
+      </View>
+
+
       </ScrollView>
     </View>
   </TouchableOpacity>
@@ -720,7 +723,7 @@ menuText: {
   },
   productDosage: {
     fontSize: 14,
-    color: "#666",
+    color: "#777",
     marginBottom: 4,
   },
   productPrice: {
@@ -823,7 +826,7 @@ menuText: {
   itemNumber: {
     fontSize: 16,
     marginBottom: 15,
-    color: '#666',
+    color: '#777',
   },
   ingredient: {
     fontSize: 16,
