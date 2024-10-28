@@ -246,7 +246,7 @@ const products = [
 ];
 
 
-const ProductCard = ({ item, onPress, isRecent }) => (
+const ProductCard = ({ item, onPress, isRecent, onAddToCart }) => (
   <TouchableOpacity style={[styles.card, isRecent && styles.recentCard]} onPress={onPress}>
     <Image source={item.image} style={styles.productImage} />
     <View style={styles.productInfo}>
@@ -254,13 +254,20 @@ const ProductCard = ({ item, onPress, isRecent }) => (
       <Text style={styles.productDosage}>{item.dosage}</Text>
       <View style={styles.priceCartContainer}>
         <Text style={styles.productPrice}>{item.price}</Text>
-        <TouchableOpacity style={styles.cartButton}>
-          <MaterialIcons name="shopping-cart" size={24} color="#038B01" />
+        <TouchableOpacity 
+          style={styles.cartButton}
+          onPress={(e) => {
+            e.stopPropagation();
+            onAddToCart(item);
+          }}
+        >
+          <MaterialIcons name="add-shopping-cart" size={24} color="#038B01" />
         </TouchableOpacity>
       </View>
     </View>
   </TouchableOpacity>
 );
+
 
 const ProductScreen = ({ product, onClose }) => {
   return (
@@ -312,6 +319,8 @@ const ProductsFn = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -323,30 +332,59 @@ const ProductsFn = () => {
     setFilteredProducts(filtered);
   };
 
+  const handleAddToCart = (product) => {
+    setCartItems([...cartItems, product]);
+  };
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Catalogue</Text>
+    <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+    <SafeAreaView style={styles.safeArea}>
+      {/* Fixed Header Section */}
+      <View style={styles.headerFixed}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Catalogue</Text>
+          <View style={styles.headerIcons}>
+            <TouchableOpacity 
+              style={styles.headerIcon}
+              onPress={() => alert(`Cart Items: ${cartItems.length}`)}
+            >
+              <MaterialIcons name="shopping-cart" size={24} color="#333" />
+              {cartItems.length > 0 && (
+                <View style={styles.cartBadge}>
+                  <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.headerIcon}
+              onPress={() => setIsMenuVisible(true)}
+            >
+              <MaterialIcons name="menu" size={24} color="#333" />
+            </TouchableOpacity>
           </View>
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Search products..."
-              value={searchQuery}
-              onChangeText={handleSearch}
-            />
-            <Text style={styles.searchIcon}>🔍</Text>
-          </View>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Products</Text>
-          </TouchableOpacity>
+        </View>
 
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchBar}
+            placeholder="Search products..."
+            value={searchQuery}
+            onChangeText={handleSearch}
+          />
+          <Text style={styles.searchIcon}>🔍</Text>
+        </View>
+
+        {/* <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Products</Text>
+        </TouchableOpacity> */}
+      </View>
+
+      {/* Scrollable Content */}
+      <ScrollView style={styles.scrollContainer}>
+        <View style={styles.contentContainer}>
           <Text style={styles.sectionTitle}>Recently Added</Text>
-          <ScrollView 
-            horizontal 
+          <ScrollView
+            horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.recentProductsContainer}
           >
@@ -356,6 +394,7 @@ const ProductsFn = () => {
                 item={item}
                 onPress={() => setSelectedProduct(item)}
                 isRecent={true}
+                onAddToCart={handleAddToCart}  // Added here
               />
             ))}
           </ScrollView>
@@ -368,8 +407,10 @@ const ProductsFn = () => {
                 key={item.id}
                 item={item}
                 onPress={() => setSelectedProduct(item)}
+                onAddToCart={handleAddToCart}  // Added here
               />
             ))}
+          </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -411,6 +452,56 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
   },
+  headerIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  
+  headerIcon: {
+    padding: 8,
+    marginLeft: 15,
+    position: 'relative',
+  },
+  
+  cartBadge: {
+    position: 'absolute',
+    right: -5,
+    top: -5,
+    backgroundColor: '#ff3b30',
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+  cartBadgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  headerFixed: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    zIndex: 1000,
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  
+  scrollContainer: {
+    flex: 1,
+    marginTop: 130, 
+  },
+  
+  contentContainer: {
+    padding: 16,
+  },
+  
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
