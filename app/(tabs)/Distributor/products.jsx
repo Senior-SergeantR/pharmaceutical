@@ -269,7 +269,7 @@ const ProductCard = ({ item, onPress, isRecent, onAddToCart }) => (
 );
 
 
-const ProductScreen = ({ product, onClose }) => {
+const ProductScreen = ({ product, onClose, onAddToCart }) => {
   return (
     <ScrollView contentContainerStyle={styles.modalContainer}>
       <View style={styles.titleContainer}>
@@ -299,7 +299,10 @@ const ProductScreen = ({ product, onClose }) => {
         
         <View style={styles.priceCartContainer}>
           <Text style={styles.price}>{product.price}</Text>
-          <TouchableOpacity style={styles.cartIconContainer}>
+          <TouchableOpacity
+            style={styles.cartIconContainer}
+            onPress={() => onAddToCart(product)}  // Now this will work
+          >
             <MaterialIcons name="shopping-cart" size={28} color="#038B01" />
           </TouchableOpacity>
         </View>
@@ -310,6 +313,8 @@ const ProductScreen = ({ product, onClose }) => {
           <Text key={index} style={styles.ingredient}>- {ingredient}</Text>
         ))}
       </View>
+
+
     </ScrollView>
   );
 };
@@ -407,7 +412,8 @@ const ProductsFn = () => {
                 key={item.id}
                 item={item}
                 onPress={() => setSelectedProduct(item)}
-                onAddToCart={handleAddToCart}  // Added here
+                onAddToCart={handleAddToCart}
+                isRecent={true}
               />
             ))}
           </View>
@@ -424,9 +430,11 @@ const ProductsFn = () => {
           <ProductScreen
             product={selectedProduct}
             onClose={() => setSelectedProduct(null)}
-          />
-        )}
-      </Modal>
+            onAddToCart={handleAddToCart}  // Add this prop
+    />
+  )}
+</Modal>
+
     </>
   );
 };
@@ -544,6 +552,12 @@ const styles = StyleSheet.create({
     color: "#333",
     marginTop: 10,
   },
+  productGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginHorizontal: 8,
+  },
   card: {
     backgroundColor: "#fff",
     borderRadius: 12,
@@ -617,12 +631,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
     marginVertical: 16,
   },
-  productGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    marginHorizontal: -8,
-  },
+
   modalContainer: {
     flexGrow: 1,
     backgroundColor: '#fff',
