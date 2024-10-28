@@ -252,7 +252,12 @@ const ProductCard = ({ item, onPress, isRecent }) => (
     <View style={styles.productInfo}>
       <Text style={styles.productName}>{item.name}</Text>
       <Text style={styles.productDosage}>{item.dosage}</Text>
-      <Text style={styles.productPrice}>{item.price}</Text>
+      <View style={styles.priceCartContainer}>
+        <Text style={styles.productPrice}>{item.price}</Text>
+        <TouchableOpacity style={styles.cartButton}>
+          <MaterialIcons name="shopping-cart" size={24} color="#038B01" />
+        </TouchableOpacity>
+      </View>
     </View>
   </TouchableOpacity>
 );
@@ -276,17 +281,22 @@ const ProductScreen = ({ product, onClose }) => {
       </View>
 
       <View style={styles.titleUnderline} />
-      <Image
-        source={product.image}
-        style={styles.heroImage}
-      />
+      <Image source={product.image} style={styles.heroImage} />
+      
       <View style={styles.detailsContainer}>
         <View style={styles.availabilityContainer}>
           <MaterialIcons name="check-circle" size={24} color="green" />
           <Text style={styles.availabilityText}>Available</Text>
         </View>
         <Text style={styles.productName}>{product.name}</Text>
-        <Text style={styles.price}>{product.price}</Text>
+        
+        <View style={styles.priceCartContainer}>
+          <Text style={styles.price}>{product.price}</Text>
+          <TouchableOpacity style={styles.cartIconContainer}>
+            <MaterialIcons name="shopping-cart" size={28} color="#038B01" />
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.itemNumber}>Item Number: {product.itemNumber}</Text>
         <Text style={styles.sectionTitle}>Active Ingredients:</Text>
         {product.ingredients.map((ingredient, index) => (
@@ -296,6 +306,7 @@ const ProductScreen = ({ product, onClose }) => {
     </ScrollView>
   );
 };
+
 
 const ProductsFn = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -490,6 +501,26 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#038B01",
   },
+  priceCartContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 4,
+  },
+  
+  cartButton: {
+    padding: 4,
+  },
+  
+  cartIconContainer: {
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    borderRadius: 50,
+    elevation: 2,
+  },
+  
+  
   divider: {
     height: 1,
     backgroundColor: "#ccc",
