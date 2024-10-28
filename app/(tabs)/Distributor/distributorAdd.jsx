@@ -52,7 +52,7 @@ const AddDistributorScreen = () => {
 
         <CustomButton
           title="Add Product"
-          handlePress={() => router.push('/searchInvoices')}
+          handlePress={() => router.push('/addproduct')}
           containerStyles={styles.addButton}
           textStyles={styles.addButtonText}
         />
