@@ -326,6 +326,7 @@ const ProductsFn = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [isCartVisible, setIsCartVisible] = useState(false);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -338,8 +339,13 @@ const ProductsFn = () => {
   };
 
   const handleAddToCart = (product) => {
-    setCartItems([...cartItems, product]);
+    const cartItem = {
+      ...product,
+      cartId: `${product.id}-${Date.now()}`
+    };
+    setCartItems([...cartItems, cartItem]);
   };
+  
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -349,9 +355,9 @@ const ProductsFn = () => {
         <View style={styles.header}>
           <Text style={styles.title}>Catalogue</Text>
           <View style={styles.headerIcons}>
-            <TouchableOpacity 
+          <TouchableOpacity
               style={styles.headerIcon}
-              onPress={() => alert(`Cart Items: ${cartItems.length}`)}
+              onPress={() => setIsCartVisible(true)}
             >
               <MaterialIcons name="shopping-cart" size={24} color="#333" />
               {cartItems.length > 0 && (
@@ -420,82 +426,87 @@ const ProductsFn = () => {
           </View>
         </ScrollView>
         {/* Menu Modal */}
-<Modal
-  animationType="slide"
-  transparent={true}
-  visible={isMenuVisible}
-  onRequestClose={() => setIsMenuVisible(false)}
->
-  <TouchableOpacity
-    style={styles.menuOverlay}
-    activeOpacity={1}
-    onPress={() => setIsMenuVisible(false)}
-  >
-    <View style={styles.menuContainer}>
-      <View style={styles.menuHeader}>
-        <Text style={styles.menuHeaderTitle}>Menu</Text>
-        <TouchableOpacity onPress={() => setIsMenuVisible(false)}>
-          <MaterialIcons name="close" size={24} color="#333" />
-        </TouchableOpacity>
-      </View>
-      <ScrollView>
-      {/* Menu Items */}
-      <View style={styles.menuContent}>
-        <TouchableOpacity style={styles.menuItem}>
-          <MaterialIcons name="home" size={24} color="#038B01" />
-          <Text style={styles.menuText}>Home</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#777" />
-        </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isMenuVisible}
+          onRequestClose={() => setIsMenuVisible(false)}
+        >
+          <TouchableOpacity
+            style={styles.menuOverlay}
+            activeOpacity={1}
+            onPress={() => setIsMenuVisible(false)}
+          >
+            <View style={styles.menuContainer}>
+              <View style={styles.menuHeader}>
+                <Text style={styles.menuHeaderTitle}>Menu</Text>
+                <TouchableOpacity onPress={() => setIsMenuVisible(false)}>
+                  <MaterialIcons name="close" size={24} color="#333" />
+                </TouchableOpacity>
+              </View>
+              <ScrollView>
+              {/* Menu Items */}
+              <View style={styles.menuContent}>
+                <TouchableOpacity style={styles.menuItem}>
+                  <MaterialIcons name="home" size={24} color="#038B01" />
+                  <Text style={styles.menuText}>Home</Text>
+                  <MaterialIcons name="chevron-right" size={24} color="#777" />
+                </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
-          <MaterialIcons name="event" size={24} color="#038B01" />
-          <Text style={styles.menuText}>Reminders</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#777" />
-        </TouchableOpacity>
+                <TouchableOpacity style={styles.menuItem}>
+                  <MaterialIcons name="event" size={24} color="#038B01" />
+                  <Text style={styles.menuText}>Reminders</Text>
+                  <MaterialIcons name="chevron-right" size={24} color="#777" />
+                </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
-          <MaterialIcons name="local-mall" size={24} color="#038B01" />
-          <Text style={styles.menuText}>Orders</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#777" />
-        </TouchableOpacity>
+                <TouchableOpacity style={styles.menuItem}>
+                  <MaterialIcons name="local-mall" size={24} color="#038B01" />
+                  <Text style={styles.menuText}>Orders</Text>
+                  <MaterialIcons name="chevron-right" size={24} color="#777" />
+                </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
-          <MaterialIcons name="people-outline" size={24} color="#038B01" />
-          <Text style={styles.menuText}>Customers</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#777" />
-        </TouchableOpacity>
+                <TouchableOpacity style={styles.menuItem}>
+                  <MaterialIcons name="people-outline" size={24} color="#038B01" />
+                  <Text style={styles.menuText}>Customers</Text>
+                  <MaterialIcons name="chevron-right" size={24} color="#777" />
+                </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
-          <MaterialIcons name="place" size={24} color="#038B01" />
-          <Text style={styles.menuText}>Find Pharmacy</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#777" />
-        </TouchableOpacity>
+                <TouchableOpacity style={styles.menuItem}>
+                  <MaterialIcons name="place" size={24} color="#038B01" />
+                  <Text style={styles.menuText}>Find Pharmacy</Text>
+                  <MaterialIcons name="chevron-right" size={24} color="#777" />
+                </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
-          <MaterialIcons name="description" size={24} color="#038B01" />
-          <Text style={styles.menuText}>Health Articles</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#777" />
-        </TouchableOpacity>
+                <TouchableOpacity style={styles.menuItem}>
+                  <MaterialIcons name="description" size={24} color="#038B01" />
+                  <Text style={styles.menuText}>Health Articles</Text>
+                  <MaterialIcons name="chevron-right" size={24} color="#777" />
+                </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
-          <MaterialIcons name="settings" size={24} color="#038B01" />
-          <Text style={styles.menuText}>Settings</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#777" />
-        </TouchableOpacity>
+                <TouchableOpacity style={styles.menuItem}>
+                  <MaterialIcons name="settings" size={24} color="#038B01" />
+                  <Text style={styles.menuText}>Settings</Text>
+                  <MaterialIcons name="chevron-right" size={24} color="#777" />
+                </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
-          <MaterialIcons name="help-outline" size={24} color="#038B01" />
-          <Text style={styles.menuText}>Help & Support</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#777" />
-        </TouchableOpacity>
-      </View>
-
-
-      </ScrollView>
-    </View>
-  </TouchableOpacity>
-</Modal>
-
+                <TouchableOpacity style={styles.menuItem}>
+                  <MaterialIcons name="help-outline" size={24} color="#038B01" />
+                  <Text style={styles.menuText}>Help & Support</Text>
+                  <MaterialIcons name="chevron-right" size={24} color="#777" />
+                </TouchableOpacity>
+              </View>
+              </ScrollView>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+          <CartModal
+            visible={isCartVisible}
+            onClose={() => setIsCartVisible(false)}
+            cartItems={cartItems}
+            onRemoveFromCart={(item) => {
+              setCartItems(cartItems.filter((cartItem) => cartItem.id !== item.id));
+            }}
+          />
       </SafeAreaView>
       <Modal
         animationType="slide"
@@ -516,14 +527,102 @@ const ProductsFn = () => {
   );
 };
 
+const CartModal = ({ visible, onClose, cartItems, onRemoveFromCart, navigation }) => {
+  const totalPrice = cartItems.reduce((sum, item) => {
+    const price = parseFloat(item.price.replace('KSh', '').replace(',', ''));
+    return sum + price;
+  }, 0);
+
+  if (cartItems.length === 0) {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={visible}
+        onRequestClose={onClose}
+      >
+        <SafeAreaView style={styles.container}>
+          <View style={styles.cartheader}>
+            <TouchableOpacity onPress={onClose} style={styles.backButton}>
+              <MaterialIcons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+            <View style={styles.titleContainer}>
+              <Text style={styles.headerTitle}>Shopping Cart</Text>
+            </View>
+          </View>
+          <View style={styles.content}>
+            <Image
+              source={require('../../../assets/images/empty-cart.jpg')}
+              style={styles.image}
+            />
+            <Text style={styles.message}>No items in your basket!!!</Text>
+            <TouchableOpacity style={styles.button} onPress={onClose}>
+              <Text style={styles.buttonText}>Browse items</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </Modal>
+    );
+  }
+
+  return (
+    <Modal
+      animationType="slide"
+      transparent={false}
+      visible={visible}
+      onRequestClose={onClose}
+    >
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={onClose} style={styles.backButton}>
+            <MaterialIcons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
+          <View style={styles.titleContainer}>
+            <Text style={styles.headerTitle}>Shopping Cart</Text>
+          </View>
+        </View>
+        <ScrollView style={styles.cartItemsContainer}>
+          {cartItems.map((item, index) => (
+            <View key={`${item.id}-${index}`} style={styles.cartItem}>
+              <Image source={item.image} style={styles.cartItemImage} />
+              <View style={styles.cartItemInfo}>
+                <Text style={styles.cartItemName}>{item.name}</Text>
+                <Text style={styles.cartItemPrice}>{item.price}</Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => onRemoveFromCart(item)}
+                style={styles.removeButton}
+              >
+                <MaterialIcons name="delete" size={24} color="#ff3b30" />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+        <View style={styles.footer}>
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalText}>Total:</Text>
+            <Text style={styles.totalAmount}>KSh {totalPrice.toFixed(2)}</Text>
+          </View>
+          <TouchableOpacity style={styles.checkoutButton}>
+            <Text style={styles.checkoutButtonText}>Proceed to Checkout</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </Modal>
+  );
+};
+
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "#fff",
+    marginTop: 20,
   },
   container: {
     flex: 1,
     padding: 16,
+   
   },
   header: {
     flexDirection: "row",
@@ -547,7 +646,109 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     position: 'relative',
   },
-  
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    width: '90%',
+    maxHeight: '80%',
+    borderRadius: 20,
+    padding: 20,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  emptyCartContainer: {
+    alignItems: 'center',
+    padding: 20,
+  },
+  emptyCartText: {
+    fontSize: 18,
+    color: '#666',
+    marginTop: 10,
+  },
+  browseButton: {
+    backgroundColor: '#038B01',
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  browseButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  cartItemsContainer: {
+    maxHeight: '60%',
+  },
+  cartItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  cartItemImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+  },
+  cartItemInfo: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  cartItemName: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  cartItemPrice: {
+    fontSize: 14,
+    color: '#038B01',
+  },
+  removeButton: {
+    padding: 5,
+  },
+  totalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  totalAmount: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#038B01',
+  },
+  checkoutButton: {
+    backgroundColor: '#038B01',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  checkoutButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   cartBadge: {
     position: 'absolute',
     right: -5,
@@ -765,9 +966,10 @@ menuText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    marginTop: 10,
+    backgroundColor: '#fff',
   },
   backButton: {
     padding: 8,
@@ -775,24 +977,31 @@ menuText: {
   pageTitle: {
     fontSize: 24,
     fontWeight: 'bold',
+    flex: 1,
+    textAlign: 'center',
+    paddingTop: 10,
+    
   },
   iconContainer: {
     flexDirection: 'row',
+    position: 'absolute',
+    right: 16,
   },
   iconButton: {
-    marginLeft: 15,
-    padding: 8,
+    marginLeft: 12,
+    padding: 6,
   },
   titleUnderline: {
     height: 1,
     backgroundColor: '#a1a1a1',
     marginHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 570,
   },
   heroImage: {
     width: '100%',
     height: height * 0.4,
     resizeMode: 'cover',
+    marginTop: -400,
   },
   detailsContainer: {
     padding: 20,
@@ -833,6 +1042,115 @@ menuText: {
     marginBottom: 6,
     color: '#444',
     paddingLeft: 10,
+  },
+  
+  cartheader: {
+    
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 16,
+    zIndex: 1,
+  },
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  image: {
+    width: 300,
+    height: 300,
+    marginBottom: 20,
+  },
+  message: {
+    fontSize: 18,
+    marginBottom: 20,
+    fontWeight: 'bold',
+  },
+  button: {
+    padding: 15,
+    backgroundColor: '#038B01',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  cartItemsContainer: {
+    flex: 1,
+    padding: 16,
+  },
+  cartItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  cartItemImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+  },
+  cartItemInfo: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  cartItemName: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  cartItemPrice: {
+    fontSize: 14,
+    color: '#038B01',
+  },
+  removeButton: {
+    padding: 5,
+  },
+  footer: {
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+  },
+  totalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  totalAmount: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#038B01',
+  },
+  checkoutButton: {
+    backgroundColor: '#038B01',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  checkoutButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
