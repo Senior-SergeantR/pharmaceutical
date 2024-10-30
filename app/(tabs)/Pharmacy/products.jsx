@@ -966,9 +966,10 @@ menuText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    marginTop: 10,
+    backgroundColor: '#fff',
   },
   backButton: {
     padding: 8,
@@ -976,24 +977,31 @@ menuText: {
   pageTitle: {
     fontSize: 24,
     fontWeight: 'bold',
+    flex: 1,
+    textAlign: 'center',
+    paddingTop: 10,
+    
   },
   iconContainer: {
     flexDirection: 'row',
+    position: 'absolute',
+    right: 16,
   },
   iconButton: {
-    marginLeft: 15,
-    padding: 8,
+    marginLeft: 12,
+    padding: 6,
   },
   titleUnderline: {
     height: 1,
     backgroundColor: '#a1a1a1',
     marginHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 570,
   },
   heroImage: {
     width: '100%',
     height: height * 0.4,
     resizeMode: 'cover',
+    marginTop: -400,
   },
   detailsContainer: {
     padding: 20,
