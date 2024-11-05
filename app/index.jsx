@@ -1,94 +1,95 @@
-import React from 'react';
-import { StatusBar, View, Text, StyleSheet, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomButton from '../components/CustomButton';
-import { router } from 'expo-router';
+import React, { useEffect } from 'react';
+import { View, Text, SafeAreaView, StyleSheet, Animated, Dimensions } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function App() {
+const { width, height } = Dimensions.get('window');
+
+export default function SplashScreenView() {
+  const fadeAnim = new Animated.Value(0);
+  const scaleAnim = new Animated.Value(0.5);
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+
+        // Start animations
+        Animated.parallel([
+          Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.spring(scaleAnim, {
+            toValue: 1,
+            friction: 8,
+            tension: 40,
+            useNativeDriver: true,
+          }),
+        ]).start();
+
+        // Simulate loading time
+        await new Promise(resolve => setTimeout(resolve, 2500));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        await SplashScreen.hideAsync();
+      }
+    }
+
+    prepare();
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.contentContainer}>
-        <Image source={require('../assets/images/capsule.png')} style={styles.image} />
-        <Text style={styles.title}>CONNECT</Text>
-        <Text style={styles.description}>
-          Breeg bridges the gap between medical distributors and pharmacies,
-          ensuring swift and efficient distribution of essential supplies.
-        </Text>
-      </View>
-      
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          title="Skip"
-          handlePress={() => router.push('/(auth)/UserType')}
-          containerStyles={styles.skipButton}
-          textStyles={styles.skipButtonText}
-        />
-        <CustomButton
-          title="Next"
-          handlePress={() => router.push('/(auth)/Onboarding2')}
-          containerStyles={styles.nextButton}
-          textStyles={styles.nextButtonText}
-        />
-      </View>
-      <StatusBar style="light" />
-    </SafeAreaView>
+    <LinearGradient
+      colors={['#034B02', '#0A7F07', '#023B01']}
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.contentContainer}>
+          <Animated.View
+            style={[
+              styles.logoContainer,
+              {
+                opacity: fadeAnim,
+                transform: [{ scale: scaleAnim }],
+              },
+            ]}
+          >
+            <Text style={styles.logoText}>BREEG</Text>
+           
+          </Animated.View>
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#034B02',
+  },
+  safeArea: {
+    flex: 1,
   },
   contentContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
-  image: {
-    width: 200,
-    height: 200,
-    marginBottom: 30,
+  logoContainer: {
+    alignItems: 'center',
   },
-  title: {
-    fontSize: 40,
+  logoText: {
+    fontSize: 72,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 20,
-    textAlign: 'center',
+    letterSpacing: 2,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 5,
   },
-  description: {
-    fontSize: 18,
-    color: 'white',
-    marginBottom: 40,
-    textAlign: 'center',
-    lineHeight: 24,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingBottom: 30,
-  },
-  skipButton: {
-    flex: 1,
-    marginRight: 10,
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: 'white',
-  },
-  skipButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  nextButton: {
-    flex: 1,
-    marginLeft: 10,
-    backgroundColor: 'white',
-  },
-  nextButtonText: {
-    color: '#034B02',
-    fontWeight: 'bold',
-  },
+
 });
