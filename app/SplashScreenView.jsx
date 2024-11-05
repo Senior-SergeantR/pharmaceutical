@@ -1,20 +1,39 @@
 import React, { useEffect } from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, Animated, Dimensions } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const { width, height } = Dimensions.get('window');
 
 export default function SplashScreenView() {
+  const fadeAnim = new Animated.Value(0);
+  const scaleAnim = new Animated.Value(0.5);
+
   useEffect(() => {
     async function prepare() {
       try {
-        // Prevent the splash screen from auto-hiding
         await SplashScreen.preventAutoHideAsync();
 
-        // Simulate some loading or initialization
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Start animations
+        Animated.parallel([
+          Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.spring(scaleAnim, {
+            toValue: 1,
+            friction: 8,
+            tension: 40,
+            useNativeDriver: true,
+          }),
+        ]).start();
+
+        // Simulate loading time
+        await new Promise(resolve => setTimeout(resolve, 2500));
       } catch (e) {
         console.warn(e);
       } finally {
-        // Hide the splash screen
         await SplashScreen.hideAsync();
       }
     }
@@ -23,12 +42,54 @@ export default function SplashScreenView() {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'primary' }}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 }}>
-        <Text style={{ fontSize: 72, fontWeight: 'bold', color: 'white', marginTop: '50%' }}>
-          BREEG
-        </Text>
-      </View>
-    </SafeAreaView>
+    <LinearGradient
+      colors={['#034B02', '#0A7F07', '#023B01']}
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.contentContainer}>
+          <Animated.View
+            style={[
+              styles.logoContainer,
+              {
+                opacity: fadeAnim,
+                transform: [{ scale: scaleAnim }],
+              },
+            ]}
+          >
+            <Text style={styles.logoText}>BREEG</Text>
+           
+          </Animated.View>
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  safeArea: {
+    flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  logoContainer: {
+    alignItems: 'center',
+  },
+  logoText: {
+    fontSize: 72,
+    fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 2,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 5,
+  },
+
+});
