@@ -82,8 +82,10 @@ export default function App() {
 
         <Text style={styles.signUpPrompt}>Already have an account?</Text>
         <CustomButton
-          title="Login"
-          handlePress={goToLoginScreen}
+          title="login"
+          handlePress={() => {
+            router.push("/(auth)/login");
+          }}
           containerStyles={styles.signupButtonContainer}
         />
       </View>
