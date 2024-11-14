@@ -29,7 +29,7 @@ const bannerImages = [
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const bannerScrollRef = useRef(null);
@@ -42,6 +42,7 @@ const HomeScreen = () => {
         throw error;
       }
       setProducts(data);
+      setFilteredProducts(data);
     } catch (error) {
       console.error(error);
     }
@@ -49,7 +50,9 @@ const HomeScreen = () => {
 
   useEffect(() => {
     getProducts();
+
   }, []);
+
   useEffect(() => {
     handleSearch(searchQuery);
   }, [searchQuery]);
