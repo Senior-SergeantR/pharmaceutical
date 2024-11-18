@@ -34,7 +34,7 @@ export default function App() {
   };
 
   const goToLoginScreen = () => {
-    router.push("/(auth)/Login");
+    router.push("/Login");
   };
 
   return (
@@ -77,9 +77,7 @@ export default function App() {
         <Text style={styles.loginPrompt}>Already have an account?</Text>
         <CustomButton
           title="Login"
-          handlePress={() => {
-            router.push("/(auth)/login");
-          }}
+          handlePress={goToLoginScreen}
           containerStyles={styles.loginButtonContainer}
         />
       </View>

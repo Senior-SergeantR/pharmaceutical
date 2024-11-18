@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -13,55 +13,47 @@ import {
   Dimensions,
   FlatList,
   KeyboardAvoidingView,
-  Platform
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-
-const { width, height } = Dimensions.get('window');
+  Platform,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { supabase } from "../../../lib/supabase";
+import { useNavigation } from "expo-router";
+const { width, height } = Dimensions.get("window");
 const cardWidth = width * 0.45;
 
 const bannerImages = [
-  require('../../../assets/images/banner.jpg'),
-  require('../../../assets/images/banner2.jpg'),
-  require('../../../assets/images/banner3.jpg'),
-];
-
-const productDatabase = [
-  {
-    id: '1',
-    image: require('../../../assets/images/blue-pill.jpeg'),
-    name: "Pain Relief Extra Strength Tablets",
-    price: "KSh1000.00",
-    discount: "-25%",
-    rating: 4,
-    stock: 50
-  },
-  {
-    id: '2',
-    image: require('../../../assets/images/blue-pill.jpeg'),
-    name: "Vitamin C Immune Support Supplements",
-    price: "KSh1500.00",
-    discount: "-30%",
-    rating: 5,
-    stock: 30
-  },
-  {
-    id: '3',
-    image: require('../../../assets/images/blue-pill.jpeg'),
-    name: "Allergy Relief 24-Hour Syrup",
-    price: "KSh800.00",
-    discount: "-20%",
-    rating: 3,
-    stock: 75
-  },
+  require("../../../assets/images/banner.jpg"),
+  require("../../../assets/images/banner2.jpg"),
+  require("../../../assets/images/banner3.jpg"),
 ];
 
 const HomeScreen = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState(productDatabase);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const bannerScrollRef = useRef(null);
+  const navigation = useNavigation();
+
+  const getProducts = async () => {
+    try {
+      //using supabase
+      const { data, error } = await supabase.from("products").select("*");
+      if (error) {
+        throw error;
+      }
+      console.log(data);
+      setProducts(data);
+      setFilteredProducts(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   useEffect(() => {
     handleSearch(searchQuery);
@@ -80,9 +72,13 @@ const HomeScreen = () => {
     return () => clearInterval(scrollInterval);
   }, [currentBannerIndex]);
 
+  const navigateToProduct = (product) => {
+    navigation.navigate("products", { product });
+  };
+
   const handleSearch = (text) => {
     setSearchQuery(text);
-    const filtered = productDatabase.filter(product =>
+    const filtered = products.filter((product) =>
       product.name.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredProducts(filtered);
@@ -94,9 +90,9 @@ const HomeScreen = () => {
         {[1, 2, 3, 4, 5].map((star) => (
           <Ionicons
             key={star}
-            name={star <= rating ? 'star' : 'star-outline'}
+            name={star <= rating ? "star" : "star-outline"}
             size={16}
-            color={star <= rating ? '#FFD700' : '#CCCCCC'}
+            color={star <= rating ? "#FFD700" : "#CCCCCC"}
           />
         ))}
       </View>
@@ -104,11 +100,11 @@ const HomeScreen = () => {
   };
 
   const MenuOverlay = () => (
-    <TouchableOpacity 
-      style={styles.menuOverlay} 
-      activeOpacity={1} 
+    <TouchableOpacity
+      style={styles.menuOverlay}
+      activeOpacity={1}
       onPress={() => setIsMenuVisible(false)}
-      >
+    >
       <View style={styles.menuContent}>
         <TouchableOpacity style={styles.menuItem}>
           <Ionicons name="home-outline" size={24} color="#038B01" />
@@ -158,16 +154,33 @@ const HomeScreen = () => {
     </TouchableOpacity>
   );
 
-  const PromoCard = ({ image, name, price, discount, rating, stock }) => (
-    <TouchableOpacity style={styles.promoCard}>
+  const PromoCard = ({
+    image_url,
+    name,
+    price,
+    discount,
+    rating,
+    stock,
+    product_id,
+  }) => (
+    <TouchableOpacity
+      style={styles.promoCard}
+      onPress={navigateToProduct(product_id)}
+    >
       <View style={styles.imageContainer}>
-        <Image source={image} style={styles.promoImage} resizeMode="cover" />
+        <Image
+          source={{ uri: image_url }}
+          style={styles.promoImage}
+          resizeMode="cover"
+        />
         <View style={styles.discountBadge}>
           <Text style={styles.discountText}>{discount}</Text>
         </View>
       </View>
       <View style={styles.productInfo}>
-        <Text style={styles.productName} numberOfLines={2}>{name}</Text>
+        <Text style={styles.productName} numberOfLines={2}>
+          {name}
+        </Text>
         <Text style={styles.productPrice}>{price}</Text>
         <View style={styles.ratingStockContainer}>
           <StarRating rating={rating} />
@@ -186,7 +199,7 @@ const HomeScreen = () => {
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="notifications-outline" size={24} color="#333" />
           </TouchableOpacity>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.iconButton}
             onPress={() => setIsMenuVisible(true)}
           >
@@ -207,7 +220,9 @@ const HomeScreen = () => {
               pagingEnabled
               showsHorizontalScrollIndicator={false}
               onMomentumScrollEnd={(event) => {
-                const newIndex = Math.round(event.nativeEvent.contentOffset.x / width);
+                const newIndex = Math.round(
+                  event.nativeEvent.contentOffset.x / width
+                );
                 setCurrentBannerIndex(newIndex);
               }}
             >
@@ -233,7 +248,10 @@ const HomeScreen = () => {
                   key={index}
                   style={[
                     styles.dot,
-                    { backgroundColor: currentBannerIndex === index ? '#038B01' : '#ccc' }
+                    {
+                      backgroundColor:
+                        currentBannerIndex === index ? "#038B01" : "#ccc",
+                    },
                   ]}
                 />
               ))}
@@ -241,7 +259,12 @@ const HomeScreen = () => {
           </View>
 
           <View style={styles.searchBarContainer}>
-            <Ionicons name="search-outline" size={20} color="#888" style={styles.searchIcon} />
+            <Ionicons
+              name="search-outline"
+              size={20}
+              color="#888"
+              style={styles.searchIcon}
+            />
             <TextInput
               style={styles.searchBar}
               placeholder="Search products"
@@ -261,8 +284,8 @@ const HomeScreen = () => {
           <View style={styles.promosContainer}>
             <FlatList
               data={filteredProducts}
-              renderItem={({ item }) => <PromoCard {...item} />}
-              keyExtractor={item => item.id}
+              renderItem={({ item }) => <PromoCard {...item} key={item.id} />}
+              keyExtractor={(item) => item.id}
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.promos}
@@ -278,7 +301,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   keyboardAvoidingView: {
     flex: 1,
@@ -289,21 +312,21 @@ const styles = StyleSheet.create({
   navBar: {
     marginTop: 30,
     height: 60,
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: "#f0f0f0",
   },
   logo: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: '#038B01',
+    fontWeight: "bold",
+    color: "#038B01",
   },
   menuIcons: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   iconButton: {
     padding: 5,
@@ -314,21 +337,21 @@ const styles = StyleSheet.create({
     marginBottom: -40,
   },
   banner: {
-    height: '100%',
+    height: "100%",
   },
   bannerContent: {
-    position: 'absolute',
+    position: "absolute",
     left: 20,
     top: 0,
     bottom: 0,
-    justifyContent: 'center',
-    width: '30%',
+    justifyContent: "center",
+    width: "30%",
   },
   paginationDots: {
-    flexDirection: 'row',
-    position: 'absolute',
+    flexDirection: "row",
+    position: "absolute",
     bottom: 50,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   dot: {
     width: 8,
@@ -338,32 +361,32 @@ const styles = StyleSheet.create({
   },
   tagline: {
     fontSize: 30,
-    fontWeight: 'bold',
-    color: '#038B01',
+    fontWeight: "bold",
+    color: "#038B01",
     marginBottom: 10,
   },
   ctaButton: {
     paddingVertical: 12,
     paddingHorizontal: 29,
-    backgroundColor: '#038B01',
+    backgroundColor: "#038B01",
     borderRadius: 10,
   },
   ctaText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   searchBarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     height: 50,
-    borderColor: '#e0e0e0',
+    borderColor: "#e0e0e0",
     borderWidth: 1,
     borderRadius: 25,
     margin: 15,
     paddingHorizontal: 15,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -377,19 +400,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   promosHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 15,
     marginBottom: 10,
   },
   promosTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   seeAll: {
-    color: '#038B01',
+    color: "#038B01",
     fontSize: 16,
   },
   promosContainer: {
@@ -402,10 +425,10 @@ const styles = StyleSheet.create({
   promoCard: {
     width: cardWidth,
     marginRight: 15,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 12,
-    overflow: 'hidden',
-    shadowColor: '#000',
+    overflow: "hidden",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -413,24 +436,24 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: 180,
-    width: '100%',
+    width: "100%",
   },
   promoImage: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   discountBadge: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     left: 10,
-    backgroundColor: '#ff3b30',
+    backgroundColor: "#ff3b30",
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
   },
   discountText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 12,
   },
   productInfo: {
@@ -438,59 +461,58 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
-    color: '#333',
+    color: "#333",
   },
   productPrice: {
     fontSize: 16,
-    color: '#038B01',
-    fontWeight: '600',
+    color: "#038B01",
+    fontWeight: "600",
     marginBottom: 5,
   },
   ratingStockContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   starContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   stockText: {
     fontSize: 12,
-    color: '#777',
+    color: "#777",
   },
   menuOverlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'flex-end',
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "flex-end",
   },
   menuContent: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingVertical: 20,
     paddingHorizontal: 15,
-    width: '100%',
-    maxHeight: '80%',
+    width: "100%",
+    maxHeight: "80%",
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: "#f0f0f0",
   },
   menuText: {
     fontSize: 16,
     marginLeft: 15,
-    color: '#333',
+    color: "#333",
   },
 });
 
 export default HomeScreen;
-
