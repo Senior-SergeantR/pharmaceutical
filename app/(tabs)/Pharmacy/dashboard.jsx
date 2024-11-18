@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../../../lib/supabase";
+import { useNavigation } from "expo-router";
 const { width, height } = Dimensions.get("window");
 const cardWidth = width * 0.45;
 
@@ -33,6 +34,7 @@ const HomeScreen = () => {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const bannerScrollRef = useRef(null);
+  const navigation = useNavigation();
 
   const getProducts = async () => {
     try {
@@ -41,6 +43,7 @@ const HomeScreen = () => {
       if (error) {
         throw error;
       }
+      console.log(data);
       setProducts(data);
       setFilteredProducts(data);
     } catch (error) {
@@ -50,7 +53,6 @@ const HomeScreen = () => {
 
   useEffect(() => {
     getProducts();
-
   }, []);
 
   useEffect(() => {
@@ -69,6 +71,10 @@ const HomeScreen = () => {
 
     return () => clearInterval(scrollInterval);
   }, [currentBannerIndex]);
+
+  const navigateToProduct = (product) => {
+    navigation.navigate("products", { product });
+  };
 
   const handleSearch = (text) => {
     setSearchQuery(text);
@@ -148,11 +154,22 @@ const HomeScreen = () => {
     </TouchableOpacity>
   );
 
-  const PromoCard = ({ image_url, name, price, discount, rating, stock }) => (
-    <TouchableOpacity style={styles.promoCard}>
+  const PromoCard = ({
+    image_url,
+    name,
+    price,
+    discount,
+    rating,
+    stock,
+    product_id,
+  }) => (
+    <TouchableOpacity
+      style={styles.promoCard}
+      onPress={navigateToProduct(product_id)}
+    >
       <View style={styles.imageContainer}>
         <Image
-          source={  { uri: image_url } }
+          source={{ uri: image_url }}
           style={styles.promoImage}
           resizeMode="cover"
         />
@@ -267,7 +284,7 @@ const HomeScreen = () => {
           <View style={styles.promosContainer}>
             <FlatList
               data={filteredProducts}
-              renderItem={({ item }) => <PromoCard {...item} />}
+              renderItem={({ item }) => <PromoCard {...item} key={item.id} />}
               keyExtractor={(item) => item.id}
               horizontal
               showsHorizontalScrollIndicator={false}

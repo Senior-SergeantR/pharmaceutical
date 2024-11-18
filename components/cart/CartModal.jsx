@@ -19,14 +19,12 @@ const CartModal = ({
   navigation,
 }) => {
   console.log("cartItems", cartItems);
-  const totalPrice = cartItems.length !== 0
-    ? cartItems.reduce((sum, item) => {
-        const price = parseFloat(
-          item.price.replace("KSh", "").replace(",", "")
-        );
-        return sum + price;
-      }, 0)
-    : 0;
+  const totalPrice =
+    cartItems.length !== 0
+      ? cartItems.reduce((sum, item) => {
+          return sum + item.price;
+        }, 0)
+      : 0;
 
   if (cartItems.length === 0) {
     return (
@@ -79,7 +77,7 @@ const CartModal = ({
         <ScrollView style={styles.cartItemsContainer}>
           {cartItems.map((item, index) => (
             <View key={`${item.id}-${index}`} style={styles.cartItem}>
-              <Image source={item.image} style={styles.cartItemImage} />
+              <Image source={{uri:item.image_url}} style={styles.cartItemImage} />
               <View style={styles.cartItemInfo}>
                 <Text style={styles.cartItemName}>{item.name}</Text>
                 <Text style={styles.cartItemPrice}>{item.price}</Text>
