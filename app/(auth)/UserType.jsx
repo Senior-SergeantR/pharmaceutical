@@ -23,7 +23,7 @@ export default function App() {
         />
         <CustomButton
           title="Pharmacist"
-          handlePress={() => router.push('../../(tabs)/Pharmacy/products')}
+          handlePress={() => router.push('../SignUpPharmacy')}
           containerStyles={styles.button}
           textStyles={styles.buttonText}
         />

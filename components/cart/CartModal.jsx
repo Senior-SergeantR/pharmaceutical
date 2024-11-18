@@ -18,10 +18,15 @@ const CartModal = ({
   onRemoveFromCart,
   navigation,
 }) => {
-  const totalPrice = cartItems.reduce((sum, item) => {
-    const price = parseFloat(item.price.replace("KSh", "").replace(",", ""));
-    return sum + price;
-  }, 0);
+  console.log("cartItems", cartItems);
+  const totalPrice = cartItems.length !== 0
+    ? cartItems.reduce((sum, item) => {
+        const price = parseFloat(
+          item.price.replace("KSh", "").replace(",", "")
+        );
+        return sum + price;
+      }, 0)
+    : 0;
 
   if (cartItems.length === 0) {
     return (
