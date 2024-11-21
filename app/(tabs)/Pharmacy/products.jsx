@@ -120,29 +120,29 @@ const ProductsFn = () => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.recentProductsContainer}
             >
-              {filteredProducts.slice(0, 5).map((item) => (
-                <ProductCard
-                  key={item.id}
-                  item={item}
-                  onPress={() => setSelectedProduct(item)}
-                  isRecent={true}
-                  onAddToCart={handleAddToCart} // Added here
-                />
-              ))}
+            {filteredProducts.slice(0, 5).map((item) => (
+              <ProductCard
+                key={`recent-${item.product_id}`} // Added unique key with prefix
+                item={item}
+                onPress={() => setSelectedProduct(item)}
+                isRecent={true}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
             </ScrollView>
 
             <View style={styles.divider} />
             <Text style={styles.sectionTitle}>All Products</Text>
             <View style={styles.productGrid}>
-              {filteredProducts.map((item) => (
-                <ProductCard
-                  key={item.id}
-                  item={item}
-                  onPress={() => setSelectedProduct(item)}
-                  onAddToCart={handleAddToCart}
-                  isRecent={true}
-                />
-              ))}
+            {filteredProducts.map((item) => (
+              <ProductCard
+                key={`all-${item.product_id}`} // Added unique key with prefix
+                item={item}
+                onPress={() => setSelectedProduct(item)}
+                onAddToCart={handleAddToCart}
+                isRecent={false}
+              />
+            ))}
             </View>
           </View>
         </ScrollView>
