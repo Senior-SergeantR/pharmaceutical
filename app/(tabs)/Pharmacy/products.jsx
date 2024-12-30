@@ -17,7 +17,7 @@ import { supabase } from "../../../lib/supabase";
 import ProductCard from "../../../components/products/ProductCard";
 import styles from "../../../components/products/styles";
 import CartModal from "../../../components/cart/CartModal";
-import ProductDetails from "../../../components/products/ProductDetails";
+// import ProductDetails from "../../../components/products/ProductDetails";
 import { useNavigation } from '@react-navigation/native';
 
 const formatCurrency = (price) => {
