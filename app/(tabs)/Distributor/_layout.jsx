@@ -4,7 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { View, Text, Platform } from "react-native";
 
 // Screen imports
-import Home from "../Distributor/dashboard";
+import Dashboard from "../Distributor/dashboard";
+import Home from "../Distributor/home";
 import ProductsFn from "../Distributor/products";
 import InvoiceSearch from "../Distributor/searchInvoices";
 import ProfileScreen from "../Distributor/profile";
