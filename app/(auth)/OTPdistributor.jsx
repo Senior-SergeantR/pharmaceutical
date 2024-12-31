@@ -30,7 +30,7 @@ const OtpVerificationScreen = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       // Navigate to next screen after verification
-      router.push('../(tabs)/Distributor/dashboard');
+      router.push('../(tabs)/Distributor/home');
     }, 2000);
   };
 
