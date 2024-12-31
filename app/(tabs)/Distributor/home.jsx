@@ -20,14 +20,41 @@ import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
-const categories = [
-    { id: '1', title: 'Nila Pharmaceuticals', image: 'https://link.to/soundbar-image.png' },
-    { id: '2', title: 'Transchem Pharmaceuticals', image: 'https://link.to/appliances-image.png' },
-    { id: '3', title: 'Omaera Pharamaceuticals', image: 'https://link.to/laptop-image.png' },
-    { id: '4', title: 'Regal Pharmaceuticals', image: 'https://link.to/supermarket-image.png' },
-    { id: '5', title: 'Dawa Pharmaceuticals', image: 'https://link.to/home-deals-image.png' },
-    { id: '6', title: 'GoodMan Agencies Limited', image: 'https://link.to/earn-money-image.png' }
+
+  const categories = [
+    { 
+        id: '1', 
+        title: 'Nila Pharmaceuticals', 
+        image: require('../../../assets/images/Nila.png') 
+    },
+    { 
+        id: '2', 
+        title: 'Transchem Pharmaceuticals', 
+        image: require('../../../assets/images/Nila.png') 
+    },
+    { 
+        id: '3', 
+        title: 'Omaera Pharamaceuticals', 
+        image: require('../../../assets/images/Nila.png') 
+    },
+    { 
+        id: '4', 
+        title: 'Regal Pharmaceuticals', 
+        image: require('../../../assets/images/Nila.png') 
+    },
+    { 
+        id: '5', 
+        title: 'Dawa Pharmaceuticals', 
+        image: require('../../../assets/images/Nila.png') 
+    },
+    { 
+        id: '6', 
+        title: 'GoodMan Agencies Limited', 
+        image: require('../../../assets/images/Nila.png') 
+    }
 ];
+
+
 
 const bannerImages = [
     { id: '1', image: 'https://link.to/banner1.png' },
