@@ -40,7 +40,7 @@ const categories = [
 ];
 
 const bannerImages = [
-    { id: '1', image: require('../../../assets/images/bsale.jpg')},
+    { id: '1', image: require('../../../assets/images/bsale2.jpg')},
     { id: '2', image: require('../../../assets/images/bsale2.jpg') },
     { id: '3', image: require('../../../assets/images/bsale3.jpg') },
 ];
@@ -50,7 +50,7 @@ const medicinalProducts = [
         id: 'm1',
         name: 'Pain Relief Tablets',
         price: 'KSH 1,299',
-        image: 'https://link.to/painrelief.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.5,
         reviews: 128,
         inStock: true,
@@ -60,7 +60,7 @@ const medicinalProducts = [
         id: 'm2',
         name: 'Vitamin C Complex',
         price: 'KSH 1,899',
-        image: 'https://link.to/vitaminc.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.8,
         reviews: 256,
         inStock: true,
@@ -70,7 +70,7 @@ const medicinalProducts = [
         id: 'm3',
         name: 'First Aid Kit',
         price: 'KSH 3,299',
-        image: 'https://link.to/firstaid.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.7,
         reviews: 89,
         inStock: true,
@@ -80,7 +80,7 @@ const medicinalProducts = [
         id: 'm4',
         name: 'Digital Thermometer',
         price: 'KSH 1,699',
-        image: 'https://link.to/thermometer.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.6,
         reviews: 167,
         inStock: true,
@@ -90,7 +90,7 @@ const medicinalProducts = [
         id: 'm5',
         name: 'Blood Pressure Monitor',
         price: 'KSH 6,499',
-        image: 'https://link.to/bpmonitor.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.9,
         reviews: 203,
         inStock: true,
@@ -100,7 +100,7 @@ const medicinalProducts = [
         id: 'm6',
         name: 'Immune Booster',
         price: 'KSH 2,599',
-        image: 'https://link.to/immune.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.4,
         reviews: 145,
         inStock: true,
@@ -110,7 +110,7 @@ const medicinalProducts = [
         id: 'm7',
         name: 'Digestive Health',
         price: 'KSH 2,199',
-        image: 'https://link.to/digestive.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.3,
         reviews: 178,
         inStock: true,
@@ -120,7 +120,7 @@ const medicinalProducts = [
         id: 'm8',
         name: 'Sleep Aid',
         price: 'KSH 1,599',
-        image: 'https://link.to/sleep.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.6,
         reviews: 234,
         inStock: true,
@@ -130,7 +130,7 @@ const medicinalProducts = [
         id: 'm9',
         name: 'Joint Support',
         price: 'KSH 2899',
-        image: 'https://link.to/joint.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.7,
         reviews: 156,
         inStock: true,
@@ -140,7 +140,7 @@ const medicinalProducts = [
         id: 'm10',
         name: 'Multivitamin Pack',
         price: 'KSH 3,899',
-        image: 'https://link.to/multivitamin.png',
+        image: require('../../../assets/images/banner2.jpg') ,
         rating: 4.8,
         reviews: 289,
         inStock: true,
@@ -262,11 +262,12 @@ export default function HomeScreen() {
           onPress={() => navigation.navigate('ProductDetails', { product: item })}
         >
           <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: item.image }}
-              style={styles.medicinalImage}
-              resizeMode="cover"
-            />
+          <Image
+            source={item.image}  
+            style={styles.medicinalImage}
+            resizeMode="cover"
+          />
+
             {item.discount > 0 && (
               <View style={styles.discountBadge}>
                 <Text style={styles.discountText}>{item.discount}% OFF</Text>
