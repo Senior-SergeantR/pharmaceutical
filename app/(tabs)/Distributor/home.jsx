@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -17,49 +17,21 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
-
 const { width } = Dimensions.get('window');
 
-
-  const categories = [
-    { 
-        id: '1', 
-        title: 'Nila Pharmaceuticals', 
-        image: require('../../../assets/images/Nila.png') 
-    },
-    { 
-        id: '2', 
-        title: 'Transchem Pharmaceuticals', 
-        image: require('../../../assets/images/Nila.png') 
-    },
-    { 
-        id: '3', 
-        title: 'Omaera Pharamaceuticals', 
-        image: require('../../../assets/images/Nila.png') 
-    },
-    { 
-        id: '4', 
-        title: 'Regal Pharmaceuticals', 
-        image: require('../../../assets/images/Nila.png') 
-    },
-    { 
-        id: '5', 
-        title: 'Dawa Pharmaceuticals', 
-        image: require('../../../assets/images/Nila.png') 
-    },
-    { 
-        id: '6', 
-        title: 'GoodMan Agencies Limited', 
-        image: require('../../../assets/images/Nila.png') 
-    }
+const categories = [
+    { id: '1', title: 'Nila Pharmaceuticals', image: require('../../../assets/images/nila.png') },
+    { id: '2', title: 'Transchem Pharmaceuticals', image: require('../../../assets/images/transchem.jpg') },
+    { id: '3', title: 'Omaera Pharamaceuticals', image: require('../../../assets/images/omaera.jpg') },
+    { id: '4', title: 'Regal Pharmaceuticals', image: require('../../../assets/images/regal.jpg') },
+    { id: '5', title: 'Dawa Pharmaceuticals', image: require('../../../assets/images/dawa.png')  },
+    { id: '6', title: 'Goodman Agencies Limited', image: require('../../../assets/images/goodman.png')  },
 ];
 
-
-
 const bannerImages = [
-    { id: '1', image: 'https://link.to/banner1.png' },
-    { id: '2', image: 'https://link.to/banner2.png' },
-    { id: '3', image: 'https://link.to/banner3.png' }
+    { id: '1', image: require('../../../assets/images/bsale.jpg')},
+    { id: '2', image: require('../../../assets/images/bsale2.jpg') },
+    { id: '3', image: require('../../../assets/images/bsale3.jpg') },
 ];
 
 const medicinalProducts = [
@@ -172,214 +144,241 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const bannerScrollRef = useRef(null);
+  const bannerAutoScrollTimer = useRef(null);
+
+  useEffect(() => {
+    const startAutoScroll = () => {
+      bannerAutoScrollTimer.current = setInterval(() => {
+        if (bannerScrollRef.current) {
+          const nextIndex = (currentBannerIndex + 1) % bannerImages.length;
+          bannerScrollRef.current.scrollTo({
+            x: nextIndex * width,
+            animated: true
+          });
+          setCurrentBannerIndex(nextIndex);
+          setActiveBannerIndex(nextIndex);
+        }
+      }, 3000); // Scroll every 3 seconds
+    };
+
+    startAutoScroll();
+
+    // Cleanup
+    return () => {
+      if (bannerAutoScrollTimer.current) {
+        clearInterval(bannerAutoScrollTimer.current);
+      }
+    };
+  }, [currentBannerIndex]);
 
 
-        // Memoized filtered products
-    const filteredProducts = useMemo(() => {
-          return medicinalProducts.filter(product =>
-              product.name.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-      }, [searchQuery]);
+  const filteredProducts = useMemo(() => {
+    return medicinalProducts.filter(product =>
+      product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery]);
 
-    const addToCart = useCallback((product) => {
-      setCartItems(prev => [...prev, product]);
-      // Add animation or toast notification here
+
+
+  const addToCart = useCallback((product) => {
+    setCartItems(prev => [...prev, product]);
   }, []);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
     setRefreshing(false);
   }, []);
 
-    const renderBannerDot = (index) => (
-        <View
-            key={index}
-            style={[
-                styles.dot,
-                { backgroundColor: index === activeBannerIndex ? '#333' : '#ccc' }
-            ]}
-        />
-    );
+  const renderBannerDot = (index) => (
+    <View
+      key={index}
+      style={[
+        styles.dot,
+        { backgroundColor: index === activeBannerIndex ? '#333' : '#ccc' }
+      ]}
+    />
+  );
 
-    const handleScroll = (event) => {
-        const scrollPosition = event.nativeEvent.contentOffset.x;
-        const index = Math.round(scrollPosition / width);
-        setActiveBannerIndex(index);
-    };
+  const handleScroll = useCallback((event) => {
+    const scrollPosition = event.nativeEvent.contentOffset.x;
+    const index = Math.round(scrollPosition / width);
+    setActiveBannerIndex(index);
+    setCurrentBannerIndex(index);
+  }, []);
 
-    const renderItem = useCallback(({ item }) => (
-      <TouchableOpacity 
-          style={styles.item}
-          onPress={() => navigation.navigate('CategoryDetails', { category: item })}
-      >
-          <Image
-              source={{ uri: item.image }}
-              style={styles.image}
-              resizeMode="cover"
-          />
-          <Text numberOfLines={2} style={styles.title}>{item.title}</Text>
-      </TouchableOpacity>
+  
+
+  const renderItem = useCallback(({ item }) => (
+    <TouchableOpacity style={styles.item}>
+      <Image
+        source={item.image}  
+        style={styles.image}
+        resizeMode="cover"
+      />
+      <Text numberOfLines={2} style={styles.title}>{item.title}</Text>
+    </TouchableOpacity>
   ), []);
 
   const renderMedicinalProduct = useCallback(({ item }) => {
     const priceNumber = parseInt(item.price.replace('KSH ', '').replace(',', ''));
     const discountedPrice = item.discount
-        ? `KSH ${Math.round(priceNumber * (1 - item.discount / 100)).toLocaleString()}`
-        : item.price;
+      ? `KSH ${Math.round(priceNumber * (1 - item.discount / 100)).toLocaleString()}`
+      : item.price;
 
       return (
-          <TouchableOpacity 
-              style={styles.medicinalItem}
-              onPress={() => navigation.navigate('ProductDetails', { product: item })}
-          >
-              <View style={styles.imageContainer}>
-                  <Image
-                      source={{ uri: item.image }}
-                      style={styles.medicinalImage}
-                      resizeMode="cover"
-                  />
-                  {item.discount > 0 && (
-                      <View style={styles.discountBadge}>
-                          <Text style={styles.discountText}>{item.discount}% OFF</Text>
-                      </View>
-                  )}
+        <TouchableOpacity
+          style={styles.medicinalItem}
+          onPress={() => navigation.navigate('ProductDetails', { product: item })}
+        >
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: item.image }}
+              style={styles.medicinalImage}
+              resizeMode="cover"
+            />
+            {item.discount > 0 && (
+              <View style={styles.discountBadge}>
+                <Text style={styles.discountText}>{item.discount}% OFF</Text>
               </View>
-              
+            )}
+          </View>
+  
+          <View style={styles.productInfo}>
+            <Text numberOfLines={2} style={styles.productName}>{item.name}</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.productPrice}>{discountedPrice}</Text>
+              {item.discount > 0 && (
+                <Text style={styles.originalPrice}>{item.price}</Text>
+              )}
+            </View>
 
-
-              <View style={styles.productInfo}>
-                  <Text numberOfLines={2} style={styles.productName}>{item.name}</Text>
-                  <View style={styles.priceContainer}>
-                      <Text style={styles.productPrice}>${discountedPrice}</Text>
-                      {item.discount > 0 && (
-                          <Text style={styles.originalPrice}>${item.price}</Text>
-                      )}
-                  </View>
-
-                  <View style={styles.ratingContainer}>
-                      <Icon name="star" size={16} color="#FFD700" />
-                      <Text style={styles.ratingText}>{item.rating}</Text>
-                      <Text style={styles.reviewsText}>({item.reviews})</Text>
-                  </View>
-
-                  {item.inStock ? (
-                      <TouchableOpacity 
-                          style={styles.addToCartButton}
-                          onPress={() => addToCart(item)}
-                      >
-                          <Icon name="add-shopping-cart" size={20} color="#fff" />
-                          <Text style={styles.addToCartText}>Add to Cart</Text>
-                      </TouchableOpacity>
-                  ) : (
-                      <Text style={styles.outOfStock}>Out of Stock</Text>
-                  )}
-              </View>
-          </TouchableOpacity>
-      );
+          {item.inStock ? (
+            <TouchableOpacity
+              style={styles.addToCartButton}
+              onPress={() => addToCart(item)}
+            >
+              <Icon name="add-shopping-cart" size={20} color="#fff" />
+              <Text style={styles.addToCartText}>Add to Cart</Text>
+            </TouchableOpacity>
+          ) : (
+            <Text style={styles.outOfStock}>Out of Stock</Text>
+          )}
+        </View>
+      </TouchableOpacity>
+    );
   }, [addToCart]);
 
-    return (
-      <SafeAreaView style={styles.container}>
+  return (
+    <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
       
-      {/* Enhanced SearchBar */}
       <View style={styles.searchBar}>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Icon name="menu" size={28} color="#333" />
-          </TouchableOpacity>
-          
-          <View style={styles.searchInputContainer}>
-              <Icon name="search" size={24} color="#666" />
-              <TextInput
-                  style={styles.searchInput}
-                  placeholder="Search products, equipment and categories"
-                  placeholderTextColor="#666"
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-              />
-              {searchQuery.length > 0 && (
-                  <TouchableOpacity onPress={() => setSearchQuery('')}>
-                      <Icon name="close" size={24} color="#666" />
-                  </TouchableOpacity>
-              )}
-          </View>
-          
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-              <Icon name="person" size={28} color="#333" />
-          </TouchableOpacity>
-          <TouchableOpacity 
-              style={styles.cartButton}
-              onPress={() => navigation.navigate('Cart')}
-          >
-              <Icon name="shopping-cart" size={28} color="#333" />
-              {cartItems.length > 0 && (
-                  <View style={styles.cartBadge}>
-                      <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
-                  </View>
-              )}
-          </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Icon name="menu" size={28} color="#333" />
+        </TouchableOpacity>
+        
+        <View style={styles.searchInputContainer}>
+          <Icon name="search" size={24} color="#666" />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search products, equipment and categories"
+            placeholderTextColor="#666"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Icon name="close" size={24} color="#666" />
+            </TouchableOpacity>
+          )}
+        </View>
+        
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <Icon name="person" size={28} color="#333" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.cartButton}
+          onPress={() => navigation.navigate('Cart')}
+        >
+          <Icon name="shopping-cart" size={28} color="#333" />
+          {cartItems.length > 0 && (
+            <View style={styles.cartBadge}>
+              <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
       </View>
 
-      {/* Main Content */}
       <FlatList
-          data={categories}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          numColumns={3}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.listContainer}
-          refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          ListFooterComponent={() => (
-              <>
-                  {/* Banner Section */}
-                  <View style={styles.bannerContainer}>
-                      <ScrollView
-                          horizontal
-                          pagingEnabled
-                          showsHorizontalScrollIndicator={false}
-                          onScroll={handleScroll}
-                          scrollEventThrottle={16}
-                      >
-                          {bannerImages.map((banner) => (
-                              <Image
-                                  key={banner.id}
-                                  source={{ uri: banner.image }}
-                                  style={styles.bannerImage}
-                                  resizeMode="cover"
-                              />
-                          ))}
-                      </ScrollView>
-                      <View style={styles.dotContainer}>
-                          {bannerImages.map((_, index) => renderBannerDot(index))}
-                      </View>
-                  </View>
-                  
-                  {/* Medicinal Products Section */}
-                  <View style={styles.medicinalSection}>
-                      <Text style={styles.sectionTitle}>Medical Supplies</Text>
-                      <FlatList
-                          data={filteredProducts}
-                          renderItem={renderMedicinalProduct}
-                          keyExtractor={item => item.id}
-                          numColumns={2}
-                          scrollEnabled={false}
+        data={categories}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        numColumns={3}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListFooterComponent={() => (
+            <>
+              <View style={styles.bannerContainer}>
+                <ScrollView
+                  ref={bannerScrollRef}
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  onScroll={handleScroll}
+                  scrollEventThrottle={16}
+                  decelerationRate="fast"
+                >
+                  {bannerImages.map((banner) => (
+                    <View key={banner.id} style={styles.bannerImageContainer}>
+                      <Image
+                        source={banner.image}
+                        style={styles.bannerImage}
+                        resizeMode="cover"
                       />
-                  </View>
-              </>
+                    </View>
+                  ))}
+                </ScrollView>
+                <View style={styles.dotContainer}>
+                  {bannerImages.map((_, index) => (
+                    <View
+                      key={index}
+                      style={[
+                        styles.dot,
+                        { backgroundColor: index === activeBannerIndex ? '#333' : '#ccc' }
+                      ]}
+                    />
+                  ))}
+                </View>
+              </View>
+          
+              <View style={styles.medicinalSection}>
+                <Text style={styles.sectionTitle}>Medical Supplies</Text>
+                <FlatList
+                  data={filteredProducts}
+                  renderItem={renderMedicinalProduct}
+                  keyExtractor={item => item.id}
+                  numColumns={2}
+                  scrollEnabled={false}
+                />
+              </View>
+            </>
           )}
+          
       />
 
       {loading && (
-          <View style={styles.loadingOverlay}>
-              <ActivityIndicator size="large" color="#2ecc71" />
-          </View>
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#2ecc71" />
+        </View>
       )}
-  </SafeAreaView>
-    );
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -441,24 +440,32 @@ const styles = StyleSheet.create({
         color: '#333',
     },
     bannerContainer: {
-        marginVertical: 16,
-    },
-    bannerImage: {
+        height: 200,
+        position: 'relative',
+      },
+      bannerImage: {
+        width: '100%',
+        height: '100%',
+      },
+      bannerImageContainer: {
         width: width,
         height: 200,
-    },
-    dotContainer: {
+      },
+      dotContainer: {
+        position: 'absolute',
+        bottom: 10,
         flexDirection: 'row',
+        width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 8,
-    },
-    dot: {
+      },
+      dot: {
         width: 8,
         height: 8,
         borderRadius: 4,
         marginHorizontal: 4,
-    },
+        backgroundColor: '#ccc',
+      },
     medicinalSection: {
         padding: 12,
         backgroundColor: '#f8f8f8',
@@ -531,60 +538,60 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     imageContainer: {
-      position: 'relative',
-  },
-  discountBadge: {
-      position: 'absolute',
-      top: 10,
-      right: 10,
-      backgroundColor: '#ff4757',
-      padding: 4,
-      borderRadius: 4,
-  },
-  discountText: {
-      color: '#fff',
-      fontSize: 12,
-      fontWeight: 'bold',
-  },
-  priceContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8,
-  },
-  originalPrice: {
-      fontSize: 14,
-      color: '#999',
-      textDecorationLine: 'line-through',
-  },
-  cartButton: {
-      position: 'relative',
-  },
-  cartBadge: {
-      position: 'absolute',
-      top: -8,
-      right: -8,
-      backgroundColor: '#ff4757',
-      borderRadius: 10,
-      width: 20,
-      height: 20,
-      justifyContent: 'center',
-      alignItems: 'center',
-  },
-  cartBadgeText: {
-      color: '#fff',
-      fontSize: 12,
-      fontWeight: 'bold',
-  },
-  loadingOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'rgba(255,255,255,0.8)',
-      justifyContent: 'center',
-      alignItems: 'center',
-  },
-  outOfStock: {
-      color: '#ff4757',
-      textAlign: 'center',
-      marginTop: 8,
-      fontWeight: '600',
+        position: 'relative',
+    },
+    discountBadge: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        backgroundColor: '#ff4757',
+        padding: 4,
+        borderRadius: 4,
+    },
+    discountText: {
+        color: '#fff',
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
+    priceContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    originalPrice: {
+        fontSize: 14,
+        color: '#999',
+        textDecorationLine: 'line-through',
+    },
+    cartButton: {
+        position: 'relative',
+    },
+    cartBadge: {
+        position: 'absolute',
+        top: -8,
+        right: -8,
+        backgroundColor: '#ff4757',
+        borderRadius: 10,
+        width: 20,
+        height: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    cartBadgeText: {
+        color: '#fff',
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
+    loadingOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    outOfStock: {
+        color: '#ff4757',
+        textAlign: 'center',
+        marginTop: 8,
+        fontWeight: '600',
     },
 });
