@@ -14,6 +14,11 @@ import {
   RefreshControl,
   ActivityIndicator
 } from 'react-native';
+import Animated, { 
+    withSpring, 
+    useAnimatedStyle, 
+    useSharedValue 
+  } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -26,6 +31,12 @@ const categories = [
     { id: '4', title: 'Regal Pharmaceuticals', image: require('../../../assets/images/regal.jpg') },
     { id: '5', title: 'Dawa Pharmaceuticals', image: require('../../../assets/images/dawa.png')  },
     { id: '6', title: 'Goodman Agencies Limited', image: require('../../../assets/images/goodman.png')  },
+    { id: '7', title: 'Phillips Pharmaceuticals', image: require('../../../assets/images/philips.jpg')  },
+    { id: '8', title: 'Cosmos Pharmaceuticals', image: require('../../../assets/images/cosmos.png')  },
+    { id: '9', title: 'Beta Healthcare', image: require('../../../assets/images/beta.png')  },
+    { id: '10', title: 'Laboratory & Allied', image: require('../../../assets/images/lab.jpg')  },
+    { id: '11', title: 'Universal Corporation', image: require('../../../assets/images/universal.png')  },
+    { id: '12', title: 'Biodeal Laboratories', image: require('../../../assets/images/biodeal.png')  },
 ];
 
 const bannerImages = [
@@ -147,6 +158,23 @@ export default function HomeScreen() {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const bannerScrollRef = useRef(null);
   const bannerAutoScrollTimer = useRef(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const rotateAnimation = useSharedValue(0);
+
+
+  const handleSeeMore = () => {
+    setIsExpanded(!isExpanded);
+    rotateAnimation.value = withSpring(isExpanded ? 0 : 1);
+  };
+  
+  const arrowStyle = useAnimatedStyle(() => {
+  return {
+    transform: [
+      { rotate: `${rotateAnimation.value * 180}deg` }
+    ]
+  };
+});
+
 
   useEffect(() => {
     const startAutoScroll = () => {
@@ -271,6 +299,20 @@ export default function HomeScreen() {
     );
   }, [addToCart]);
 
+
+  const SeeMoreButton = () => (
+    <TouchableOpacity 
+      style={styles.seeMoreContainer} 
+      onPress={handleSeeMore}
+    >
+      <Text style={styles.seeMoreText}>See More Pharmaceutical Companies</Text>
+      <Animated.View style={arrowStyle}>
+        <Icon name="keyboard-arrow-down" size={24} color="#2ecc71" />
+      </Animated.View>
+    </TouchableOpacity>
+  );
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
@@ -313,17 +355,20 @@ export default function HomeScreen() {
       </View>
 
       <FlatList
-        data={categories}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        numColumns={3}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+            data={isExpanded ? categories : categories.slice(0, 6)}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            numColumns={3}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.listContainer}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+        
+
         ListFooterComponent={() => (
             <>
+            <SeeMoreButton />
               <View style={styles.bannerContainer}>
                 <ScrollView
                   ref={bannerScrollRef}
@@ -466,6 +511,27 @@ const styles = StyleSheet.create({
         marginHorizontal: 4,
         backgroundColor: '#ccc',
       },
+      
+      seeMoreContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        marginVertical: 8,
+        backgroundColor: '#f8f8f8',
+        borderRadius: 8,
+        marginHorizontal: 16,
+        borderWidth: 1,
+        borderColor: '#2ecc71',
+      },
+      seeMoreText: {
+        color: '#2ecc71',
+        fontSize: 16,
+        fontWeight: '600',
+        marginRight: 8,
+      },
+      
+
     medicinalSection: {
         padding: 12,
         backgroundColor: '#f8f8f8',
