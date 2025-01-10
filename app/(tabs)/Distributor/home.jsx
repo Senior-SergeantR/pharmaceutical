@@ -11,6 +11,7 @@ import {
   Dimensions
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
 
 
@@ -107,6 +108,16 @@ const categories = [
   const App = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const handleMenuPress = () => {
+      console.log('Menu pressed');
+      // menu logic here
+    };
+
+    const handleCartPress = () => {
+      console.log('Cart pressed');
+      // Add your cart logic here
+    };
   
     const filteredCategories = categories.filter(category =>
       category.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -118,65 +129,73 @@ const categories = [
   
     return (
       <LinearGradient
-        colors={['#f6f9fc', '#ffffff']}
-        style={styles.gradient}
-      >
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}>Pharmaceutical Categories</Text>
-            <View style={styles.searchContainer}>
-              <TextInput
-                style={styles.searchBar}
-                placeholder="Search medications..."
-                placeholderTextColor="#8895a7"
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-              />
-              {searchQuery !== '' && (
-                <TouchableOpacity
-                  style={styles.clearButton}
-                  onPress={() => setSearchQuery('')}
-                >
-                  <Text style={styles.clearButtonText}>✕</Text>
-                </TouchableOpacity>
-              )}
-            </View>
+      colors={['#f6f9fc', '#ffffff']}
+      style={styles.gradient}
+    >
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerContainer}>
+          <View style={styles.topBar}>
+            <TouchableOpacity onPress={handleMenuPress} style={styles.iconButton}>
+              <Ionicons name="menu" size={28} color="#333" />
+            </TouchableOpacity>
+            <Text style={styles.logoText}>BREEG</Text>
+            <TouchableOpacity onPress={handleCartPress} style={styles.iconButton}>
+              <Ionicons name="cart" size={28} color="#333" />
+            </TouchableOpacity>
           </View>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchBar}
+              placeholder="Search medications..."
+              placeholderTextColor="#8895a7"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+            {searchQuery !== '' && (
+              <TouchableOpacity
+                style={styles.clearButton}
+                onPress={() => setSearchQuery('')}
+              >
+                <Text style={styles.clearButtonText}>✕</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
   
-          <Text style={styles.categoriesHeader}>
-            Categories ({filteredCategories.length})
-          </Text>
+        <Text style={styles.categoriesHeader}>
+         Phamaceutical Categories ({filteredCategories.length})
+        </Text>
   
-          {loading ? (
-            <ActivityIndicator size="large" color="#4a90e2" />
-          ) : (
-            <View style={styles.categoriesContainer}>
-              {filteredCategories.map((category, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.category}
-                  onPress={() => handleCategoryPress(category)}
-                  activeOpacity={0.7}
-                >
-                  <View style={styles.imageContainer}>
-                    <Image
-                      source={category.image}
-                      style={styles.categoryImage}
-                      resizeMode="cover"
-                    />
-                  </View>
-                  <View style={styles.categoryContent}>
-                    <Text style={styles.categoryText}>{category.name}</Text>
-                    <Text style={styles.categoryDescription}>
-                      {category.description}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-        </ScrollView>
-      </LinearGradient>
+        {loading ? (
+          <ActivityIndicator size="large" color="#4a90e2" />
+        ) : (
+          <View style={styles.categoriesContainer}>
+            {filteredCategories.map((category, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.category}
+                onPress={() => handleCategoryPress(category)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={category.image}
+                    style={styles.categoryImage}
+                    resizeMode="cover"
+                  />
+                </View>
+                <View style={styles.categoryContent}>
+                  <Text style={styles.categoryText}>{category.name}</Text>
+                  <Text style={styles.categoryDescription}>
+                    {category.description}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+      </ScrollView>
+    </LinearGradient>
     );
   };
 
@@ -186,6 +205,35 @@ const categories = [
     },
     container: {
       flex: 1,
+    },
+    topBar: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    
+    logoText: {
+      fontSize: 32,
+      fontWeight: '800',
+      color: '#2E8B57', // Forest green color
+      letterSpacing: 2,
+      textTransform: 'uppercase',
+      textShadowColor: 'rgba(0, 0, 0, 0.1)',
+      textShadowOffset: { width: 1, height: 1 },
+      textShadowRadius: 2,
+      fontStyle: 'pacifico',
+    },
+  
+    iconButton: {
+      padding: 8,
+      borderRadius: 8,
+      backgroundColor: '#ffffff',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
     },
     headerContainer: {
       padding: 20,
