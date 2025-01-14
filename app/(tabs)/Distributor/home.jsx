@@ -12,7 +12,8 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-
+import { products } from '../Distributor/prod';
+import ProductList from '../../../components/ProductList';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -108,6 +109,7 @@ const categories = [
   const App = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     const handleMenuPress = () => {
       console.log('Menu pressed');
@@ -124,8 +126,22 @@ const categories = [
     );
   
     const handleCategoryPress = (category) => {
-      console.log(`Selected category: ${category.name}`);
+      setSelectedCategory(category.name);
     };
+    
+    const handleBackPress = () => {
+      setSelectedCategory(null);
+    };
+    
+    if (selectedCategory) {
+      return (
+        <ProductList
+          products={products[selectedCategory] || []}
+          category={selectedCategory}
+          onBack={handleBackPress}
+        />
+      );
+    }
   
     return (
       <LinearGradient
