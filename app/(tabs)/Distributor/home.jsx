@@ -13,7 +13,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { products } from '../Distributor/prod';
-import ProductList from '../../../components/ProductList';
+import ProductList from '../../../components/productlist';
 
 
 const windowWidth = Dimensions.get('window').width;
