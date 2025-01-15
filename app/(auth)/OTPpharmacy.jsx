@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { Link, useRouter } from 'expo-router';
-import CustomButton from '../../components/CustomButton1';
+import React, { useState, useRef } from "react";
+import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
+import { Link, useRouter } from "expo-router";
+import CustomButton from "../../components/CustomButton1";
 
 const OtpVerificationScreen = () => {
-  const [otp, setOtp] = useState(['', '', '', '']);
+  const [otp, setOtp] = useState(["", "", "", ""]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const inputRefs = useRef([]);
@@ -22,15 +22,23 @@ const OtpVerificationScreen = () => {
 
   const handleVerify = () => {
     setIsSubmitting(true);
-    const enteredOtp = otp.join('');
-    console.log('OTP entered:', enteredOtp);
+    const enteredOtp = otp.join("");
+    console.log("OTP entered:", enteredOtp);
 
-    // Simulating API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      // Navigate to next screen after verification
-      router.push('/../../(tabs)/Pharmacy/dashboard');
-    }, 2000);
+    // Check if entered OTP matches the expected value
+    if (enteredOtp === "1234") {
+      setTimeout(() => {
+        setIsSubmitting(false);
+        Alert.alert("Success", "OTP verified successfully!");
+        // Navigate to the dashboard after verification
+        router.push("/../../(tabs)/Pharmacy/dashboard");
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        setIsSubmitting(false);
+        Alert.alert("Invalid OTP", "Please enter the correct OTP.");
+      }, 1000);
+    }
   };
 
   return (
@@ -41,7 +49,7 @@ const OtpVerificationScreen = () => {
         {otp.map((digit, index) => (
           <TextInput
             key={index}
-            ref={el => inputRefs.current[index] = el}
+            ref={(el) => (inputRefs.current[index] = el)}
             style={styles.otpInput}
             value={digit}
             onChangeText={(text) => handleChange(text, index)}
@@ -58,8 +66,15 @@ const OtpVerificationScreen = () => {
       />
       <Text style={styles.disclaimer}>
         By clicking Verify, you agree to our
-        <Link href="/terms" style={styles.externalLink}> Terms of Service</Link> and
-        <Link href="/privacy" style={styles.externalLink}> Privacy Policy</Link>
+        <Link href="/terms" style={styles.externalLink}>
+          {" "}
+          Terms of Service
+        </Link>{" "}
+        and
+        <Link href="/privacy" style={styles.externalLink}>
+          {" "}
+          Privacy Policy
+        </Link>
       </Text>
     </View>
   );
@@ -68,51 +83,51 @@ const OtpVerificationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 35,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 150,
   },
   subtitle: {
     fontSize: 18,
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   otpContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   otpInput: {
     width: 70,
     height: 50,
-    borderColor: '#828282',
+    borderColor: "#828282",
     borderWidth: 2,
     borderRadius: 5,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 18,
     marginHorizontal: 5,
   },
   buttonContainer: {
-    width: '100%',
+    width: "100%",
     marginTop: 20,
     marginBottom: 20,
   },
   disclaimer: {
     fontSize: 12,
-    color: '#777',
-    textAlign: 'center',
+    color: "#777",
+    textAlign: "center",
     marginTop: 80,
   },
   externalLink: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 13,
-  }
+  },
 });
 
 export default OtpVerificationScreen;

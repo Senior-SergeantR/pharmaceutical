@@ -6,33 +6,24 @@ import FormField from "../../components/FormField";
 import { Link, router } from "expo-router";
 
 export default function App() {
-
   const [form, setForm] = useState({
     licenseID: "",
   });
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const checkIfValidLicenseID = (licenseID) => {
-    // Implement logic to check if the licenseID is valid
-    if (licenseID === "123456") {
-      return true;
-    }
-    return false;
+    return licenseID === "123456"; // Simplified condition
   };
 
   const submit = () => {
     setIsSubmitting(true);
-
     if (checkIfValidLicenseID(form.licenseID)) {
       ToastAndroid.show("Login successful", ToastAndroid.SHORT);
       goToNextScreen();
-      setIsSubmitting(false);
     } else {
-      // Show an error message
       ToastAndroid.show("Invalid license ID", ToastAndroid.SHORT);
-      setIsSubmitting(false);
     }
+    setIsSubmitting(false);
   };
 
   const goToNextScreen = () => {
@@ -42,97 +33,125 @@ export default function App() {
     });
   };
 
+  const goToLoginScreen = () => {
+    router.push("/Login");
+  };
+
   return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar
-          barStyle="dark-content"
-          backgroundColor="#fff"
-          translucent={false}
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <View style={styles.centeredView}>
+        <Text style={styles.title}>BREEG</Text>
+        <Text style={styles.subtitle}>Create an account</Text>
+        <Text style={styles.description}>
+          Enter your official license to sign up for this app
+        </Text>
+
+        <FormField
+          title="Enter License ID Here"
+          value={form.licenseID}
+          handleChangeText={(text) => setForm({ ...form, licenseID: text })}
+          otherStyles={styles.formField}
+          keyboardType="numeric"
+          style={styles.formFieldInput}
         />
-        <View style={styles.centeredView}>
-          <Text style={styles.title}>BREEG</Text>
-          <Text style={styles.subtitle}>Create an account</Text>
-          <Text style={styles.description}>
-            Enter your official license to sign up for this app
-          </Text>
 
-          <FormField
-            title="Enter License ID Here"
-            value={form.licenseID}
-            handleChangeText={(text) => setForm({ ...form, licenseID: text })}
-            otherStyles={styles.formField}
-            keyboardType="numeric"
-            style={styles.formFieldInput}
-          />
+        <Text style={styles.termsText}>
+          By clicking Sign Up, you agree to our
+          <Link href="/terms" style={styles.externalLink}>
+            Terms of Service
+          </Link>
+          and
+          <Link href="/privacy" style={styles.externalLink}>
+            Privacy Policy
+          </Link>
+        </Text>
 
-          <CustomButton
-            title="Sign up"
-            handlePress={submit}
-            containerStyles={styles.buttonContainer}
-            isLoading={isSubmitting}
-          />
+        <CustomButton
+          title="Sign up"
+          handlePress={submit}
+          containerStyles={styles.buttonContainer}
+          isLoading={isSubmitting}
+        />
 
-          <Text style={styles.termsText}>
-            By clicking Sign Up, you agree to our
-            <Link href="/terms" style={styles.externalLink}>
-              Terms of Service
-            </Link>
-            and
-            <Link href="/privacy" style={styles.externalLink}>
-              Privacy Policy
-            </Link>
-          </Text>
-        </View>
-        <StatusBar style="auto" />
-      </SafeAreaView>
+        <Text style={styles.loginPrompt}>Already have an account?</Text>
+        <CustomButton
+          title="Login"
+          handlePress={goToLoginScreen}
+          containerStyles={styles.loginButtonContainer}
+        />
+      </View>
+      <StatusBar style="auto" />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 26,
+    padding: 20,
   },
   title: {
-    fontSize: 40,
+    fontSize: 42,
     fontWeight: "bold",
-    marginTop: 80,
-    marginBottom: 50,
+    marginBottom: 10,
+    color: "#333",
   },
   subtitle: {
-    fontSize: 25,
-    fontWeight: "bold",
-    marginBottom: 20,
+    fontSize: 24,
+    fontWeight: "600",
+    marginBottom: 8,
+    color: "#555", 
   },
   description: {
-    fontSize: 18,
+    fontSize: 16,
     textAlign: "center",
-    marginBottom: 50,
+    marginBottom: 40,
+    color: "#666",
   },
   formField: {
-    marginTop: 20,
+    marginBottom: 20,
     width: "100%",
   },
   formFieldInput: {
     width: "100%",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: 50,
+    backgroundColor: "#fff", 
   },
   buttonContainer: {
     width: "100%",
-    marginTop: 30,
-    marginBottom: 20,
+    marginTop: 20,
   },
   termsText: {
-    marginTop: 20,
+    fontSize: 12,
     textAlign: "center",
+    color: "#888", 
+    marginBottom: 10,
   },
   externalLink: {
+    marginHorizontal: 5,
     fontWeight: "bold",
-    fontSize: 17,
+    color: "#007bff", 
+  },
+  loginPrompt: {
+    fontSize: 16,
+    color: "#555",
+    marginTop: 20,
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  loginButtonContainer: {
+    width: "100%",
+    marginTop: 10,
   },
 });

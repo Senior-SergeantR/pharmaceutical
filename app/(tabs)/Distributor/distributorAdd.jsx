@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, SafeAreaView, StatusBar, Dimensions } from 'react-native';
 import { Card } from '@rneui/themed';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
+import { router } from 'expo-router';
+import CustomButton from '../../../components/CustomButton';
 
 const { width } = Dimensions.get('window');
 const cardWidth = width / 2 - 24;
@@ -9,6 +11,7 @@ const orderWidth = (width - 64) / 3;
 
 const AddDistributorScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+
 
   const products = [
     { title: 'Famiclav', description: '200mg Tablets\nBox of 100 Tablets', image: null },
@@ -18,7 +21,7 @@ const AddDistributorScreen = () => {
   ];
 
   const orders = [
-    { name: 'Ipsum Chemist', image: null },
+    { name: 'Arabica Chemist', image: null },
     { name: 'Good Life', image: null },
     { name: 'Soothe Pres', image: null },
     { name: 'Health Plus', image: null },
@@ -47,9 +50,12 @@ const AddDistributorScreen = () => {
           activeFontStyle={{ color: '#fff' }}
         />
 
-    <TouchableOpacity style={styles.addButton}>
-      <Text style={styles.addButtonText}>Add Product</Text>
-    </TouchableOpacity>
+        <CustomButton
+          title="Add Product"
+          handlePress={() => router.push('/addproduct')}
+          containerStyles={styles.addButton}
+          textStyles={styles.addButtonText}
+        />
 
         {selectedIndex === 0 && (
           <>
