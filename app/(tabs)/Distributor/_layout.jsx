@@ -1,44 +1,99 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { View, Text } from "react-native";
-import Home from "../Distributor/dashboard";
-import ProductsFn from "../Distributor/products"
-import App from "../Distributor/searchInvoices";
-import ProfileScreen from "../Distributor/profile";
-import AddProductScreen from "../Distributor/addproduct";
-import AddDistributorScreen from "../Distributor/distributorAdd"
-const isDistributor = false; 
+import { View, Text, Platform } from "react-native";
 
-const TabIcons = ({ icon, color, name, focused }) => {
-  return (
-    <View
-      style={{
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 4,
-        width: 100,
-      }}
-    >
-      <Ionicons name={icon} size={24} color={color} />
-      <Text
-        style={{
-          fontSize: 12,
-          fontWeight: focused ? "600" : "400",
-          color: color,
-          textAlign: "center",
-        }}
-      >
-        {name}
-      </Text>
-    </View>
-  );
-};
+// Screen imports
+import Dashboard from "../Distributor/dashboard";
+import Home from "../Distributor/home";
+import ProductsFn from "../Distributor/products";
+import InvoiceSearch from "../Distributor/searchInvoices";
+import ProfileScreen from "../Distributor/profile";
+import AddDistributorScreen from "../Distributor/distributorAdd";
 
 const Tab = createBottomTabNavigator();
 
+// Tab configuration data
+const TAB_CONFIG = {
+  DISTRIBUTOR: [
+    {
+      name: "Dashboard",
+      component: Home,
+      icon: "home-outline",
+    },
+    {
+      name: "Products",
+      component: ProductsFn,
+      icon: "cube-outline",
+    },
+    {
+      name: "Invoices",
+      component: InvoiceSearch,
+      icon: "document-text-outline",
+    },
+    {
+      name: "Profile",
+      component: ProfileScreen,
+      icon: "person-outline",
+    },
+  ],
+  REGULAR: [
+    {
+      name: "Dashboard",
+      component: Home,
+      icon: "home-outline",
+    },
+    {
+      name: "Products",
+      component: ProductsFn,
+      icon: "cube-outline",
+    },
+    {
+      name: "Add",
+      component: AddDistributorScreen,
+      icon: "add-circle-outline",
+    },
+    {
+      name: "Profile",
+      component: ProfileScreen,
+      icon: "person-outline",
+    },
+  ],
+};
+
+const TabIcon = ({ icon, color, name, focused }) => (
+  <View
+    style={{
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 4,
+      width: 100,
+      paddingTop: 14,
+    }}
+  >
+    <Ionicons name={icon} size={24} color={color} />
+    <Text
+      style={{
+        fontSize: 12,
+        fontWeight: focused ? "700" : "500",
+        color: color,
+        textAlign: "center",
+        fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
+      }}
+    >
+      {name}
+    </Text>
+  </View>
+);
+
 const TabsLayout = () => {
+  // You can manage this through authentication context/redux
+  const userRole = "REGULAR"; // or "DISTRIBUTOR"
+  const isDistributor = userRole === "DISTRIBUTOR";
+
+  const tabConfig = isDistributor ? TAB_CONFIG.DISTRIBUTOR : TAB_CONFIG.REGULAR;
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -48,149 +103,38 @@ const TabsLayout = () => {
         tabBarStyle: {
           backgroundColor: "#fff",
           borderTopWidth: 1,
-          height: 70,
-          borderTopColor: "#fff",
-          paddingBottom: 6,
+          height: Platform.OS === 'ios' ? 85 : 70,
+          borderTopColor: "#f0f0f0",
+          paddingBottom: Platform.OS === 'ios' ? 20 : 6,
+          elevation: 8,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: -2,
+          },
+          shadowOpacity: 0.1,
+          shadowRadius: 3,
         },
+        headerShown: false,
       }}
     >
-      {isDistributor ? (
-        <>
-          {/* Distributor Tabs */}
-          <Tab.Screen
-            name="Dashboard"
-            component={Home}
-            options={{
-              title: "Dashboard",
-              headerShown: false,
-              tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="home-outline"
-                  color={color}
-                  name="Dashboard"
-                  focused={focused}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Products"
-            component={ProductsFn}
-            options={{
-              title: "Products",
-              headerShown: false,
-              tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="cube-outline"
-                  color={color}
-                  name="Products"
-                  focused={focused}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="SearchInvoices"
-            component={App}
-            options={{
-              title: "Invoices",
-              headerShown: false,
-              tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="document-text-outline"
-                  color={color}
-                  name="Invoices"
-                  focused={focused}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={{
-              title: "Profile",
-              headerShown: false,
-              tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="person-outline"
-                  color={color}
-                  name="Profile"
-                  focused={focused}
-                />
-              ),
-            }}
-          />
-        </>
-      ) : (
-        <>
-          {/* Regular User Tabs */}
-          <Tab.Screen
-            name="Dashboard"
-            component={Home}
-            options={{
-              title: "Dashboard",
-              headerShown: false,
-              tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="home-outline"
-                  color={color}
-                  name="Dashboard"
-                  focused={focused}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="products"
-            component={ProductsFn}
-            options={{
-              title: "products",
-              headerShown: false,
-              tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="cube-outline"
-                  color={color}
-                  name="Products"
-                  focused={focused}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="DistributorAdd"
-            component={AddDistributorScreen}
-            options={{
-              title: "Add",
-              headerShown: false,
-              tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="add-circle-outline"
-                  color={color}
-                  name="Add"
-                  focused={focused}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={{
-              title: "Profile",
-              headerShown: false,
-              tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="person-outline"
-                  color={color}
-                  name="Profile"
-                  focused={focused}
-                />
-              ),
-            }}
-          />
-        </>
-      )}
+      {tabConfig.map((tab) => (
+        <Tab.Screen
+          key={tab.name}
+          name={tab.name}
+          component={tab.component}
+          options={{
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={tab.icon}
+                color={color}
+                name={tab.name}
+                focused={focused}
+              />
+            ),
+          }}
+        />
+      ))}
     </Tab.Navigator>
   );
 };
