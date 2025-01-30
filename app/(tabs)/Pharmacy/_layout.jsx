@@ -38,7 +38,7 @@ const TabIcons = ({ icon, color, name, focused }) => {
 
 const Tab = createBottomTabNavigator();
 
-const TabsLayout = () => {
+const PharmacyLayout = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -195,4 +195,4 @@ const TabsLayout = () => {
   );
 };
 
-export default TabsLayout;
+export default PharmacyLayout;

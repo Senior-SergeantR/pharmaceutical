@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 
-export default function SplashScreenView() {
+function SplashScreenView() {
   const fadeAnim = new Animated.Value(0);
   const scaleAnim = new Animated.Value(0.5);
 
@@ -18,7 +18,7 @@ export default function SplashScreenView() {
         Animated.parallel([
           Animated.timing(fadeAnim, {
             toValue: 1,
-            duration: 1000,
+            duration: 3000,
             useNativeDriver: true,
           }),
           Animated.spring(scaleAnim, {
@@ -93,3 +93,5 @@ const styles = StyleSheet.create({
   },
 
 });
+
+export default SplashScreenView;
