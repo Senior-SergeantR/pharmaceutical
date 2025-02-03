@@ -36,7 +36,7 @@ const data = [
 ];
 
 
-const App = () => {
+const InvoiceSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [statusFilter, setStatusFilter] = useState('All');
@@ -76,12 +76,12 @@ const App = () => {
     setStatusFilter('All');
     
   };
-  const FilterModal = () => (
+  const FilterModal = ({ visible, onClose, currentFilter, onFilterSelect }) => (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={filterModalVisible}
-      onRequestClose={() => setFilterModalVisible(false)}
+      visible={visible}
+      onRequestClose={onClose}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
@@ -308,4 +308,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default App;
+export default InvoiceSearch;

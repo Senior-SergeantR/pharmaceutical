@@ -12,8 +12,11 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { products } from '../Distributor/prod';
-import ProductList from '../../../components/productlist';
+import { products } from '.';
+import ProductList from '../../../components/products/productlist';
+import MenuModal from "../../../components/common/MenuModal";
+import CartModal from '../../../components/common/CartModal';
+
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -106,20 +109,30 @@ const categories = [
   ];
   
 
-  const App = () => {
+  const Home = ({ navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [menuVisible, setMenuVisible] = useState(false);
+    const [cartVisible, setCartVisible] = useState(false);
 
     const handleMenuPress = () => {
-      console.log('Menu pressed');
-      // menu logic here
+      setMenuVisible(true);
+      // menu logic
+    };
+
+    const handleCloseMenu = () => {
+      setMenuVisible(false);
     };
 
     const handleCartPress = () => {
-      console.log('Cart pressed');
-      // Add your cart logic here
+      setCartVisible(true);
     };
+
+    const handleCloseCart = () => {
+      setCartVisible(false);
+    };
+    
   
     const filteredCategories = categories.filter(category =>
       category.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -211,6 +224,15 @@ const categories = [
           </View>
         )}
       </ScrollView>
+      <MenuModal 
+        visible={menuVisible}
+        onClose={handleCloseMenu}
+        navigation={navigation}
+      />
+      <CartModal
+      visible={cartVisible}
+      onClose={handleCloseCart}
+      />
     </LinearGradient>
     );
   };
@@ -345,6 +367,7 @@ const categories = [
       color: '#8895a7',
       lineHeight: 14,
     },
+    
   });
   
-  export default App;
+  export default Home;

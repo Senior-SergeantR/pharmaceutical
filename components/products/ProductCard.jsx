@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet } from 'react-native';
 
 const { width } = Dimensions.get("window");
 const cardWidth = width * 0.42;
@@ -82,7 +83,7 @@ const ProductCard = ({ item, navigation, isRecent, onAddToCart }) => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   promoCard: {
     backgroundColor: "#fff",
     borderRadius: 12,
@@ -163,6 +164,6 @@ const styles = {
     fontWeight: "600",
     fontSize: 12,
   }
-};
+});
 
 export default ProductCard;

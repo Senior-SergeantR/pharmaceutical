@@ -4,12 +4,13 @@ import { Card } from '@rneui/themed';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { router } from 'expo-router';
 import CustomButton from '../../../components/CustomButton';
+import ProductCard from '../../../components/products/ProductCard';
 
 const { width } = Dimensions.get('window');
 const cardWidth = width / 2 - 24;
 const orderWidth = (width - 64) / 3;
 
-const AddDistributorScreen = () => {
+const DistributorAdd = ({ navigation }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
 
@@ -27,6 +28,34 @@ const AddDistributorScreen = () => {
     { name: 'Health Plus', image: null },
     { name: 'MediCare', image: null },
   ];
+
+  const handleAddProduct = () => {
+    router.push('/addproduct');
+  };
+
+  const renderProducts = () => (
+    <>
+      <ScrollView horizontal>
+        {products.map((product, index) => (
+          <ProductCard key={index} product={product} width={cardWidth} />
+        ))}
+      </ScrollView>
+      
+      <ScrollView horizontal>
+        {orders.map((order, index) => (
+          <OrderItem key={index} order={order} width={orderWidth} />
+        ))}
+      </ScrollView>
+    </>
+  );
+  
+  const renderPerformingProducts = () => (
+    <View>
+      {products.map((product, index) => (
+        <PerformingProductItem key={index} product={product} width={cardWidth} />
+      ))}
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -52,78 +81,17 @@ const AddDistributorScreen = () => {
 
         <CustomButton
           title="Add Product"
-          handlePress={() => router.push('/addproduct')}
+          handlePress={handleAddProduct}
           containerStyles={styles.addButton}
           textStyles={styles.addButtonText}
         />
 
-        {selectedIndex === 0 && (
-          <>
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Products</Text>
-              <Text style={styles.sectionDescription}>Offers of the week with 5% off</Text>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.productContainer}
-              >
-                {products.map((product, index) => (
-                  <Card key={index} containerStyle={[styles.card, { width: cardWidth }]}>
-                    <Image
-                      source={product.image || require('../../../assets/images/default-meds.jpeg')}
-                      style={styles.productImage}
-                    />
-                    <Card.Title>{product.title}</Card.Title>
-                    <Card.Divider />
-                    <Text>{product.description}</Text>
-                  </Card>
-                ))}
-              </ScrollView>
-            </View>
-
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Orders</Text>
-              <Text style={styles.sectionDescription}>Orders in progress</Text>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.orderContainer}
-              >
-                {orders.map((order, index) => (
-                  <View key={index} style={[styles.iconWrapper, { width: orderWidth }]}>
-                    <Image
-                      source={order.image || require('../../../assets/images/default-pharm.jpg')}
-                      style={styles.icon}
-                    />
-                    <Text style={styles.orderName}>{order.name}</Text>
-                  </View>
-                ))}
-              </ScrollView>
-            </View>
-          </>
-        )}
-
-        {selectedIndex === 1 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Performing Products</Text>
-            <View style={styles.performingProductsContainer}>
-              {products.map((product, index) => (
-                <View key={index} style={styles.performingProductItem}>
-                  <Image
-                    source={product.image || require('../../../assets/images/default-meds.jpeg')}
-                    style={styles.performingProductImage}
-                  />
-                  <Text style={styles.performingProductTitle}>{product.title}</Text>
-                  <Text style={styles.performingProductDescription}>{product.description}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
+        {selectedIndex === 0 ? renderProducts() : renderPerformingProducts()}
       </ScrollView>
     </SafeAreaView>
   );
 };
+
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -247,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddDistributorScreen;
+export default DistributorAdd;

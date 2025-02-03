@@ -1,101 +1,36 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text, Platform } from "react-native";
 
-// Screen imports
-import Dashboard from "../Distributor/dashboard";
-import Home from "../Distributor/home";
-import ProductsFn from "../Distributor/products";
-import InvoiceSearch from "../Distributor/searchInvoices";
-import ProfileScreen from "../Distributor/profile";
-import AddDistributorScreen from "../Distributor/distributorAdd";
 
-const Tab = createBottomTabNavigator();
-
-// Tab configuration data
-const TAB_CONFIG = {
-  DISTRIBUTOR: [
-    {
-      name: "Dashboard",
-      component: Home,
-      icon: "home-outline",
-    },
-    {
-      name: "Products",
-      component: ProductsFn,
-      icon: "cube-outline",
-    },
-    {
-      name: "Invoices",
-      component: InvoiceSearch,
-      icon: "document-text-outline",
-    },
-    {
-      name: "Profile",
-      component: ProfileScreen,
-      icon: "person-outline",
-    },
-  ],
-  REGULAR: [
-    {
-      name: "Dashboard",
-      component: Home,
-      icon: "home-outline",
-    },
-    {
-      name: "Products",
-      component: ProductsFn,
-      icon: "cube-outline",
-    },
-    {
-      name: "Add",
-      component: AddDistributorScreen,
-      icon: "add-circle-outline",
-    },
-    {
-      name: "Profile",
-      component: ProfileScreen,
-      icon: "person-outline",
-    },
-  ],
-};
-
-const TabIcon = ({ icon, color, name, focused }) => (
-  <View
-    style={{
+function TabIcon({ icon, color, name, focused }) {
+  return (
+    <View style={{
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
       gap: 4,
       width: 100,
       paddingTop: 14,
-    }}
-  >
-    <Ionicons name={icon} size={24} color={color} />
-    <Text
-      style={{
+    }}>
+      <Ionicons name={icon} size={24} color={color} />
+      <Text style={{
         fontSize: 12,
         fontWeight: focused ? "700" : "500",
         color: color,
         textAlign: "center",
         fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
-      }}
-    >
-      {name}
-    </Text>
-  </View>
-);
+      }}>
+        {name}
+      </Text>
+    </View>
+  );
+}
 
-const TabsLayout = () => {
-  // You can manage this through authentication context/redux
-  const userRole = "REGULAR"; // or "DISTRIBUTOR"
-  const isDistributor = userRole === "DISTRIBUTOR";
-
-  const tabConfig = isDistributor ? TAB_CONFIG.DISTRIBUTOR : TAB_CONFIG.REGULAR;
-
+export default function TabsLayout() {
   return (
-    <Tab.Navigator
+    <Tabs
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: "#168503",
@@ -118,25 +53,41 @@ const TabsLayout = () => {
         headerShown: false,
       }}
     >
-      {tabConfig.map((tab) => (
-        <Tab.Screen
-          key={tab.name}
-          name={tab.name}
-          component={tab.component}
-          options={{
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={tab.icon}
-                color={color}
-                name={tab.name}
-                focused={focused}
-              />
-            ),
-          }}
-        />
-      ))}
-    </Tab.Navigator>
+      <Tabs.Screen
+        name="home"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon icon="home-outline" color={color} name="Dashboard" focused={focused} />
+          ),
+        }}
+      />
+      
+      <Tabs.Screen
+        name="products"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon icon="cube-outline" color={color} name="Products" focused={focused} />
+          ),
+        }}
+      />
+      
+      <Tabs.Screen
+        name="invoices"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon icon="document-text-outline" color={color} name="Invoices" focused={focused} />
+          ),
+        }}
+      />
+      
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon icon="person-outline" color={color} name="Profile" focused={focused} />
+          ),
+        }}
+      />
+    </Tabs>
   );
-};
-
-export default TabsLayout;
+}

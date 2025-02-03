@@ -2,7 +2,15 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
+  const handleMenuItemPress = (screen) => {
+    navigation.navigate(screen);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -39,8 +47,8 @@ const ProfileScreen = () => {
   );
 };
 
-const MenuItem = ({ title, icon }) => (
-  <TouchableOpacity style={styles.menuItem}>
+const MenuItem = ({ title, icon, onPress }) => (
+  <TouchableOpacity style={styles.menuItem} onPress={onPress}>
     <View style={styles.menuItemLeft}>
       <MaterialIcons name={icon} size={24} color="black" style={styles.menuIcon} />
       <Text style={styles.menuText}>{title}</Text>
