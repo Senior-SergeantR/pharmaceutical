@@ -11,7 +11,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import InvoicesScreen from "../Pharmacy/invoices"
 
 const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
   const [quantity, setQuantity] = useState(item.quantity.toString());

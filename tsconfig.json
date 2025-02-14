@@ -15,7 +15,7 @@
     "app/(tabs)/_layout.jsc",
     "app/(tabs)/(distibutor)/distributorAdd.jsx",
     "app/(tabs)/Distributor/dashboard.jsx",
-    "app/(tabs)/Distributor/productScreen.jsx",
+    "app/(tabs)/Distributor/productsScreen.jsx",
     "app/(tabs)/Distributor/profile.jsx",
     "app/_layout.jsx",
     "app/SplashScreenView.jsx",

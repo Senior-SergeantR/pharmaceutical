@@ -18,6 +18,9 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../../../lib/supabase";
 import { useNavigation } from "expo-router";
+import InvoicesScreen from "../Pharmacy/invoices"
+
+
 const { width, height } = Dimensions.get("window");
 const cardWidth = width * 0.45;
 

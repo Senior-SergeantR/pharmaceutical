@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ProgressBarAndroid, Platform, StatusBar, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Progress from 'react-native-progress';
+import InvoicesScreen from "../Pharmacy/invoices"
 
 const OrderHistoryScreen = () => {
   const [showCompleted, setShowCompleted] = useState(false);

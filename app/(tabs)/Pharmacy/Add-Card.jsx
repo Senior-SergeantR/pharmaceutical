@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, StatusBar} from 'react-native';
 import { Card, useTheme, Caption, Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import InvoicesScreen from "../Pharmacy/invoices"
 
 const CardDetailsScreen = ({ navigation }) => {
   const [cardNumber, setCardNumber] = useState('');

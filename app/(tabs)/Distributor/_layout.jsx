@@ -3,7 +3,6 @@ import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text, Platform } from "react-native";
 
-
 function TabIcon({ icon, color, name, focused }) {
   return (
     <View style={{
