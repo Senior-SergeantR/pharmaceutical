@@ -1,56 +1,30 @@
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
-import { View, Text } from "react-native";
-import Home from "../Pharmacy/dashboard";
-import ProductsFn from "../Pharmacy/products"
-import ProfileScreen from "../Pharmacy/profile";
-import Cart from "../Pharmacy/Cart-Details";
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import Home from './dashboard'; 
+import ProductsFn from './products'; 
+import Invoices from './invoices'; 
+import Cart from './Cart-Details'; 
+import ProfileScreen from './profile'; 
 
 
-const isPharmacy = false;
-
-const TabIcons = ({ icon, color, name, focused }) => {
-  return (
-    <View
-      style={{
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 4,
-        width: 100,
-      }}
-    >
-      <Ionicons name={icon} size={24} color={color} />
-      <Text
-        style={{
-          fontSize: 12,
-          fontWeight: focused ? "600" : "400",
-          color: color,
-          textAlign: "center",
-        }}
-      >
-        {name}
-      </Text>
-    </View>
-  );
-};
 
 const Tab = createBottomTabNavigator();
 
 const PharmacyLayout = () => {
+  const isPharmacy = false; // Set this based on your logic
+
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarShowLabel: false,
-        tabBarActiveTintColor: "#168503",
-        tabBarInactiveTintColor: "#b0b0b0",
+        tabBarActiveTintColor: '#168503', // Color for the active tab
+        tabBarInactiveTintColor: '#b0b0b0', // Color for inactive tabs
         tabBarStyle: {
-          backgroundColor: "#fff",
-          borderTopWidth: 1,
-          height: 70,
-          borderTopColor: "#fff",
-          paddingBottom: 6,
+          backgroundColor: '#fff', // Background color of the tab bar
+          borderTopWidth: 1, // Add a border at the top of the tab bar
+          height: 70, // Height of the tab bar
+          borderTopColor: '#fff', // Color of the top border
+          paddingBottom: 6, // Padding at the bottom of the tab bar
         },
       }}
     >
@@ -61,46 +35,58 @@ const PharmacyLayout = () => {
             name="Dashboard"
             component={Home}
             options={{
-              title: "Dashboard",
+              title: 'Dashboard',
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="home-outline"
+                <Ionicons
+                  name={focused ? 'home' : 'home-outline'}
+                  size={24}
                   color={color}
-                  name="Dashboard"
-                  focused={focused}
                 />
               ),
             }}
           />
           <Tab.Screen
-            name="Products"
+            name="products"
             component={ProductsFn}
             options={{
-              title: "Products",
+              title: 'Products',
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="cube-outline"
+                <Ionicons
+                  name={focused ? 'cube' : 'cube-outline'}
+                  size={24}
                   color={color}
-                  name="Products"
-                  focused={focused}
                 />
               ),
             }}
           />
-         <Tab.Screen
+          <Tab.Screen
+            name="invoices"
+            component={Invoices}
+            options={{
+              title: 'Invoices',
+              headerShown: false,
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons
+                  name={focused ? 'document' : 'document-outline'}
+                  size={24}
+                  color={color}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
             name="CartDetails"
             component={Cart}
             options={{
-              title: "Cart",
+              title: 'Cart',
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="cart-outline"
+                <Ionicons
+                  name={focused ? 'cart' : 'cart-outline'}
+                  size={24}
                   color={color}
-                  name="Cart"
-                  focused={focused}
                 />
               ),
             }}
@@ -109,14 +95,13 @@ const PharmacyLayout = () => {
             name="Profile"
             component={ProfileScreen}
             options={{
-              title: "Profile",
+              title: 'Profile',
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="person-outline"
+                <Ionicons
+                  name={focused ? 'person' : 'person-outline'}
+                  size={24}
                   color={color}
-                  name="Profile"
-                  focused={focused}
                 />
               ),
             }}
@@ -129,14 +114,13 @@ const PharmacyLayout = () => {
             name="Dashboard"
             component={Home}
             options={{
-              title: "Dashboard",
+              title: 'Dashboard',
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="home-outline"
+                <Ionicons
+                  name={focused ? 'home' : 'home-outline'}
+                  size={24}
                   color={color}
-                  name="Home"
-                  focused={focused}
                 />
               ),
             }}
@@ -145,14 +129,28 @@ const PharmacyLayout = () => {
             name="products"
             component={ProductsFn}
             options={{
-              title: "products",
+              title: 'Products',
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="cube-outline"
+                <Ionicons
+                  name={focused ? 'cube' : 'cube-outline'}
+                  size={24}
                   color={color}
-                  name="Products"
-                  focused={focused}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="invoices"
+            component={Invoices}
+            options={{
+              title: 'Invoices',
+              headerShown: false,
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons
+                  name={focused ? 'document' : 'document-outline'}
+                  size={24}
+                  color={color}
                 />
               ),
             }}
@@ -161,14 +159,13 @@ const PharmacyLayout = () => {
             name="CartDetails"
             component={Cart}
             options={{
-              title: "Cart",
+              title: 'Cart',
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="cart-outline"
+                <Ionicons
+                  name={focused ? 'cart' : 'cart-outline'}
+                  size={24}
                   color={color}
-                  name="Cart"
-                  focused={focused}
                 />
               ),
             }}
@@ -177,14 +174,13 @@ const PharmacyLayout = () => {
             name="Profile"
             component={ProfileScreen}
             options={{
-              title: "Profile",
+              title: 'Profile',
               headerShown: false,
               tabBarIcon: ({ color, focused }) => (
-                <TabIcons
-                  icon="person-outline"
+                <Ionicons
+                  name={focused ? 'person' : 'person-outline'}
+                  size={24}
                   color={color}
-                  name="Profile"
-                  focused={focused}
                 />
               ),
             }}

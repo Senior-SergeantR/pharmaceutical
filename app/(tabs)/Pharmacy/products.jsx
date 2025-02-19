@@ -5,27 +5,23 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Image,
-  TouchableOpacity,
   ScrollView,
   StatusBar,
   Modal,
-  Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { supabase } from "../../../lib/supabase";
 import ProductCard from "../../../components/products/ProductCard";
-import styles from "../../../components/products/styles";
 import CartModal from "../../../components/cart/CartModal";
-// import ProductDetails from "../../../components/products/ProductDetails";
-import { useNavigation } from '@react-navigation/native';
+import ProductDetails from "../../../components/products/ProductDetail";
+import styles from "../../../components/products/styles";
 
 const formatCurrency = (price) => {
   return `KSh ${price.toLocaleString()}`;
 };
 
 const ProductsFn = () => {
-  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -34,20 +30,21 @@ const ProductsFn = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isCartVisible, setIsCartVisible] = useState(false);
 
+  // Fetch products from Supabase
   const getProducts = useCallback(async () => {
     try {
       const { data, error } = await supabase.from("products").select("*");
       if (error) throw error;
-      
-      const formattedData = data.map(product => ({
+
+      const formattedData = data.map((product) => ({
         ...product,
-        formattedPrice: formatCurrency(product.price)
+        formattedPrice: formatCurrency(product.price),
       }));
-      
+
       setProducts(formattedData);
       setFilteredProducts(formattedData);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching products:", error);
     }
   }, []);
 
@@ -55,47 +52,56 @@ const ProductsFn = () => {
     getProducts();
   }, [getProducts]);
 
-  const handleSearch = useCallback((query) => {
-    setSearchQuery(query);
-    const filtered = products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.dosage.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredProducts(filtered);
-  }, [products]);
+  // Handle search functionality
+  const handleSearch = useCallback(
+    (query) => {
+      setSearchQuery(query);
+      const filtered = products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(query.toLowerCase()) ||
+          product.dosage.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    },
+    [products]
+  );
 
+  // Add product to cart
   const handleAddToCart = useCallback((product) => {
     const cartItem = {
       ...product,
       cartId: `${product.id}-${Date.now()}`,
-      formattedPrice: formatCurrency(product.price)
+      formattedPrice: formatCurrency(product.price),
     };
-    setCartItems(prev => [...prev, cartItem]);
+    setCartItems((prev) => [...prev, cartItem]);
   }, []);
 
-  const handleProductSelect = useCallback((item) => {
-    setSelectedProduct(item);
-  }, []);
-
+  // Remove product from cart
   const handleRemoveFromCart = useCallback((itemToRemove) => {
-    setCartItems(prev => prev.filter(item => item.cartId !== itemToRemove.cartId));
+    setCartItems((prev) =>
+      prev.filter((item) => item.cartId !== itemToRemove.cartId)
+    );
   }, []);
 
-  const renderProductCard = useCallback(({ item, isRecent }) => (
-    <ProductCard
-      key={`${item.id}-${isRecent ? 'recent' : 'all'}`}
-      item={item}
-      onPress={() => handleProductSelect(item)}
-      isRecent={isRecent}
-      onAddToCart={() => handleAddToCart(item)}
-    />
-  ), [handleProductSelect, handleAddToCart]);
+  // Render product card
+  const renderProductCard = useCallback(
+    ({ item, isRecent }) => (
+      <ProductCard
+        key={`${item.id}-${isRecent ? "recent" : "all"}`}
+        item={item}
+        onPress={() => setSelectedProduct(item)}
+        isRecent={isRecent}
+        onAddToCart={() => handleAddToCart(item)}
+      />
+    ),
+    [handleAddToCart]
+  );
 
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <SafeAreaView style={styles.safeArea}>
+        {/* Header */}
         <View style={styles.headerFixed}>
           <View style={styles.header}>
             <Text style={styles.title}>Catalogue</Text>
@@ -120,6 +126,7 @@ const ProductsFn = () => {
             </View>
           </View>
 
+          {/* Search Bar */}
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.searchBar}
@@ -131,8 +138,10 @@ const ProductsFn = () => {
           </View>
         </View>
 
+        {/* Product List */}
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.contentContainer}>
+            {/* Recently Added Products */}
             <Text style={styles.sectionTitle}>Recently Added</Text>
             <ScrollView
               horizontal
@@ -147,6 +156,8 @@ const ProductsFn = () => {
             </ScrollView>
 
             <View style={styles.divider} />
+
+            {/* All Products */}
             <Text style={styles.sectionTitle}>All Products</Text>
             <View style={styles.productGrid}>
               {filteredProducts.map((item, index) => (
@@ -158,15 +169,17 @@ const ProductsFn = () => {
           </View>
         </ScrollView>
 
+        {/* Menu Modal */}
         <Modal
           animationType="slide"
           transparent={true}
           visible={isMenuVisible}
           onRequestClose={() => setIsMenuVisible(false)}
         >
-          {/* Menu Modal content */}
+          {/* Add menu content here */}
         </Modal>
 
+        {/* Cart Modal */}
         <CartModal
           visible={isCartVisible}
           onClose={() => setIsCartVisible(false)}
@@ -174,6 +187,7 @@ const ProductsFn = () => {
           onRemoveFromCart={handleRemoveFromCart}
         />
 
+        {/* Product Details Modal */}
         <ProductDetails
           visible={selectedProduct !== null}
           product={selectedProduct}

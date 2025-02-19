@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView,  StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import InvoicesScreen from "../Pharmacy/invoices"
 
 const ShoppingCartScreen = ({ navigation }) => {
   const handleGoBack = () => {

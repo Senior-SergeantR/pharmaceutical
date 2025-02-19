@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native';
 import { Icon, CheckBox } from '@rneui/themed';
 import { LinearGradient } from 'expo-linear-gradient';
+import InvoicesScreen from "../Pharmacy/invoices"
 
 export default function CheckoutScreen({ navigation }) {
   const [email, setEmail] = useState('theagakhanunivertyhospital@gmail.com');
