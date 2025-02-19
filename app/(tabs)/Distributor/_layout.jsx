@@ -62,7 +62,7 @@ export default function TabsLayout() {
       />
       
       <Tabs.Screen
-        name="products"
+        name="productsScreen" // Updated route name
         options={{
           tabBarIcon: ({ color, focused }) => (
             <TabIcon icon="cube-outline" color={color} name="Products" focused={focused} />
