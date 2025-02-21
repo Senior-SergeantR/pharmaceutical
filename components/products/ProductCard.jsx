@@ -40,7 +40,11 @@ const ProductCard = ({ item, navigation, isRecent, onAddToCart }) => {
     >
       <View style={styles.imageContainer}>
         <Image
-          source={{ uri: item.image_url }}
+          source={
+            typeof item.image_url === 'string' 
+              ? { uri: item.image_url } // Remote image (URI string)
+              : item.image_url // Local image (require)
+          }
           style={styles.promoImage}
           resizeMode="cover"
         />
@@ -82,6 +86,7 @@ const ProductCard = ({ item, navigation, isRecent, onAddToCart }) => {
     </TouchableOpacity>
   );
 };
+
 
 const styles = StyleSheet.create({
   promoCard: {

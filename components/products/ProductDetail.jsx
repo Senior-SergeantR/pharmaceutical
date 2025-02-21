@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 
 const ProductDetail = ({ product }) => {
-  // If product is null or undefined, show a loading indicator
   if (!product) {
     return (
       <View style={styles.loadingContainer}>
@@ -12,10 +11,11 @@ const ProductDetail = ({ product }) => {
     );
   }
 
-  // If product.image is missing, use a placeholder image
   const imageSource = product.image
-    ? { uri: product.image }
-    : require('../../assets/images/lab.jpg'); // Add a local placeholder image
+    ? typeof product.image === 'string'
+      ? { uri: product.image } // Remote image (URI string)
+      : product.image // Local image (require)
+    : require('../../assets/images/lab.jpg'); // Placeholder image
 
   return (
     <View style={styles.container}>
@@ -27,6 +27,7 @@ const ProductDetail = ({ product }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
