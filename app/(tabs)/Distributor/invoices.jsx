@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, SafeAreaView, TouchableOpacity, Modal} from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, SafeAreaView, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const data = [
@@ -35,28 +35,33 @@ const data = [
   { batch: 'FIG-150', name: 'Estrobalance (Estradiol) 1mg...', status: 'Pending' },
 ];
 
-
 const Invoices = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [statusFilter, setStatusFilter] = useState('All');
 
-  const filteredData = data.filter(item =>
-    (item.batch.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.status.toLowerCase().includes(searchQuery.toLowerCase())) &&
-    (statusFilter === 'All' || item.status === statusFilter)
+  const filteredData = data.filter(
+    (item) =>
+      (item.batch.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.status.toLowerCase().includes(searchQuery.toLowerCase())) &&
+      (statusFilter === 'All' || item.status === statusFilter)
   );
 
   const renderItem = useCallback(({ item }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.batch}>{item.batch}</Text>
       <Text style={styles.name}>{item.name}</Text>
-      <Text style={[
-        styles.status,
-        item.status === 'Complete' ? styles.complete :
-        item.status === 'Pending' ? styles.pending : styles.inProgress
-      ]}>
+      <Text
+        style={[
+          styles.status,
+          item.status === 'Complete'
+            ? styles.complete
+            : item.status === 'Pending'
+            ? styles.pending
+            : styles.inProgress,
+        ]}
+      >
         {item.status}
       </Text>
     </View>
@@ -71,11 +76,10 @@ const Invoices = () => {
   );
 
   const handleBackPress = () => {
-   
     setSearchQuery('');
     setStatusFilter('All');
-    
   };
+
   const FilterModal = ({ visible, onClose, currentFilter, onFilterSelect }) => (
     <Modal
       animationType="slide"
@@ -89,19 +93,16 @@ const Invoices = () => {
           {['All', 'Complete', 'Pending', 'In Progress'].map((status) => (
             <TouchableOpacity
               key={status}
-              style={[styles.filterOption, statusFilter === status && styles.selectedFilter]}
-              onPress={() => {
-                setStatusFilter(status);
-                setFilterModalVisible(false);
-              }}
+              style={[
+                styles.filterOption,
+                currentFilter === status && styles.selectedFilter,
+              ]}
+              onPress={() => onFilterSelect(status)}
             >
               <Text style={styles.filterOptionText}>{status}</Text>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setFilterModalVisible(false)}
-          >
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
         </View>
@@ -142,19 +143,25 @@ const Invoices = () => {
         stickyHeaderIndices={[0]}
         contentContainerStyle={styles.listContentContainer}
       />
-      <FilterModal />
+      <FilterModal
+        visible={filterModalVisible}
+        onClose={() => setFilterModalVisible(false)}
+        currentFilter={statusFilter}
+        onFilterSelect={(status) => {
+          setStatusFilter(status);
+          setFilterModalVisible(false);
+        }}
+      />
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 40, 
+    paddingTop: 40,
   },
-
   backButton: {
     padding: 5,
   },
@@ -164,7 +171,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
-    marginRight: 30, 
+    marginRight: 30,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -214,7 +221,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#333',
     marginBottom: 20,
     marginTop: 10,
-    
   },
   headerText: {
     fontSize: 16,
@@ -306,6 +312,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 
 export default Invoices;
